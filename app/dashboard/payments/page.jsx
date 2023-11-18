@@ -1,14 +1,18 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import TablePayment from "@/components/Dashboard/Payment/TablePayment";
 
-const Payments = () => {
+// import { fetchDataPayment } from "@/app/dashboard/payments/api/fetchDataPayment";
+
+import { fetchData } from "@/app/api/payments/api";
+
+const Payments = async () => {
+  const { data } = await fetchData();
   return (
     <>
       <Breadcrumb pageName="Payments" />
 
-      <div className="rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark md:p-6 xl:p-9">
-        <div className="flex flex-col gap-7.5">
-          <h1>Ini di halaman payment</h1>
-        </div>
+      <div className="flex flex-col gap-10">
+        <TablePayment data={data} />
       </div>
     </>
   );
