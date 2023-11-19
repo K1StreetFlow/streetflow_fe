@@ -1,13 +1,13 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import TableCart from "@/app/dashboard/carts/TableCart";
+import TableCartDetail from "@/app/dashboard/cart-details/TableCartDetail";
 
 const Carts = async () => {
   return (
     <>
-      <Breadcrumb pageName="Carts" />
+      <Breadcrumb pageName="Cart-details" />
 
       <div className="flex flex-col gap-10">
-        <TableCart />
+        <TableCartDetail />
       </div>
     </>
   );

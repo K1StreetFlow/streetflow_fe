@@ -3,7 +3,7 @@ import React from "react";
 
 export default function ButtonDetail({ route }) {
   return (
-    <Link href={route}>
+    <Link href={route} className="hover:text-primary">
       <svg
         className="fill-current"
         width="18"
