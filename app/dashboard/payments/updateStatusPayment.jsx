@@ -1,27 +1,17 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 
 export default function updateStatusPayment() {
+  const router = useRouter();
   async function handleClickUpdate() {
-    alert("Maintenance");
-    // const res = await fetch(
-    //   `https://api.sandbox.midtrans.com/v2/TES10/status`,
-    //   {
-    //     next: {
-    //       revalidate: 0,
-    //     },
-    //     headers: {
-    //       Authorization:
-    //         "Basic " +
-    //         Buffer.from(
-    //           "SB-Mid-server-QzTg7Mjwxg-ael0bQkI7F8C6" + ":"
-    //         ).toString("base64"),
-    //     },
-    //   }
-    // );
-    // const midtransData = await res.json();
-    // console.log(res.json(midtransData));
+    await fetch(`http://localhost:8000/api/payments/update-status/pending`, {
+      next: {
+        revalidate: 0,
+      },
+    });
+    router.refresh();
   }
 
   return (
