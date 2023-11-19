@@ -1,15 +1,17 @@
-// components/TableTwo.tsx
 import Image from "next/image";
 import { FaTrash, FaEdit, FaPlus } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { getAllProducts, deleteProduct, addProduct, editProduct } from '@/app/dashboard/products/api/ProductApi';
 import AddProductModal from '@/components/Form/TambahProductForm';
 import EditProductModal from '@/components/Form/EditProductForm';
+import DeleteConfirmationModal from '@/components/Form/DeleteConfirmationModal'; // Import modal konfirmasi penghapusan
 
 const TableTwo: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // State untuk menampilkan modal konfirmasi penghapusan
+  const [deleteProductId, setDeleteProductId] = useState<number | null>(null); // ID produk yang akan dihapus
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,13 +26,24 @@ const TableTwo: React.FC = () => {
     fetchData();
   }, []);
 
-  const handleDeleteProduct = async (id: number) => {
+  const handleDeleteProduct = (id: number) => {
+    // Menampilkan modal konfirmasi penghapusan
+    setDeleteProductId(id);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
     try {
-      await deleteProduct(id);
-      const updatedProducts = await getAllProducts();
-      setProducts(updatedProducts.data);
+      if (deleteProductId) {
+        await deleteProduct(deleteProductId);
+        const updatedProducts = await getAllProducts();
+        setProducts(updatedProducts.data);
+      }
     } catch (error) {
       console.error('Error deleting product:', error);
+    } finally {
+      // Menutup modal konfirmasi penghapusan setelah operasi selesai
+      setShowDeleteModal(false);
     }
   };
 
@@ -49,13 +62,14 @@ const TableTwo: React.FC = () => {
     setEditingProduct(product);
   };
 
-
   const handleUpdateProduct = async (updatedProduct: any) => {
     try {
-      await editProduct(editingProduct.id, updatedProduct);
-      const updatedProducts = await getAllProducts();
-      setProducts(updatedProducts.data);
-      setEditingProduct(null);
+      if (editingProduct) {
+        await editProduct(editingProduct.id, updatedProduct);
+        const updatedProducts = await getAllProducts();
+        setProducts(updatedProducts.data);
+        setEditingProduct(null);
+      }
     } catch (error) {
       console.error('Error updating product:', error);
     }
@@ -190,6 +204,14 @@ const TableTwo: React.FC = () => {
               <FaTrash />
               Delete
             </button>
+             {/* Modal konfirmasi penghapusan */}
+            {showDeleteModal && product.id === deleteProductId && (
+              <DeleteConfirmationModal
+                isOpen={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirmDelete={confirmDelete}
+              />
+            )}
           </div>
         </div>
       ))}
