@@ -30,7 +30,13 @@
     ".next/types/**/*.ts",
     "services/**/*.js",
     "app/dashboard/page.js",
-    "app/page.js"
-, "app/dashboard/order-list/page.js", "components/Tables/TableOrder.js"  ],
+    "app/page.js",
+    "app/dashboard/order-list/page.js",
+    "components/Tables/TableOrder.js",
+    "app/auth/user/login/page.jsx",
+    "app/auth/user/register/page.jsx",
+    "components/Header/DropdownUser.jsx",
+    "app/dashboard/profile/page.jsx"
+  ],
   "exclude": ["node_modules"]
 }
