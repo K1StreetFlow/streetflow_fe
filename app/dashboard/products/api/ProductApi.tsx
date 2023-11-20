@@ -22,3 +22,6 @@ export const editProduct = async (id: number, data: any): Promise<AxiosResponse>
 export const deleteProduct = async (id: number): Promise<AxiosResponse> => {
   return await axios.delete(`${API_BASE_URL}/products/${id}`);
 };
+export const getProductsByCategory = async (categoryId: number): Promise<AxiosResponse> => {
+  return await axios.get(`${API_BASE_URL}/products/category/${categoryId}`);
+};
