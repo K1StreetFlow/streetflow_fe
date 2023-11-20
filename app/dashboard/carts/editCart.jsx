@@ -8,8 +8,6 @@ export default function EditCartDetail({ users, cart }) {
   const router = useRouter();
   const [user, setUser] = useState(cart.id_user_customer);
 
-  console.log(cart.user_customer.fullname);
-
   function handleChange() {
     setModal(!modal);
   }

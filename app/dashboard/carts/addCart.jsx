@@ -5,12 +5,9 @@ import { useRouter } from "next/navigation";
 
 export default function AddCart({ users }) {
   const [modal, setModal] = useState(false);
-
   const [user, setUser] = useState(0);
 
   const router = useRouter();
-
-  console.log(user);
 
   function handleChange() {
     setModal(!modal);
@@ -19,17 +16,15 @@ export default function AddCart({ users }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const res = await fetch("http://localhost:8000/api/carts", {
+    await fetch("http://localhost:8000/api/carts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        id_users_customer: user,
+        id_users_custoemr: user,
       }),
     });
-
-    console.log(res);
 
     setUser("");
     router.refresh();
