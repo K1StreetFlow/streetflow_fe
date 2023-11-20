@@ -2,9 +2,9 @@ import Image from "next/image";
 import { FaTrash, FaEdit, FaPlus } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { getAllProducts, deleteProduct, addProduct, editProduct } from '@/app/dashboard/products/api/ProductApi';
-import AddProductModal from '@/components/Form/TambahProductForm';
-import EditProductModal from '@/components/Form/EditProductForm';
-import DeleteConfirmationModal from '@/components/Form/DeleteConfirmationModal'; // Import modal konfirmasi penghapusan
+import AddProductModal from '@/components/Product/FormCrudProduct/TambahProductForm';
+import EditProductModal from '@/components/Product/FormCrudProduct/EditProductForm';
+import DeleteConfirmationModal from '@/components/Product/FormCrudProduct/DeleteConfirmationModal'; // Import modal konfirmasi penghapusan
 
 const TableTwo: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
