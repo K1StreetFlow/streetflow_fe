@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getAllCategory } from "../../services/fetch/category_product";
 import AddCategory from "./AddCategory";
+// import { DeleteCategory } from "./DeleteCategory";   
+
 
 const TableCategory = () => {
     const [categorys, setCategory] = useState([]);
@@ -8,6 +10,8 @@ const TableCategory = () => {
 		const fetchCategory = async () => {
 			const category = await getAllCategory();
 			setCategory(category);
+            console.log(category)
+            console.log(categorys)
 		};
 		fetchCategory();
 	}, []);
@@ -57,7 +61,7 @@ const TableCategory = () => {
 
             <div className="flex items-center justify-center  p-2.5 xl:p-5">
               <button className="text-white hover:bg-meta-8 bg-warning p-2 rounded-md me-2">Edit</button>
-              <button className="text-white hover:bg-danger rounded-md bg-meta-1 p-2">Delete</button>
+              {/* <DeleteCategory {...category}/>  */}
             </div>
           </div>
         ))}
