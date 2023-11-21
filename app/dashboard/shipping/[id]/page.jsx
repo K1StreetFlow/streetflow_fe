@@ -1,6 +1,5 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { formatDate } from "@/app/utils/formatDate";
-import "./style.css";
 import Image from "next/image";
 
 async function getOrderById(id) {
