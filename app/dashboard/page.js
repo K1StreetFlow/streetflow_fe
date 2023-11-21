@@ -19,7 +19,7 @@ const Home = () => {
     // Jika tidak ada token, redirect ke halaman login
     if (!tokenRole) {
       // Redirect ke halaman login
-      router.push("/auth/user/login");
+      router.push("/auth/admin/login");
     }
   }, [router]); // Menggunakan array dependencies kosong agar useEffect hanya dijalankan sekali setelah komponen pertama kali di-mount
 
