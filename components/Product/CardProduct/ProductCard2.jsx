@@ -11,8 +11,8 @@ const ProductCard2 = ({ product }) => {
   return (
     <div>
       
-      <div className="max-w-xs gap-3 mb-59 ms-3 bg-white rounded-lg overflow-hidden shadow-md mx-auto">
-        <Link href={`/detail/${product.id}`}>
+      <div className="max-w-xs gap-3 ms-3 bg-white rounded-lg overflow-hidden shadow-md mx-auto">
+        <Link href={`product/detail/${product.id}`}>
           <div className="block">
             <div className="overflow-hidden">
               <Image
@@ -26,7 +26,7 @@ const ProductCard2 = ({ product }) => {
           </div>
         </Link>
         <div className="p-4">
-          <Link href={`/detail/${product.id}`}>
+          <Link href={`product/detail/${product.id}`}>
             <div className="block">
               <h5 className="text-md font-bold tracking-tight text-black dark:text-white">
                 {product.name_product}
