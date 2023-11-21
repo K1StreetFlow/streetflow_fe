@@ -29,29 +29,32 @@ const CardSlider = ({ cards }) => {
     dots: false,
     infinite: true,
     speed: 600,
-    slidesToShow: 5,
+    slidesToShow: 4,
     slidesToScroll: 2,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 4,
-          slidesToScroll: 2,
+          slidesToScroll: 3,
           infinite: true,
+         
         },
       },
       {
         breakpoint: 768,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 2,
+          slidesToScroll: 3,
+         
         },
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
-          slidesToScroll: 2,
+          slidesToScroll: 3,
+         
         },
       },
     ],
@@ -63,9 +66,9 @@ const CardSlider = ({ cards }) => {
   };
 
   return (
-    <div className="relative max-w-screen-lg mx-auto my-8">
-      <h2 className="text-3xl font-bold mb-6 text-start">Baju</h2>
-      <Slider {...settings} className="mx-auto">
+    <div className="relative  max-w-280  mx-auto ">
+      <h2 className="text-3xl font-bold mb-6 text-start"></h2>
+      <Slider {...settings}>
         {cards}
       </Slider>
     </div>

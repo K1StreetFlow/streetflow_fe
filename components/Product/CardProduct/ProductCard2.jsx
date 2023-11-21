@@ -3,15 +3,15 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const ProductCard1 = ({ product }) => {
-  if (!product || !product.category || product.category.id !== 1) {
+const ProductCard2 = ({ product }) => {
+  if (!product || !product.category || product.category.id !== 2) {
     return null;
   }
 
   return (
     <div>
       
-      <div className="max-w-xs gap-3 ms-3 bg-black  rounded-lg overflow-hidden shadow-md mx-auto">
+      <div className="max-w-xs gap-3 mb-59 ms-3 bg-white rounded-lg overflow-hidden shadow-md mx-auto">
         <Link href={`/detail/${product.id}`}>
           <div className="block">
             <div className="overflow-hidden">
@@ -47,4 +47,4 @@ const ProductCard1 = ({ product }) => {
   );
 };
 
-export default ProductCard1;
+export default ProductCard2;
