@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import Address from "./Address";
 
 async function getCartById(id) {
   const res = await fetch(`http://localhost:8000/api/carts/${id}`);
@@ -22,40 +23,12 @@ const Checkout = async () => {
     <div className="flex justify-center my-6">
       <div className="flex flex-col w-full h-120 p-20 mt-20 text-gray-800 bg-white shadow-lg pin-r pin-y md:w-4/5 lg:w-4/5">
         <div>
-          <h1 className="text-4xl text-black font-bold mb-5 ">Detail Order</h1>
+          <h1 className="text-4xl text-black font-bold mb-5 ">Checkout Page</h1>
           <hr />
         </div>
         <div className="flex-1 mt-20">
-          <h2 className="mb-5 font-bold text-2xl text-black ">
-            Alamat Pengiriman
-          </h2>
-          <div className="flex flex-col gap-7.5">
-            <div className="flex flex-row gap-5.5">
-              {data.user_customer.address.map((address, key) => (
-                <div className="w-full sm:w-1/2 p-10 border-2 border-success rounded-lg hover:bg-success">
-                  <label htmlFor="address">
-                    <input type="radio" className="hidden" />
-                    <div>
-                      <h2 className="font-bold text-black text-lg mb-2">
-                        {data.user_customer.fullname}
-                      </h2>
-                      <h4 className="text-black mb-1">
-                        {data.user_customer.phone_number}
-                      </h4>
-                      <p>
-                        <span>
-                          {address.street}
-                          {address.house_number}
-                          <br />
-                          {address.city},{address.province}
-                        </span>
-                      </p>
-                    </div>
-                  </label>
-                </div>
-              ))}
-            </div>
-          </div>
+          <Address data={data} />
+
           <hr className="mt-10" />
           <h2 className=" mt-10 mb-5 font-bold text-2xl text-black">
             Product Detail
@@ -126,8 +99,10 @@ const Checkout = async () => {
               <div className="mb-5">
                 Rp {data.grand_price.toLocaleString("id-ID")}
               </div>
-              <div className="mb-5">Rp 12.000</div>
-              <div className="text-2xl font-bold text-black">Rp 908.000</div>
+              <div className="mb-5">-</div>
+              <div className="text-2xl font-bold text-black">
+                Rp {data.grand_price.toLocaleString("id-ID")}
+              </div>
               <button className="btn btn-primary text-white mt-10 ">
                 Pilih metode pembayaran
               </button>

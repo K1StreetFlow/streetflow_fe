@@ -1,4 +1,19 @@
-export default function page() {
+import axios from "axios";
+
+async function getOrderListById() {
+  // const res = await fetch("http://localhost:8000/api/carts/2", {
+  //   cache: "no-store",
+  // });
+  // return res.json();
+
+  const res = await axios.get("http://localhost:8000/api/order/1");
+  return res.data;
+}
+const page = async () => {
+  const order_list = await getOrderListById();
+
+  console.log(order_list);
+
   return (
     <div className="flex justify-center my-6">
       <div className="flex flex-col w-full p-8 text-gray-800 bg-white shadow-lg pin-r pin-y md:w-4/5 lg:w-4/5">
@@ -8,4 +23,6 @@ export default function page() {
       </div>
     </div>
   );
-}
+};
+
+export default page;
