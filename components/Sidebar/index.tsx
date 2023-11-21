@@ -68,7 +68,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           <Image
             width={176}
             height={32}
-            src={"/images/logo/logo.svg"}
+            src={"/images/logo/sfadmin-logo-light.svg"}
             alt="Logo"
           />
         </Link>
@@ -276,7 +276,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         href="#"
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
                           (pathname === "/dashboard/carts" ||
-                            pathname.includes("carts")) &&
+                            pathname.includes("dashboard/carts")) &&
                           "bg-graydark dark:bg-meta-4"
                         }`}
                         onClick={(e) => {
@@ -329,22 +329,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             <Link
                               href="/dashboard/carts"
                               className={`first-letter:group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === "/dashboard/carts/carts" &&
-                                "text-white"
+                                pathname === "/dashboard/carts" && "text-white"
                               }`}
                             >
-                              Carts
+                              Cart
                             </Link>
                           </li>
                           <li>
                             <Link
-                              href="/dashboard/carts/details"
+                              href="/dashboard/cart-details"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${
-                                pathname === "/dashboard/carts/details" &&
+                                pathname === "/dashboard/cart-details" &&
                                 "text-white"
                               }`}
                             >
-                              Cart Details
+                              Cart Detail
                             </Link>
                           </li>
                         </ul>
