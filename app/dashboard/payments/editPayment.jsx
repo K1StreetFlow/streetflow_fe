@@ -3,21 +3,22 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function AddCart({ users }) {
+export default function EditCartDetail({ users, cart }) {
   const [modal, setModal] = useState(false);
-  const [user, setUser] = useState(0);
-
   const router = useRouter();
+  const [user, setUser] = useState(cart.id_user_customer);
+
+  console.log(cart.user_customer.fullname);
 
   function handleChange() {
     setModal(!modal);
   }
 
-  async function handleSubmit(e) {
+  async function handleUpdate(e) {
     e.preventDefault();
 
-    await fetch("http://localhost:8000/api/carts", {
-      method: "POST",
+    const res = await fetch(`http://localhost:8000/api/carts/${cart.cart_id}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -26,14 +27,16 @@ export default function AddCart({ users }) {
       }),
     });
 
+    console.log(res);
+
     setUser("");
     router.refresh();
     setModal(false);
   }
   return (
     <div>
-      <button className="btn bg-primary text-white" onClick={handleChange}>
-        Add Cart
+      <button className="btn bg-info btn-sm text-white" onClick={handleChange}>
+        Edit
       </button>
 
       <input
@@ -45,18 +48,18 @@ export default function AddCart({ users }) {
 
       <div className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Add New Cart</h3>
-          <form onSubmit={handleSubmit}>
+          <h3 className="font-bold text-lg">Update Cart</h3>
+          <form onSubmit={handleUpdate}>
             <div className="form-control">
               <label htmlFor="user_customer" className="label font-bold">
                 User Customer
               </label>
               <select
+                defaultChecked={cart.user_customer.fullname}
                 className="select select-bordered w-full"
-                defaultValue={"DEFAULT"}
                 onChange={(e) => setUser(e.target.value)}
               >
-                <option value="DEFAULT" disabled>
+                <option disabled value="DEFAULT">
                   -- Select User Customer --
                 </option>
                 {users?.map((user, key) => (
@@ -74,7 +77,7 @@ export default function AddCart({ users }) {
                 type="Submit"
                 className="btn btn-primary hover:btn-primary text-white"
               >
-                Add Cart
+                Update Cart Detail
               </button>
             </div>
           </form>

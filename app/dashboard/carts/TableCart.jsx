@@ -28,6 +28,7 @@ const TableCart = async () => {
   const users = await getAllCustomers();
   const carts = await getAllCarts();
 
+  console.log(carts);
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
       <div className="py-6 px-4 md:px-6 xl:px-7.5">
@@ -45,8 +46,9 @@ const TableCart = async () => {
               <th className="flex justify-center">Action</th>
             </tr>
           </thead>
+
           <tbody>
-            {carts?.map((cart, key) => (
+            {carts.map((cart, key) => (
               <tr key={key}>
                 <td>{count++}</td>
                 <td>{cart.user_customer.fullname}</td>
