@@ -26,7 +26,7 @@ const Checkout = async () => {
           <h1 className="text-4xl text-black font-bold mb-5 ">Checkout Page</h1>
           <hr />
         </div>
-        <div className="flex-1 mt-20">
+        <div className="flex-1 mt-10">
           <Address data={data} />
 
           <hr className="mt-10" />
