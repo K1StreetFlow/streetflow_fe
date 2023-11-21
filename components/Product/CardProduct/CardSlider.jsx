@@ -64,6 +64,7 @@ const CardSlider = ({ cards }) => {
 
   return (
     <div className="relative max-w-screen-lg mx-auto my-8">
+      <h2 className="text-3xl font-bold mb-6 text-start">Baju</h2>
       <Slider {...settings} className="mx-auto">
         {cards}
       </Slider>
