@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { getProductById } from "@/app/dashboard/products/api/ProductApi";
 import { FaShoppingCart, FaCheck } from "react-icons/fa";
 import LoginModal from "@/components/Product/modalproduct/LoginModal";
+import Loader from "@/components/common/Loader";
 
 const ProductPage = ({ params }) => {
   const { id } = params;
@@ -64,7 +65,7 @@ const ProductPage = ({ params }) => {
   };
 
   if (!product) {
-    return <p>Loading...</p>;
+    return   <Loader />;
   }
 
   return (
