@@ -7,9 +7,9 @@ import Image from "next/image";
 
 export default function editReviewProducts({ users, products, order_list, review }) {
     const [modal, setModal] = useState(false);
-    const [user, setUser] = useState(review.id_users_customer);
-    const [product, setProduct] = useState(review.id_products);
-    const [orderlist, setOrderlist] = useState(review.id_order_list);
+    const [user, setUser] = useState(review.users_customer.fullname);
+    const [product, setProduct] = useState(review.products.name_product);
+    const [orderlist, setOrderlist] = useState(review.order_list.code_order);
     const [messageReview, setMessageReview] = useState(review.message_review);
     const [numberReview, setNumberReview] = useState(review.number_review);
     const [photoReview, setPhotoReview] = useState(review.photo_review);
@@ -20,11 +20,20 @@ export default function editReviewProducts({ users, products, order_list, review
         setModal(!modal);
     }
 
-    function handlePhotoChange(e) {
-        const file =  e.target.files[0];
+    function getImageUrl(filename) {
+        return `http://localhost:8000/api/review-products-photo/view/${filename}`;
+    }
+
+    async function handlePhotoChange(e) {
+        const file = e.target.files[0];
         setPhotoReview(file);
 
-        // preview the selected image
+        const fileName = file ? file.name : "";
+        const photoReviewInput = document.getElementById("photoReviewInput");
+        if (photoReviewInput) {
+            photoReviewInput.value = fileName;
+        }
+
         const reader = new FileReader();
         reader.onloadend = () => {
             setPreviewImage(reader.result);
@@ -34,6 +43,21 @@ export default function editReviewProducts({ users, products, order_list, review
         } else {
             setPreviewImage(null);
         }
+
+        await editPhotoReview(file);
+    }
+
+    async function editPhotoReview(file) {
+        const formData = new FormData();
+        formData.append('photo_review', file);
+
+        await fetch(`http://localhost:8000/api/review-products-photo/${review.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            body: formData
+        });
     }
 
     async function handleUpdate(e) {
@@ -53,25 +77,41 @@ export default function editReviewProducts({ users, products, order_list, review
             }),
         });
 
-        const formData = new FormData();
-        formData.append('photo_review', photoReview);
-
-        await fetch(`http://localhost:8000/api/review-products-photo/${review.id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "multipart/form-data" // Set Content-Type here
-            },
-            body: formData
-        });
-
-        setUser();
-        setProduct();
-        setOrderlist();
-        setMessageReview();
-        setNumberReview();
+        setUser('');
+        setProduct('');
+        setOrderlist('');
+        setMessageReview('');
+        setNumberReview('');
         router.refresh();
         setModal(false);
     }
+
+    async function handleUpdate(e) {
+        e.preventDefault();
+
+        await fetch(`http://localhost:8000/api/review-products/${review.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id_users_customer: user,
+                id_products: product,
+                id_order_list: orderlist,
+                message_review: messageReview,
+                number_review: numberReview,
+            }),
+        });
+
+        setUser(review.id_users_customer);
+        setProduct(review.id_products);
+        setOrderlist(review.id_order_list);
+        setMessageReview(review.message_review);
+        setNumberReview(review.number_review);
+        router.refresh();
+        setModal(false);
+    }
+    
         return (
             <div>
                 <button className="btn bg-info btn-sm text-white" onClick={handleChange}>
@@ -150,11 +190,19 @@ export default function editReviewProducts({ users, products, order_list, review
                                 />
                             </div>
                             <div className="form-control">
-                                <label htmlFor="photo_review" className="label font-bold">
+                                <label htmlFor="photo_review" className="label font-bold ">
                                     Photo Review
                                 </label>
+                                <Image
+                                    src={getImageUrl(review.photo_review)}
+                                    width={100}
+                                    height={100}
+                                    alt={review.photo_review} 
+                                    className="rounded-md mr-4"
+                                />
                                 <input 
                                     type="file"
+                                    id="photoReviewInput"
                                     name="photoReview"
                                     accept="image/*"
                                     className="input w-full input-bordered"
