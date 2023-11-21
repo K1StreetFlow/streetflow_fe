@@ -1,25 +1,30 @@
 "use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-function AddCategory({}) {
-  const [title, setTitle] = useState("");
+export default function EditCategory({ category }) {
   const [modal, setModal] = useState(false);
+  const [title, setTitle] = useState(category.name_category_products);
   const router = useRouter();
 
   async function handleSubmit(e) {
-    // console.log(title)
     e.preventDefault();
 
-    const res = await fetch("http://localhost:8000/api/category_products", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name_category_products: title,
-      }),
-    });
+    const res = await fetch(
+      `http://localhost:8000/api/category_products/${category.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name_category_products: title,
+        }),
+      }
+    );
+
+    console.log(res);
 
     setTitle("");
     router.refresh();
@@ -32,8 +37,11 @@ function AddCategory({}) {
 
   return (
     <div>
-      <button className="btn btn-primary text-white" onClick={handleChange}>
-        Add New
+      <button
+        className="text-white hover:bg-meta-8 bg-warning p-2 rounded-md me-2"
+        onClick={handleChange}
+      >
+        Edit
       </button>
 
       <input
@@ -77,5 +85,3 @@ function AddCategory({}) {
     </div>
   );
 }
-
-export default AddCategory;
