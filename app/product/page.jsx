@@ -98,7 +98,7 @@ const ProductList = () => {
             {/* Carousel component */}
 
             {/* Section for Category 1 */}
-            <div className="flex items-center mb-4 bg-primary w-60 p-3 text-white mt-2 rounded-ee-xl">
+            <div className="flex items-center mb-4 bg-primary w-60 p-3 text-white mt-5 rounded-ee-xl">
               <FaShoppingCart className="mr-1" size="2em" />
               <h2 className="text-2xl font-bold">
                 {getCategoryName(filteredProductsCategory1[0]?.category)}{" "}
@@ -111,7 +111,7 @@ const ProductList = () => {
               ))}
             />
 
-            <div className="flex items-center mb-4 bg-meta-8 w-60 p-3 text-white mt-2 rounded-ee-xl">
+            <div className="flex items-center mb-4 bg-meta-8 w-60 p-3 text-white mt-5 rounded-ee-xl">
               <FaStar className="mr-1" size="2em" />
               <h2 className="text-2xl font-bold">
                 {getCategoryName(filteredProductsCategory2[0]?.category)}{" "}
@@ -125,7 +125,7 @@ const ProductList = () => {
             />
 
             {/* Section for Category 3 */}
-            <div className="flex items-center mb-4 bg-black w-60 p-3 text-white mt-2 rounded-ee-xl">
+            <div className="flex items-center mb-4 bg-black w-60 p-3 text-white mt-5 rounded-ee-xl">
               <FaCheck className="mr-1" size="2em" />
               <h2 className="text-2xl font-bold">
                 {getCategoryName(filteredProductsCategory3[0]?.category)}{" "}

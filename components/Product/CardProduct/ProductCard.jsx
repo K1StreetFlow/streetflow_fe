@@ -10,7 +10,7 @@ const ProductCard = ({ product }) => {
         <div>
           <Image
             src={`http://localhost:8000/api/photo_products/view/${product.photo.photo_product}`}
-            width={220} // Adjust the width as needed
+            width={320} // Adjust the width as needed
             height={100} // Adjust the height as needed
             alt={product.name_product}
             className="object-fill"
@@ -25,7 +25,7 @@ const ProductCard = ({ product }) => {
           </div>
         </Link>
         <p className="text-meta-1 text-xs">
-          ${product.price_product} 
+          RP.{product.price_product} 
         </p>
         <p className="text-xs"> Stock: {product.stock_product}</p>
       </div>

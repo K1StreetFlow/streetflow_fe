@@ -135,13 +135,13 @@ const PhotoProduct = () => {
     <>
       <Breadcrumb pageName="PhotoProduct" />
 
-      <div className="rounded-sm  z-99999 bg-white p-4 shadow-default dark:bg-boxdark md:p-6 xl:p-9">
+      <div className="rounded-sm bg-white p-4 shadow-default dark:bg-boxdark md:p-6 xl:p-9">
         <Transition
           show={showDeleteConfirmation}
           as={Dialog}
           onClose={() => handleModalToggle("delete")}
         >
-          <Dialog.Overlay className="fixed w-full h-full z-99 inset-0 bg-black bg-opacity-50" />
+          <Dialog.Overlay className="fixed w-full h-full  inset-0 bg-black bg-opacity-50" />
           <div className="flex items-center justify-center fixed inset-0">
             <div className="bg-white p-8 rounded-md">
               <h1> Konfirmasi Hapus</h1>
