@@ -1,5 +1,5 @@
 "use client";
-// user-administrators/page.jsx
+// app/dashboard/user-administrators/page.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
@@ -66,6 +66,7 @@ const Home = ({ admins }) => {
 
   return (
     <>
+      {/* ini modals edit */}
       {editAdminId && <EditAdminForm adminId={editAdminId} onCancel={() => setEditAdminId(null)} onEditSuccess={handleEditSuccess} />}
       <Breadcrumb pageName="User Administrators" />
       <div className="rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark md:p-6 xl:p-9">

@@ -76,18 +76,25 @@ const EditAdminForm = ({ adminId, onCancel, onEditSuccess }) => {
   };
 
   return (
-    <div className="inset-0 z-50 overflow-hidden flex items-center justify-center">
-      <div className="fixed inset-0 bg-black bg-opacity-50" style={{ zIndex: 50, pointerEvents: "none" }}></div>
+    <div className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center">
+      <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md" style={{ zIndex: 50, pointerEvents: "none" }}></div>
       <div className="z-50 flex items-center justify-center">
-        <div className="bg-white p-4 rounded-md w-full max-w-3xl" style={{ pointerEvents: "auto" }}>
+        <div className="bg-white p-4 rounded-md w-full max-w-3xl" style={{ pointerEvents: "auto", zIndex: 51, top: "50%", left: "50%", transform: "translate(0%, 10%)" }}>
           <div className={`modal ${showModal ? "block" : "hidden"}`}>
-            <div className="modal-overlay" onClick={() => setShowModal(false)}></div>
+            <div
+              className="modal-overlay"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowModal(false);
+              }}
+              style={{ background: "rgba(0, 0, 0, 0.5)" }}
+            ></div>
             <div className="modal-container max-w-md max-h-full">
               <div className="modal-body">
                 <form onSubmit={handleEditSubmit} className="max-w-md mx-auto mt-8 p-4 bg-gray-600 shadow-md rounded-md">
                   <label className="block mb-2">
                     Username:
-                    <input type="text" name="username" value={formData.username} onChange={handleChange} className="w-full px-3 py-2 border rounded-md" />
+                    <input type="text" name="username" value={formData.username} onChange={handleChange} className="w-full px-3 py-2 border rounded-md" autoFocus />
                   </label>
                   <label className="block mb-2">
                     Email:

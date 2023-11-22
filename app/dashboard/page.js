@@ -1,4 +1,5 @@
 "use client";
+// app/dashboard/page.jsx
 import { useEffect } from "react";
 import ECommerce from "@/components/Dashboard/E-commerce";
 import Cookies from "js-cookie";

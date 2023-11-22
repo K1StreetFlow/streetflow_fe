@@ -19,7 +19,7 @@ const SignIn = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/admin/auth/login",
+        "http://localhost:8000/api/user/auth/login",
         {
           email: email,
           password: password,
@@ -28,7 +28,7 @@ const SignIn = () => {
           withCredentials: true,
         }
       );
-      router.push("/dashboard");
+      router.push("/dashboard/profile/userProfile");
     } catch (error) {
       if (error.response) {
         setMessage(error.response.data.message);
@@ -54,7 +54,7 @@ const SignIn = () => {
           <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               <span className="mb-1.5 block font-medium">Start for free</span>
-              <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">Sign In to StreetFlow Admin</h2>
+              <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">Sign In to StreetFlow</h2>
 
               <form onSubmit={handleSignIn}>
                 <div className="mb-4">
@@ -113,6 +113,14 @@ const SignIn = () => {
 
                 <div className="mb-5">
                   <input type="submit" value="Sign In" className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90" />
+                </div>
+                <div className="mt-6 text-center">
+                  <p>
+                    Don’t have any account?{" "}
+                    <Link href="/auth/user/register" className="text-primary">
+                      Sign Up
+                    </Link>
+                  </p>
                 </div>
               </form>
             </div>
