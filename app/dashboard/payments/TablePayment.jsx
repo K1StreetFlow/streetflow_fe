@@ -3,9 +3,6 @@ import formatDate from "@/app/utils/formatDate";
 import Image from "next/image";
 import DetailPayment from "@/app/dashboard/payments/detailPayment";
 import DeletePayment from "@/app/dashboard/payments/deletePayment";
-import ChangeStatus from "@/app/dashboard/payments/changeStatus";
-import AddPayment from "@/app/dashboard/payments/addPayment";
-import UpdateStatusPayment from "@/app/dashboard/payments/updateStatusPayment";
 
 async function getAllPayments() {
   const res = await fetch(`http://localhost:8000/api/payments`, {
@@ -42,10 +39,6 @@ const TablePayment = async () => {
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
       <div className="max-w-full overflow-x-auto">
-        <AddPayment payments={payments.data} users={users} carts={carts} />
-
-        <UpdateStatusPayment payments={payments.data} />
-
         <table className="w-full table-auto mt-10">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
@@ -54,6 +47,12 @@ const TablePayment = async () => {
               </th>
               <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                 Method Payment
+              </th>
+              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
+                VA Type
+              </th>
+              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
+                Virtual Account
               </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                 Total Payment
@@ -82,6 +81,16 @@ const TablePayment = async () => {
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p className="text-black dark:text-white">
+                    {payment.va_type}
+                  </p>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <p className="text-black dark:text-white">
+                    {payment.va_number}
+                  </p>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <p className="text-black dark:text-white">
                     Rp {payment.total_payment.toLocaleString("id-ID")}
                   </p>
                 </td>
@@ -101,7 +110,6 @@ const TablePayment = async () => {
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-                    <ChangeStatus {...payment} />
                     <DetailPayment id={payment.id} />
                     <DeletePayment {...payment} />
                   </div>

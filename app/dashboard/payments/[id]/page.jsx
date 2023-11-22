@@ -110,6 +110,16 @@ const Payment = async ({ params }) => {
             <div className="w-full sm:w-1/2">
               <label
                 className="mb-3 block text-sm font-medium text-black dark:text-white"
+                htmlFor="email"
+              >
+                Total Payment
+              </label>
+
+              <h3>Rp {data.total_payment}</h3>
+            </div>
+            <div className="w-full sm:w-1/2">
+              <label
+                className="mb-3 block text-sm font-medium text-black dark:text-white"
                 htmlFor="phoneNumber"
               >
                 Status Payment
@@ -128,7 +138,7 @@ const Payment = async ({ params }) => {
               </p>
             </div>
           </div>
-          <div className="flex flex-col gap-5.5 sm:flex-row">
+          <div className="flex flex-col gap-5.5 sm:flex-row mt-5">
             <div className="w-[32%]">
               <label
                 className="mb-3 block text-sm font-medium text-black dark:text-white"
@@ -149,6 +159,28 @@ const Payment = async ({ params }) => {
               </label>
               <div className="relative">
                 <h3>{data.code_payment}</h3>
+              </div>
+            </div>
+            <div className="w-1/3">
+              <label
+                className="mb-3 block text-sm font-medium text-black dark:text-white"
+                htmlFor="fullName"
+              >
+                Virtual Account Type
+              </label>
+              <div className="relative">
+                <h3>{data.va_type}</h3>
+              </div>
+            </div>
+            <div className="w-1/3">
+              <label
+                className="mb-3 block text-sm font-medium text-black dark:text-white"
+                htmlFor="fullName"
+              >
+                Virtual Account
+              </label>
+              <div className="relative">
+                <h3>{data.va_number}</h3>
               </div>
             </div>
           </div>

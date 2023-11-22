@@ -1,25 +1,23 @@
 "use client";
 
 import axios from "axios";
-
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
-async function getCartById() {
-  const res = await axios.get("http://localhost:8000/api/carts/2");
-  return res.data;
-}
-
 export default function tableCartCustomer({ carts }) {
-  const [cartDetail, setCartDetail] = useState(carts.cart_detail);
+  const [cartDetail, setCartDetail] = useState();
   const [cart, setCart] = useState(carts);
 
   useEffect(() => {
     // Fungsi untuk mengambil data dari backend
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/carts/2");
+        const response = await fetch("http://localhost:8000/api/carts/2", {
+          next: {
+            revalidate: 0,
+          },
+        });
         const result = await response.json();
         setCartDetail(result.cart_detail);
         setCart(result);
@@ -29,7 +27,7 @@ export default function tableCartCustomer({ carts }) {
     };
 
     fetchData();
-    const interval = setInterval(fetchData, 1);
+    const interval = setInterval(fetchData, 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -72,7 +70,7 @@ export default function tableCartCustomer({ carts }) {
                     width={200}
                     height={200}
                     className="w-20 rounded"
-                    alt="Thumbnail"
+                    alt={cart.product.name_product}
                   />
                 </a>
               </td>
