@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import "./style.css";
 import React, { useState, useEffect } from "react";
 import { formatDate } from "@/app/utils/formatDate";
 import SidebarUser from "@/components/Sidebar/SidebarUser";

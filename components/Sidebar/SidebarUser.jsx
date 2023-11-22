@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import Gambar from "/assets/img/profile.jpg";
-import "./style.css";
 
 const SidebarUser = () => {
 	return (
@@ -24,6 +23,17 @@ const SidebarUser = () => {
 						className="pl-4 py-1 cursor-pointer border-none rounded-sm font-normal hover:bg-meta-9"
 					>
 						Transaction List
+					</a>
+				</div>
+			</div>
+			<div className="flex flex-col px-3 py-4 w-full border-bawah justify-between relative">
+				<p className="font-bold items-center pb-2">My Profile</p>
+				<div className="flex flex-col w-full">
+					<a
+						href="http://localhost:3000/profile"
+						className="pl-4 py-1 cursor-pointer border-none rounded-sm font-normal hover:bg-meta-9"
+					>
+						Setting
 					</a>
 				</div>
 			</div>

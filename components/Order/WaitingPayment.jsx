@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Gambar from "/assets/img/profile.jpg";
-import "./style.css";
 import React, { useState, useEffect } from "react";
 import { formatDate } from "@/app/utils/formatDate";
 import SidebarUser from "@/components/Sidebar/SidebarUser";

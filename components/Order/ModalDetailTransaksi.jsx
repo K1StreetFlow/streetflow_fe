@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import "./style.css";
 
 async function getOrderById(id) {
 	const res = await fetch(`http://localhost:8000/api/shipping/${id}`);
