@@ -35,7 +35,7 @@ const ProductCard1 = ({ product }) => {
           </Link>
           <div className="flex justify-between items-center">
             <p className="text-meta-7 dark:text-black">
-              ${product.price_product}
+              RP.{product.price_product}
             </p>
             <p className="text-body dark:text-boxdark">
               Stock: {product.stock_product}

@@ -90,7 +90,7 @@ const ProductPage = ({ params }) => {
             <p className="text-gray-600">Terjual 4</p>
           </div>
           <div className="text-3xl lg:text-4xl text-black-2 font-bold mb-2">
-            ${product.price_product}
+            RP.{product.price_product}
           </div>
           <div className="font-normal text-black text-sm lg:text-lg">
             <p className="font-bold lg:text-title-lg text-black-2">Detail Produk</p>
@@ -126,6 +126,7 @@ const ProductPage = ({ params }) => {
           </div>
           <div className="flex justify-between items-center">
             <p className="text-gray-600 mb-1">Jumlah Pembayaran:</p>
+            <p className="ms-30">RP.</p>
             <span id="displayPayment" className="text-lg font-semibold">
               0.00
             </span>

@@ -15,15 +15,16 @@ export const editProduct = async (id: number, data: any, photo?: File): Promise<
   if (photo) {
     formData.append('photo_product', photo);
   }
-  // You can append other fields if needed
+
   formData.append('data', JSON.stringify(data));
 
-  return await axios.put(`${API_BASE_URL}/photo_products/${id}`, formData, {
+  return await axios.put(`${API_BASE_URL}/photo_products/upload/${id}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
 };
+
 
 export const deleteProduct = async (id: number): Promise<AxiosResponse> => {
   return await axios.delete(`${API_BASE_URL}/photo_products/${id}`);

@@ -1,6 +1,7 @@
 // LoginModal.js
-import { Dialog, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment } from "react";
+import Link from "next/link";
 
 const LoginModal = ({ isOpen, onClose, onLogin }) => {
   return (
@@ -55,6 +56,7 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
                 </div>
               </div>
               <div className="mt-5 sm:mt-6">
+                <Link href="/auth/user/login">
                 <button
                   type="button"
                   className="inline-flex justify-center bg-primary text-white w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm"
@@ -62,6 +64,7 @@ const LoginModal = ({ isOpen, onClose, onLogin }) => {
                 >
                   Login Sekarang
                 </button>
+                </Link>
               </div>
             </div>
           </Transition.Child>

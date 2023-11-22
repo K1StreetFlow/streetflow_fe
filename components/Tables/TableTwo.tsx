@@ -62,10 +62,10 @@ const TableTwo: React.FC = () => {
     setEditingProduct(product);
   };
 
-  const handleUpdateProduct = async (updatedProduct: any) => {
+  const handleUpdateProduct = async (updatedProduct: any, data:any) => {
     try {
       if (editingProduct) {
-        await editProduct(editingProduct.id, updatedProduct);
+        await editProduct(updatedProduct,data);
         const updatedProducts = await getAllProducts();
         setProducts(updatedProducts.data);
         setEditingProduct(null);
@@ -167,7 +167,7 @@ const TableTwo: React.FC = () => {
 
           <div className="col-span-1 hidden lg:flex items-center">
             <p className="text-sm text-black dark:text-white">
-              ${product.price_product}
+              RP.{product.price_product}
             </p>
           </div>
 
