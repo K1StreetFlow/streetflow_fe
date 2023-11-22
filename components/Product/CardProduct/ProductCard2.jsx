@@ -26,6 +26,7 @@ const ProductCard2 = ({ product }) => {
           </div>
         </Link>
         <div className="p-4">
+        <p  className="text-xs">stretflow</p>
           <Link href={`product/detail/${product.id}`}>
             <div className="block">
               <h5 className="text-md font-bold tracking-tight text-black dark:text-white">

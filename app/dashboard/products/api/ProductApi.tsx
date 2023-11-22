@@ -3,13 +3,14 @@ import axios, { AxiosResponse } from 'axios';
 
 const API_BASE_URL = 'http://localhost:8000/api';
 
-export const getAllProducts = async (): Promise<AxiosResponse> => {
-  return await axios.get(`${API_BASE_URL}/products`);
+export const getAllProducts = async (page: number = 1): Promise<AxiosResponse> => {
+  return await axios.get(`${API_BASE_URL}/products?page=${page}`);
 };
 
 export const getProductById = async (id: number): Promise<AxiosResponse> => {
   return await axios.get(`${API_BASE_URL}/products/${id}`);
 };
+
 
 export const addProduct = async (data: any): Promise<AxiosResponse> => {
   return await axios.post(`${API_BASE_URL}/products`, data);
@@ -25,3 +26,5 @@ export const deleteProduct = async (id: number): Promise<AxiosResponse> => {
 export const getProductsByCategory = async (categoryId: number): Promise<AxiosResponse> => {
   return await axios.get(`${API_BASE_URL}/products/category/${categoryId}`);
 };
+
+

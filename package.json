@@ -13,11 +13,11 @@
     "@nextui-org/react": "^2.2.9",
     "axios": "^1.6.2",
     "framer-motion": "^10.16.5",
-    "react": "^18",
     "react-dom": "^18",
     "react-icons": "^4.12.0",
     "react-modal": "^3.16.1",
     "react-slick": "^0.29.0",
+    "react-spring": "^9.7.3",
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
@@ -33,7 +33,7 @@
     "jsvectormap": "^1.5.3",
     "next": "^14.0.3",
     "postcss": "8.4.27",
-    "react": "18.2.0",
+    "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-dom": "18.2.0",
     "react-jvectormap": "^0.0.16",
