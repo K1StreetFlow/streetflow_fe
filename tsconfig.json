@@ -37,7 +37,9 @@
     "app/auth/admin/register/page.jsx",
     "components/Header/DropdownUser.jsx",
     "app/dashboard/profile/page.jsx",
-    "components/Dashboard/E-commerce.jsx"
+    "components/Dashboard/E-commerce.jsx",
+    "components/Dashboard/Cart/TableTwo.jsx",
+    "components/Dashboard/Cart/TableCart.jsx"
   ],
   "exclude": ["node_modules"]
 }
