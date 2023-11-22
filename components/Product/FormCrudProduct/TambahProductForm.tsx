@@ -129,7 +129,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ onClose, onAddProduct
                                     <option value="" disabled>Select Color</option>
                                     <option value="Black">Black</option>
                                     <option value="Blue">Blue</option>
-                                    <option value="Gray">Gray</option>
+                                    <option value="Grey">Grey</option>
                                 </select>
                             </div>
                             <div className="mb-4 hover:border-blue-700">

@@ -146,7 +146,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ onClose, onEditProd
                   <option value="" disabled>Select Color</option>
                   <option value="Black">Black</option> 
                   <option value="Blue">Blue</option>
-                  <option value="Gray">Gray</option>
+                  <option value="Grey">Grey</option>
                 </select>
               </div>
               <div className="mb-4 hover:border-b-primary">
