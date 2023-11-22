@@ -5,7 +5,7 @@ import Gambar from "/assets/img/profile.jpg";
 import "./style.css";
 import React, { useState, useEffect } from "react";
 import { formatDate } from "@/app/utils/formatDate";
-import SidebarOrder from "@/components/Order/SidebarOrder";
+import SidebarUser from "@/components/Sidebar/SidebarUser";
 import ModalDetailTransaksi from "@/components/Order/ModalDetailTransaksi";
 
 async function getAllOrders() {
@@ -48,7 +48,7 @@ const WaitingPayment = () => {
 		<>
 			<div className="flex items-start mt-10">
 				<div className="w-1/5 border-none rounded-lg pb-8 box text-[#212121]">
-					<SidebarOrder />
+					<SidebarUser />
 				</div>
 				<div className="w-4/5 mb-5 text-[#212121]">
 					<div className="box-2">

@@ -1,12 +1,13 @@
 import React from "react";
 import Image from "next/image";
 import Gambar from "/assets/img/profile.jpg";
+import "./style.css";
 
-const SidebarOrder = () => {
+const SidebarUser = () => {
 	return (
 		<div>
-			<div className="flex p-3 items-center">
-				<Image src={Gambar} alt="profile" width={48} height={48} className="rounded-lg mr-2"></Image>
+			<div className="flex p-3 items-center flex-wrap">
+				<Image src={Gambar} alt="profile" width={62} height={62} className="photo"></Image>
 				<p className="justify-between font-semibold ">Nama</p>
 			</div>
 			<div className="flex flex-col px-3 py-4 box-1 w-full justify-between relative">
@@ -30,4 +31,4 @@ const SidebarOrder = () => {
 	);
 };
 
-export default SidebarOrder;
+export default SidebarUser;

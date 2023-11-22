@@ -4,7 +4,7 @@ import Image from "next/image";
 import "./style.css";
 import React, { useState, useEffect } from "react";
 import { formatDate } from "@/app/utils/formatDate";
-import SidebarOrder from "@/components/Order/SidebarOrder";
+import SidebarUser from "@/components/Sidebar/SidebarUser";
 import ModalDetailTransaksi from "@/components/Order/ModalDetailTransaksi";
 
 async function getAllOrders() {
@@ -49,7 +49,7 @@ const OrderTransaction = () => {
 		<>
 			<div className="flex items-start mt-10 text-[#212121]">
 				<div className="w-1/5 border-none rounded-lg pb-8 box ">
-					<SidebarOrder />
+					<SidebarUser />
 				</div>
 				<div className="w-4/5 mb-5 ">
 					<h3 className="font-bold ml-6 mb-5 text-xl">Transaction List</h3>

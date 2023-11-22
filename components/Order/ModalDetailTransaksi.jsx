@@ -99,7 +99,6 @@ const ModalDetailTransaksi = ({ id }) => {
 				</div>
 				<div className="flex justify-between mt-4 border-t border-y-meta-9">
 					<p className="mt-2">Total Shopping</p>
-
 					<p className="font-semibold mt-2">Rp {data.data.order_list.payment.total_payment.toLocaleString("id-ID")}</p>
 				</div>
 			</div>
