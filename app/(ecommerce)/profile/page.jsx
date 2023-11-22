@@ -1,16 +1,7 @@
 "use client";
-
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
-
-export const metadata = {
-  title: "Profile Page | Next.js E-commerce Dashboard",
-  description: "This is Profile page for TailAdmin Next.js",
-  // other metadata
-};
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -24,10 +15,11 @@ const Profile = () => {
     profileImage: null,
   });
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("personal");
 
   const fetchToken = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/admin/token", {
+      const response = await axios.get("http://localhost:8000/api/user/token", {
         withCredentials: true,
       });
       const decodedToken = response.data.decodedToken;
@@ -35,7 +27,7 @@ const Profile = () => {
       setDecodedToken(decodedToken);
 
       // Menggunakan ID dari token untuk mendapatkan data pengguna
-      const userResponse = await axios.get(`http://localhost:8000/api/admin/${decodedToken.adminId}`, {
+      const userResponse = await axios.get(`http://localhost:8000/api/user/${decodedToken.userId}`, {
         withCredentials: true,
       });
       const userData = userResponse.data;
@@ -126,7 +118,7 @@ const Profile = () => {
       console.log("Account deleted successfully");
       setDecodedToken(null);
       closeDeleteModal();
-      window.location.href = "/auth/admin/login";
+      window.location.href = "/auth/user/login";
     } catch (error) {
       console.error("Error deleting account:", error);
     }
@@ -134,6 +126,76 @@ const Profile = () => {
 
   return (
     <>
+      <div className="flex justify-center mt-4">
+        <button onClick={() => setActiveTab("personal")} className={`px-4 py-2 mx-2 rounded-md ${activeTab === "personal" ? "bg-primary text-white" : "bg-gray-300 text-gray-700"}`}>
+          Personal Profile
+        </button>
+        <button onClick={() => setActiveTab("address")} className={`px-4 py-2 mx-2 rounded-md ${activeTab === "address" ? "bg-primary text-white" : "bg-gray-300 text-gray-700"}`}>
+          Address
+        </button>
+      </div>
+
+      {activeTab === "personal" && (
+        <>
+          {/* <Breadcrumb pageName="Address" /> */}
+          <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-4 mt-4">
+            <div className="flex flex-col items-center">
+              {userData && userData.upload_photo && (
+                <div className="relative mt-4 w-36 h-36 rounded-full overflow-hidden">
+                  <Image src={`http://localhost:8000/${userData.upload_photo.replace("\\", "/")}`} alt="User Profile" className="rounded-full" width={144} height={144} priority={true} />
+                </div>
+              )}
+              <h3 className="mt-4 text-2xl font-semibold text-black dark:text-white">{userData ? userData.username : "Loading..."}</h3>
+              <p className="font-medium">{userData ? userData.email : "Loading..."}</p>
+
+              <div className="mt-4">
+                <p>
+                  <strong>Fullname:</strong> {userData ? userData.fullname : "Loading..."}
+                </p>
+                <p>
+                  <strong>Gender:</strong> {userData ? userData.gender : "Loading..."}
+                </p>
+                <p>
+                  <strong>Birth Date:</strong> {userData ? userData.birth_date : "Loading..."}
+                </p>
+                <p>
+                  <strong>Phone Number:</strong> {userData ? userData.phone_number : "Loading..."}
+                </p>
+              </div>
+
+              <div className="flex justify-center gap-4 mt-4">
+                <button onClick={openEditModal} className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark transition duration-300 ease-in-out">
+                  Edit Profile
+                </button>
+                <button onClick={openDeleteModal} className="bg-danger text-white px-4 py-2 rounded-md hover:bg-danger-dark transition duration-300 ease-in-out">
+                  Delete Account
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {activeTab === "address" && (
+        <>
+          {/* <Breadcrumb pageName="Address" /> */}
+          <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-4 mt-4">
+            <div className="text-center">
+              {userData && userData.addresses && (
+                <div className="mt-4">
+                  <h4 className="text-lg font-semibold mb-2">Addresses:</h4>
+                  {userData.addresses.map((address) => (
+                    <div key={address.id} className="mb-2">
+                      <p>{`${address.street} ${address.house_number}, ${address.zipcode}, ${address.city}, ${address.province}`}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+      )}
+
       {/* Edit Profile Modal */}
       {isEditModalOpen && (
         <div className=" inset-0 z-50 overflow-hidden flex items-center justify-center">
@@ -198,27 +260,6 @@ const Profile = () => {
           </div>
         </div>
       )}
-      <Breadcrumb pageName="Profile" />
-
-      <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
-          <div className="relative mt-10 z-30 mx-auto h-30 w-full max-w-30 rounded-full bg-white/20 p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
-            {userData && userData.upload_photo && <Image src={`http://localhost:8000/${userData.upload_photo.replace("\\", "/")}`} alt="User Profile" className="rounded-full" layout="fill" objectFit="cover" />}
-          </div>
-          <div className="mt-4">
-            <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">{userData ? userData.username : "Loading..."}</h3>
-            <p className="font-medium">{userData ? userData.email : "Loading..."}</p>
-            <div className="flex justify-center gap-4 mt-4">
-              <button onClick={openEditModal} className="mt-4 bg-primary text-white w-35 px-4 py-2 rounded-md hover:bg-primary-dark transition duration-300 ease-in-out">
-                Edit Profile
-              </button>
-              <button onClick={openDeleteModal} className="mt-4 bg-danger text-white w-35 px-4 py-2 rounded-md hover:bg-danger-dark transition duration-300 ease-in-out">
-                Delete Account
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </>
   );
 };
