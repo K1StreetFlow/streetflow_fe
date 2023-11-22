@@ -144,13 +144,13 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ onClose, onEditProd
                   className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-700 transition duration-300"
                 >
                   <option value="" disabled>Select Color</option>
-                  <option value="Black">Black</option>
-                  <option value="White">White</option>
-                  <option value="Brown">Brown</option>
+                  <option value="Black">Black</option> 
+                  <option value="Blue">Blue</option>
+                  <option value="Gray">Gray</option>
                 </select>
               </div>
-              <div className="mb-4 hover:border-blue-700">
-                <label htmlFor="id_category_product" className="block text-sm font-medium text-gray-600">Product Category ID:</label>
+              <div className="mb-4 hover:border-b-primary">
+                <label htmlFor="id_category_product" className="block text-sm font-medium text-gray-2">Product Category ID:</label>
                 <input
                   type="number"
                   id="id_category_product"
