@@ -324,8 +324,8 @@ const AllProduct = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full md:w-3/4">
-              <div className="max-w-280 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+            <div className="w-full mx-auto">
+              <div className="max-w-280 mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {currentProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
