@@ -53,11 +53,17 @@ const TableOrder = async () => {
 								<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 									<p
 										className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-											order.order_list.status_order === "Paid" || order.order_list.status_order === "Delivered"
+											order.order_list.status_order === "Paid"
+												? "text-primary bg-primary"
+												: order.order_list.status_order === "Delivered"
+												? "text-[#F3B664] bg-[#F1EB90]"
+												: order.order_list.status_order === "Completed"
 												? "text-success bg-success"
-												: order.status_order === "Unpaid"
+												: order.order_list.status_order === "Packaged"
+												? "text-warning bg-warning"
+												: order.order_list.status_order === "Unpaid"
 												? "text-danger bg-danger"
-												: "text-warning bg-warning"
+												: "text-secondary bg-secondary"
 										}`}
 									>
 										{order.order_list.status_order}

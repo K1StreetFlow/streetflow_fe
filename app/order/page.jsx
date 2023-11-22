@@ -9,7 +9,7 @@ export const metadata = {
 const DetailTrasanksi = () => {
 	return (
 		<>
-			<div className="container mx-auto px-4">
+			<div className="container mx-auto px-4 max-h-screen">
 				<OrderTransaction />
 			</div>
 		</>
