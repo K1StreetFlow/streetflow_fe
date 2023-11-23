@@ -1,6 +1,6 @@
 import "../../satoshi.css";
 import "../../globals.css";
-import OrderTransaction from "@/components/Order/OrderTransaction";
+import OrderTransaction from "./OrderTransaction";
 
 export const metadata = {
 	title: "Order | Streetflow",

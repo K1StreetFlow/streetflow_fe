@@ -7,15 +7,6 @@ import SidebarUser from "@/components/Sidebar/SidebarUser";
 import ModalDetailTransaksi from "@/components/Order/ModalDetailTransaksi";
 import Link from "next/link";
 
-async function getAllOrders() {
-	const res = await fetch(`http://localhost:8000/api/shipping`, {
-		next: {
-			revalidate: 0,
-		},
-	});
-	return res.json();
-}
-
 function getImageUrl(filename) {
 	return `http://localhost:8000/api/photo_products/view/${filename}`;
 }
@@ -32,18 +23,33 @@ const OrderTransaction = () => {
 	};
 
 	useEffect(() => {
-		const fetchOrders = async () => {
-			const allOrders = await getAllOrders();
-			setOrders(allOrders);
+		const fetchOrderById = async (id) => {
+			try {
+				const res = await fetch(`http://localhost:8000/api/shipping/${id}`, {
+					next: {
+						revalidate: 0, 
+					},
+				});
+
+				if (!res.ok) {
+					throw new Error(`Error fetching data. Status: ${res.status}`);
+				}
+
+				const data = await res.json();
+				setOrders([data.data]);
+				console.log(data);
+			} catch (error) {
+				console.error(error);
+			}
 		};
 
-		fetchOrders();
+		// Ganti ID sesuai dengan kebutuhan
+		const orderId = 2;
+		fetchOrderById(orderId);
 	}, []);
 
 	const filteredOrders =
-		selectedStatus === "All"
-			? orders.data
-			: orders.data?.filter((order) => order.order_list.status_order === selectedStatus);
+		selectedStatus === "All" ? orders : orders?.filter((order) => order.order_list.status_order === selectedStatus);
 
 	return (
 		<>
@@ -113,7 +119,7 @@ const OrderTransaction = () => {
 							if (order.order_list.status_order === "Unpaid") {
 								return (
 									<div className="box-payment rounded-sm mb-4" key={key}>
-										<Link href="/order/waitingpayment">
+										<Link href="/waitingpayment">
 											<div className="flex justify-between items-center">
 												<p className="font-normal">Waiting for payment</p>
 												<p className="text-sm number-payment">{order.order_list.cart.cart_detail.length}</p>
@@ -204,7 +210,7 @@ const OrderTransaction = () => {
 							<div className="fixed inset-0 flex items-center justify-center z-50">
 								<div className="absolute inset-0 bg-black opacity-50 backdrop-blur-md z-10"></div>
 								<div className="bg-white rounded-lg shadow-lg p-6 w-3/5 z-20 max-h-screen flex flex-col h-115">
-									<div className="flex justify-between items-center shadow-md">
+									<div className="flex justify-between items-center">
 										<h2 className="text-2xl font-bold">Transaction Details</h2>
 										<button onClick={() => toggleModal(null)} className="text-lg">
 											X

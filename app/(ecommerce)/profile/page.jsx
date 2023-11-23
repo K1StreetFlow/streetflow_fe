@@ -1,6 +1,7 @@
 "use client";
 
-import SidebarUser from "../Sidebar/SidebarUser";
+import SidebarUser from "../../../components/Sidebar/SidebarUser";
+import ProfileMain from "./ProfileMain";
 
 const ProfilePage = () => {
 	return (
@@ -11,7 +12,9 @@ const ProfilePage = () => {
 				</div>
 				<div className="w-4/5 mb-5 ">
 					<h3 className="font-bold ml-6 mb-5 text-xl">Profile</h3>
-					<div className="box-2">Ini bagian content profile</div>
+					<div className="box-2">
+						<ProfileMain />
+					</div>
 				</div>
 			</div>
 		</>
