@@ -5,9 +5,6 @@ import ECommerce from "@/components/Dashboard/E-commerce";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
-export const metadata = {
-  title: "Dashboard | Streetflow",
-};
 
 const Home = () => {
   // Gunakan useRouter untuk melakukan navigasi
@@ -28,7 +25,6 @@ const Home = () => {
   return (
     <>
       <ECommerce />
-
     </>
   );
 };

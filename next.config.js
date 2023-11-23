@@ -9,12 +9,8 @@ const nextConfig = {
         pathname: "/uploads/**",
       },
     ],
+    domains: ["localhost"]
   },
 };
 
 module.exports = nextConfig
-module.exports = {
-    images: {
-      domains: ['localhost'],
-    },
-  };
