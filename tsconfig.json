@@ -30,7 +30,16 @@
     ".next/types/**/*.ts",
     "services/**/*.js",
     "app/dashboard/page.js",
-    "app/page.js"
-, "app/dashboard/order-list/page.js", "components/Tables/TableOrder.js"  ],
+    "app/page.js",
+    "app/dashboard/order-list/page.js",
+    "components/Tables/TableOrder.js",
+    "app/auth/admin/login/page.jsx",
+    "app/auth/admin/register/page.jsx",
+    "components/Header/DropdownUser.jsx",
+    "app/dashboard/profile/page.jsx",
+    "components/Dashboard/E-commerce.jsx",
+    "components/Dashboard/Cart/TableTwo.jsx",
+    "components/Dashboard/Cart/TableCart.jsx"
+  ],
   "exclude": ["node_modules"]
 }
