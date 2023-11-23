@@ -13,13 +13,13 @@ const SidebarUser = () => {
 				<p className="font-bold items-center pb-2">Purchase</p>
 				<div className="flex flex-col w-full">
 					<a
-						href="http://localhost:3000/waitingpayment"
+						href="http://localhost:3000/order/waitingpayment"
 						className="pl-4 py-1 cursor-pointer border-none rounded-sm font-normal hover:bg-meta-9"
 					>
 						Waiting for payment
 					</a>
 					<a
-						href="http://localhost:3000/order-list"
+						href="http://localhost:3000/order"
 						className="pl-4 py-1 cursor-pointer border-none rounded-sm font-normal hover:bg-meta-9"
 					>
 						Transaction List
