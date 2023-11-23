@@ -1,3 +1,6 @@
+import "@/app/globals.css";
+import "@/app/satoshi.css";
+
 export const metadata = {
   title: "Home | Streetflow",
 };

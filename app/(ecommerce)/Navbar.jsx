@@ -1,16 +1,16 @@
 import Image from "next/image";
-import React from "react";
+import React, { use } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import DropdownUser from "./DropdownUser";
 
 export default function Navbar() {
   const [cart, setCart] = useState({});
   const [showCartIcon, setShowCartIcon] = useState(true);
-
   const pathname = usePathname();
-
-  // const router = useRouter();
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     // Periksa apakah pengguna sedang berada di halaman checkout
@@ -25,15 +25,40 @@ export default function Navbar() {
     }
   }, [pathname]);
 
+  const fetchToken = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/user/token", {
+        withCredentials: true,
+      });
+      const userData = response.data.decodedToken;
+
+      setUserData(userData);
+    } catch (error) {
+      console.error("Error fetching or decoding token:", error);
+    }
+  };
+
+  const updateToken = async () => {
+    await fetchToken();
+  };
+
+  useEffect(() => {
+    updateToken();
+    fetchToken();
+  }, []);
+
   useEffect(() => {
     // Fungsi untuk mengambil data dari backend
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/carts/2", {
-          next: {
-            revalidate: 0,
-          },
-        });
+        const response = await fetch(
+          "http://localhost:8000/api/carts/user/cart",
+          {
+            next: {
+              revalidate: 0,
+            },
+          }
+        );
         const result = await response.json();
         setCart(result);
       } catch (error) {
@@ -115,13 +140,22 @@ export default function Navbar() {
                   height={30}
                 />
               </Link>
-              <span className="badge bg-[#3C50E0] py-2 text-white font-bold ">
-                {cart.total_product}
-              </span>
+              {cart.total_product > 0 && (
+                <span className="badge bg-[#3C50E0] py-2 text-white font-bold ">
+                  {cart.total_product}
+                </span>
+              )}
             </>
           )}
         </div>
-        <a className="btn">Login</a>
+        {userData ? (
+          <DropdownUser user={userData} />
+        ) : (
+          // <a className="btn">Logout</a>
+          <Link href="/auth/user/login">
+            <a className="btn">Login</a>
+          </Link>
+        )}
       </div>
     </div>
   );

@@ -1,12 +1,13 @@
 "use client";
-import "../../../globals.css";
-import "../../../data-tables-css.css";
-import "../../../satoshi.css";
+import "@/app/globals.css";
+
+import "@/app/satoshi.css";
 import React, { useEffect, useState } from "react";
 import { getProductById } from "@/app/dashboard/products/api/ProductApi";
 import { FaShoppingCart, FaCheck } from "react-icons/fa";
 import LoginModal from "@/components/Product/modalproduct/LoginModal";
 import Loader from "@/components/common/Loader";
+import { useRouter } from "next/navigation";
 
 const ProductPage = ({ params }) => {
   const { id } = params;
@@ -14,6 +15,8 @@ const ProductPage = ({ params }) => {
   const [quantity, setQuantity] = useState(1);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showModalLogin, setShowModalLogin] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,17 +32,18 @@ const ProductPage = ({ params }) => {
   }, [id]);
 
   const handleAddToCart = () => {
-    if (!isLoggedIn) {
-      // Jika pengguna belum login, tampilkan modal login
-      setShowModalLogin(true);
-    } else {
-      // Jika pengguna sudah login, hitung total harga
-      const totalPrice = calculateTotalPrice(product.price_product, quantity);
-      // Update displayPayment
-      document.getElementById("displayPayment").innerText =
-        totalPrice.toFixed(2);
-      console.log("Total Pembayaran:", totalPrice);
-    }
+    // if (!isLoggedIn) {
+    //   // Jika pengguna belum login, tampilkan modal login
+    //   setShowModalLogin(true);
+    // } else {
+    // Jika pengguna sudah login, hitung total harga
+    const totalPrice = calculateTotalPrice(product.price_product, quantity);
+    // Update displayPayment
+    document.getElementById("displayPayment").innerText = totalPrice.toFixed(2);
+    console.log("Total Pembayaran:", totalPrice);
+    router.push("/carts");
+
+    // }
   };
 
   const calculateTotalPrice = (price, quantity) => {
@@ -65,7 +69,7 @@ const ProductPage = ({ params }) => {
   };
 
   if (!product) {
-    return   <Loader />;
+    return <Loader />;
   }
 
   return (
@@ -93,14 +97,20 @@ const ProductPage = ({ params }) => {
             RP.{product.price_product}
           </div>
           <div className="font-normal text-black text-sm lg:text-lg">
-            <p className="font-bold lg:text-title-lg text-black-2">Detail Produk</p>
-            <p >Stok: {product.stock_product}</p>
-            <p >Size: {product.size_product}</p>
-            <p >Warna: {product.colour_product}</p>
-            <p >Category :{product.category.name_category_products}</p>
+            <p className="font-bold lg:text-title-lg text-black-2">
+              Detail Produk
+            </p>
+            <p>Stok: {product.stock_product}</p>
+            <p>Size: {product.size_product}</p>
+            <p>Warna: {product.colour_product}</p>
+            <p>Category :{product.category.name_category_products}</p>
           </div>
-          <p className="font-bold lg:text-title-lg text-black-2 mt-2">Deskripsi Produk</p>
-          <p className=" text-black text-sm lg:text-lg">{product.description_product}</p>
+          <p className="font-bold lg:text-title-lg text-black-2 mt-2">
+            Deskripsi Produk
+          </p>
+          <p className=" text-black text-sm lg:text-lg">
+            {product.description_product}
+          </p>
         </div>
       </div>
 
@@ -150,12 +160,12 @@ const ProductPage = ({ params }) => {
         </div>
       </div>
 
-      {/* Modal Login */}
+      {/* Modal Login
       <LoginModal
         isOpen={showModalLogin}
         onClose={() => setShowModalLogin(false)}
         onLogin={() => handleLogin()}
-      />
+      /> */}
     </div>
   );
 };

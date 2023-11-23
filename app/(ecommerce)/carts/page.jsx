@@ -16,7 +16,6 @@ async function getAllCarts() {
 
 const Carts = async () => {
   const carts = await getAllCarts();
-  console.log(carts);
   return (
     <div className="flex justify-center my-6">
       <div className="flex flex-col w-full h-120 p-20 text-gray-800 bg-white shadow-lg pin-r pin-y md:w-4/5 lg:w-4/5">
@@ -25,7 +24,7 @@ const Carts = async () => {
           <hr />
         </div>
         <div className="flex-1 mt-20 ">
-          <TableCartCustomer carts={carts} />
+          {/* <TableCartCustomer carts={carts} /> */}
         </div>
       </div>
     </div>

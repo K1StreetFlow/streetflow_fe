@@ -66,7 +66,13 @@ export default function tableCartCustomer({ carts }) {
             <tr className="hover" key={key}>
               <td className="hidden pb-4 md:table-cell w-30">
                 <a href="#">
-                  <Image src="/images/product/product-01.png" width={200} height={200} className="w-20 rounded" alt={cart.product.name_product} />
+                  <Image
+                    src="/images/product/product-01.png"
+                    width={200}
+                    height={200}
+                    className="w-20 rounded"
+                    alt={cart.product.name_product}
+                  />
                 </a>
               </td>
               <td className="w-50">
@@ -83,11 +89,23 @@ export default function tableCartCustomer({ carts }) {
                 <div className="w-20 h-10">
                   <div className="relative flex flex-row w-full h-8">
                     <div className="join">
-                      <button onClick={() => updateQuantity(cart.id, cart.quantity - 1)} disabled={cart.quantity <= 1} className="btn btn-sm rounded-full  join-item">
+                      <button
+                        onClick={() =>
+                          updateQuantity(cart.id, cart.quantity - 1)
+                        }
+                        disabled={cart.quantity <= 1}
+                        className="btn btn-sm rounded-full  join-item"
+                      >
                         -
                       </button>
                       <span className="mx-5">{cart.quantity}</span>
-                      <button onClick={() => updateQuantity(cart.id, cart.quantity + 1)} disabled={cart.quantity >= cart.product.stock_product} className="btn btn-sm rounded-full  join-item">
+                      <button
+                        onClick={() =>
+                          updateQuantity(cart.id, cart.quantity + 1)
+                        }
+                        disabled={cart.quantity >= cart.product.stock_product}
+                        className="btn btn-sm rounded-full  join-item"
+                      >
                         +
                       </button>
                     </div>
@@ -95,10 +113,14 @@ export default function tableCartCustomer({ carts }) {
                 </div>
               </td>
               <td className="text-right">
-                <span className="text-sm lg:text-base font-medium">Rp {cart.product.price_product.toLocaleString("id-ID")}</span>
+                <span className="text-sm lg:text-base font-medium">
+                  Rp {cart.product.price_product.toLocaleString("id-ID")}
+                </span>
               </td>
               <td className="text-right">
-                <span className="text-sm lg:text-base font-medium">Rp {cart.total_price.toLocaleString("id-ID")}</span>
+                <span className="text-sm lg:text-base font-medium">
+                  Rp {cart.total_price.toLocaleString("id-ID")}
+                </span>
               </td>
             </tr>
           ))}

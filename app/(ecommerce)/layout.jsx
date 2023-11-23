@@ -20,16 +20,15 @@ export default function RootLayout({ children }) {
       ) : (
         <div className="flex h-screen overflow-hidden">
           {/* <!-- ===== Content Area Start ===== --> */}
-          <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+          <div className=" flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
             <Navbar />
             {/* <!-- ===== Main Content Start ===== --> */}
             <main>
               <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
                 {children}
               </div>
-
-              <Footer />
             </main>
+            <Footer />
 
             {/* <!-- ===== Main Content End ===== --> */}
           </div>

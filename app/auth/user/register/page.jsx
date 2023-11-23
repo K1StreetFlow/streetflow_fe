@@ -5,11 +5,11 @@ import Image from "next/image";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-export const metadata = {
-  title: "Signup Page | Next.js E-commerce Dashboard Template",
-  description: "This is Signup page for TailAdmin Next.js",
-  // other metadata
-};
+// export const metadata = {
+//   title: "Signup Page | Next.js E-commerce Dashboard Template",
+//   description: "This is Signup page for TailAdmin Next.js",
+//   // other metadata
+// };
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -57,13 +57,21 @@ const SignUp = () => {
       formDataToSubmit.append("phone_number", formData.phone_number);
       formDataToSubmit.append("profileImage", formData.profileImage);
 
-      const response = await axios.post("http://localhost:8000/api/user/auth/register", formDataToSubmit, {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      const response = await axios.post(
+        "http://localhost:8000/api/user/auth/register",
+        formDataToSubmit,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      await axios.post("http://localhost:8000/api/carts", {
+        id_users_customer: response.data.id,
       });
-      console.log("Registration successful");
+
       router.push("/auth/user/login");
       // Optionally, you can redirect the user or perform other actions upon successful registration
     } catch (error) {
@@ -80,12 +88,20 @@ const SignUp = () => {
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="w-full p-4 sm:p-12.5">
           <span className="mb-1.5 block font-medium">Start for free</span>
-          <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">Sign Up to StreetFlow</h2>
+          <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+            Sign Up to StreetFlow
+          </h2>
 
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <form
+            onSubmit={handleSubmit}
+            className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+          >
             <div>
               <div className="mb-4">
-                <label htmlFor="username" className="mb-2.5 block font-medium text-black dark:text-white">
+                <label
+                  htmlFor="username"
+                  className="mb-2.5 block font-medium text-black dark:text-white"
+                >
                   Username
                 </label>
                 <input
@@ -100,7 +116,10 @@ const SignUp = () => {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="email" className="mb-2.5 block font-medium text-black dark:text-white">
+                <label
+                  htmlFor="email"
+                  className="mb-2.5 block font-medium text-black dark:text-white"
+                >
                   Email
                 </label>
                 <input
@@ -115,7 +134,10 @@ const SignUp = () => {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="fullname" className="mb-2.5 block font-medium text-black dark:text-white">
+                <label
+                  htmlFor="fullname"
+                  className="mb-2.5 block font-medium text-black dark:text-white"
+                >
                   Full Name
                 </label>
                 <input
@@ -130,7 +152,10 @@ const SignUp = () => {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="password" className="mb-2.5 block font-medium text-black dark:text-white">
+                <label
+                  htmlFor="password"
+                  className="mb-2.5 block font-medium text-black dark:text-white"
+                >
                   Password
                 </label>
                 <input
@@ -145,7 +170,10 @@ const SignUp = () => {
               </div>
 
               <div className="mb-6">
-                <label htmlFor="retypePassword" className="mb-2.5 block font-medium text-black dark:text-white">
+                <label
+                  htmlFor="retypePassword"
+                  className="mb-2.5 block font-medium text-black dark:text-white"
+                >
                   Re-type Password
                 </label>
                 <input
@@ -162,7 +190,10 @@ const SignUp = () => {
 
             <div>
               <div className="mb-4">
-                <label htmlFor="gender" className="mb-2.5 block font-medium text-black dark:text-white">
+                <label
+                  htmlFor="gender"
+                  className="mb-2.5 block font-medium text-black dark:text-white"
+                >
                   Gender
                 </label>
                 <select
@@ -178,7 +209,10 @@ const SignUp = () => {
                 </select>
               </div>
               <div className="mb-4">
-                <label htmlFor="birth_date" className="mb-2.5 block font-medium text-black dark:text-white">
+                <label
+                  htmlFor="birth_date"
+                  className="mb-2.5 block font-medium text-black dark:text-white"
+                >
                   Birth Date
                 </label>
                 <input
@@ -191,7 +225,10 @@ const SignUp = () => {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="phone_number" className="mb-2.5 block font-medium text-black dark:text-white">
+                <label
+                  htmlFor="phone_number"
+                  className="mb-2.5 block font-medium text-black dark:text-white"
+                >
                   Phone Number
                 </label>
                 <input
@@ -205,7 +242,10 @@ const SignUp = () => {
                 />
               </div>
               <div className="mb-6">
-                <label htmlFor="profileImage" className="mb-2.5 block font-medium text-black dark:text-white">
+                <label
+                  htmlFor="profileImage"
+                  className="mb-2.5 block font-medium text-black dark:text-white"
+                >
                   Profile Image
                 </label>
                 <input
@@ -219,7 +259,11 @@ const SignUp = () => {
               </div>
               {error && <p className="text-danger mt-2">{error}</p>}
               <div className="mb-5 col-span-2">
-                <input type="submit" value="Create account" className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90" />
+                <input
+                  type="submit"
+                  value="Create account"
+                  className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                />
               </div>
             </div>
           </form>

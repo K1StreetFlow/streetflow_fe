@@ -1,7 +1,7 @@
 "use client";
-import "../globals.css";
-import "../data-tables-css.css";
-import "../satoshi.css";
+import "@/app/globals.css";
+s;
+import "@/app/satoshi.css";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import CardSlider from "@/components//Product/CardProduct/CardSlider";
@@ -12,7 +12,7 @@ import ProductCard from "@/components/Product/CardProduct/ProductCard";
 import { getAllProducts } from "@/app/dashboard/products/api/ProductApi";
 import Loader from "@/components/common/Loader";
 import Carousel from "@/components/Product/CardProduct/Corosel";
-import { useSpring, animated } from 'react-spring';
+import { useSpring, animated } from "react-spring";
 import {
   FaShoppingCart,
   FaStar,
@@ -93,50 +93,50 @@ const ProductList = () => {
           <Loader />
         ) : (
           <>
-           <animated.div style={productListAnimation}>
-            <Carousel />
-            {/* Carousel component */}
+            <animated.div style={productListAnimation}>
+              <Carousel />
+              {/* Carousel component */}
 
-            {/* Section for Category 1 */}
-            <div className="flex items-center mb-4 bg-primary w-60 p-3 text-white mt-5 rounded-ee-xl">
-              <FaShoppingCart className="mr-1" size="2em" />
-              <h2 className="text-2xl font-bold">
-                {getCategoryName(filteredProductsCategory1[0]?.category)}{" "}
-                Products
-              </h2>
-            </div>
-            <CardSlider
-              cards={filteredProductsCategory1.map((product) => (
-                <ProductCard1 key={product.id} product={product} />
-              ))}
-            />
+              {/* Section for Category 1 */}
+              <div className="flex items-center mb-4 bg-primary w-60 p-3 text-white mt-5 rounded-ee-xl">
+                <FaShoppingCart className="mr-1" size="2em" />
+                <h2 className="text-2xl font-bold">
+                  {getCategoryName(filteredProductsCategory1[0]?.category)}{" "}
+                  Products
+                </h2>
+              </div>
+              <CardSlider
+                cards={filteredProductsCategory1.map((product) => (
+                  <ProductCard1 key={product.id} product={product} />
+                ))}
+              />
 
-            <div className="flex items-center mb-4 bg-meta-8 w-60 p-3 text-white mt-5 rounded-ee-xl">
-              <FaStar className="mr-1" size="2em" />
-              <h2 className="text-2xl font-bold">
-                {getCategoryName(filteredProductsCategory2[0]?.category)}{" "}
-                Products
-              </h2>
-            </div>
-            <CardSlider
-              cards={filteredProductsCategory2.map((product) => (
-                <ProductCard2 key={product.id} product={product} />
-              ))}
-            />
+              <div className="flex items-center mb-4 bg-meta-8 w-60 p-3 text-white mt-5 rounded-ee-xl">
+                <FaStar className="mr-1" size="2em" />
+                <h2 className="text-2xl font-bold">
+                  {getCategoryName(filteredProductsCategory2[0]?.category)}{" "}
+                  Products
+                </h2>
+              </div>
+              <CardSlider
+                cards={filteredProductsCategory2.map((product) => (
+                  <ProductCard2 key={product.id} product={product} />
+                ))}
+              />
 
-            {/* Section for Category 3 */}
-            <div className="flex items-center mb-4 bg-black w-60 p-3 text-white mt-5 rounded-ee-xl">
-              <FaCheck className="mr-1" size="2em" />
-              <h2 className="text-2xl font-bold">
-                {getCategoryName(filteredProductsCategory3[0]?.category)}{" "}
-                Products
-              </h2>
-            </div>
-            <CardSlider
-              cards={filteredProductsCategory3.map((product) => (
-                <ProductCard3 key={product.id} product={product} />
-              ))}
-            />
+              {/* Section for Category 3 */}
+              <div className="flex items-center mb-4 bg-black w-60 p-3 text-white mt-5 rounded-ee-xl">
+                <FaCheck className="mr-1" size="2em" />
+                <h2 className="text-2xl font-bold">
+                  {getCategoryName(filteredProductsCategory3[0]?.category)}{" "}
+                  Products
+                </h2>
+              </div>
+              <CardSlider
+                cards={filteredProductsCategory3.map((product) => (
+                  <ProductCard3 key={product.id} product={product} />
+                ))}
+              />
             </animated.div>
           </>
         )}
@@ -170,7 +170,8 @@ const ProductList = () => {
         >
           <FaChevronUp size="2em" />
         </div>
-      )};
+      )}
+      ;
     </>
   );
 };
