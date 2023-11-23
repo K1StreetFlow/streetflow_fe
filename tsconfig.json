@@ -40,7 +40,10 @@
     "components/Dashboard/E-commerce.jsx",
     "components/Dashboard/Cart/TableTwo.jsx",
     "components/Dashboard/Cart/TableCart.jsx",
-    "components/Tables/AddCategory.jsx"
+    "components/Tables/AddCategory.jsx",
+    "app/page.jsx",
+    "components/Dashboard/Cart/TableTwo.jsx",
+    "components/Dashboard/Cart/TableCart.jsx"
   ],
   "exclude": ["node_modules"]
 }

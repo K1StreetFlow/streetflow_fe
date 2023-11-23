@@ -94,6 +94,10 @@ const DropdownUser = () => {
           {userDataFromApi && userDataFromApi.upload_photo && (
             <Image src={`http://localhost:8000/${userDataFromApi.upload_photo.replace("\\", "/")}`} alt="User Profile" className="rounded-full" objectFit="cover" layout="fixed" width={112} height={112} />
           )}
+          <span className="block text-sm font-medium text-black dark:text-white">
+            Kevin Pandoh
+          </span>
+          <span className="block text-xs">kevinmpandoh</span>
         </span>
 
         <svg className="hidden fill-current sm:block" width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">

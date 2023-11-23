@@ -1,7 +1,4 @@
 import Image from "next/image";
-import AddCart from "@/app/dashboard/carts/addCart";
-import EditCart from "@/app/dashboard/carts/editCart";
-import DeleteCart from "@/app/dashboard/carts/deleteCart";
 import DetailCart from "@/app/dashboard/carts/detailCart";
 
 async function getAllCarts() {
@@ -13,52 +10,59 @@ async function getAllCarts() {
   return res.json();
 }
 
-async function getAllCustomers() {
-  const res = await fetch("http://localhost:8000/api/user", {
-    next: {
-      revalidate: 0,
-    },
-  });
-  return res.json();
-}
-
 const TableCart = async () => {
   let count = 1;
-
-  const users = await getAllCustomers();
   const carts = await getAllCarts();
 
-  console.log(carts);
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-      <div className="py-6 px-4 md:px-6 xl:px-7.5">
-        <AddCart users={users} />
-      </div>
-
-      <div className="py-10 px-10">
-        <table className="table w-full">
+    <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+      <div className="max-w-full overflow-x-auto">
+        <table className="w-full table-auto mt-10">
           <thead>
-            <tr>
-              <th>#</th>
-              <th>User Customer</th>
-              <th>Total Product</th>
-              <th>Grand Price</th>
-              <th className="flex justify-center">Action</th>
+            <tr className="bg-gray-2 text-left dark:bg-meta-4">
+              <th className="min-w-[30px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 text-center ">
+                #
+              </th>
+              <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white">
+                User Customer
+              </th>
+              <th className="min-w-[50] py-4 px-4 font-medium text-black dark:text-white text-center">
+                Total Product
+              </th>
+              <th className="min-w-40 py-4 px-4 font-medium text-black dark:text-white ">
+                Grand Price
+              </th>
+              <th className="py-4 px-4 font-medium text-black dark:text-white text-center ">
+                Actions
+              </th>
             </tr>
           </thead>
-
           <tbody>
-            {carts.map((cart, key) => (
+            {carts?.map((cart, key) => (
               <tr key={key}>
-                <td>{count++}</td>
-                <td>{cart.user_customer.fullname}</td>
-                <td>{cart.total_product}</td>
-                <td>{cart.grand_price}</td>
-                <td>
-                  <div className="flex items-center justify-center space-x-3.5">
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark text-center">
+                  <p className="text-black dark:text-white">{count++}</p>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <p className="text-black dark:text-white">
+                    {cart.user_customer.fullname}
+                  </p>
+                </td>
+
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark ">
+                  <p className="text-black dark:text-white text-center ">
+                    {cart.total_product}
+                  </p>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <p className="text-black dark:text-white">
+                    Rp {cart.grand_price.toLocaleString("id-ID")}
+                  </p>
+                </td>
+
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <div className="flex items-center space-x-3.5 justify-center">
                     <DetailCart id={cart.cart_id} />
-                    <EditCart cart={cart} users={users} />
-                    <DeleteCart {...cart} />
                   </div>
                 </td>
               </tr>

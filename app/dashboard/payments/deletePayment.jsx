@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function deletePayment(payment) {
   const [modal, setModal] = useState(false);
   const router = useRouter();
+
+  console.log(payment);
 
   const handleChange = () => {
     setModal(!modal);
@@ -21,8 +24,20 @@ export default function deletePayment(payment) {
   }
   return (
     <div>
-      <button className="btn bg-error btn-sm text-white" onClick={handleChange}>
-        Delete
+      <button
+        className="btn bg-error btn-sm text-white"
+        disabled={
+          payment.status_payment == "Success" ||
+          payment.status_payment == "Pending"
+        }
+        onClick={handleChange}
+      >
+        <Image
+          src="/images/icon/trash.svg"
+          width={15}
+          height={15}
+          alt="delete"
+        />
       </button>
 
       <input
@@ -42,10 +57,15 @@ export default function deletePayment(payment) {
             </button>
             <button
               type="button"
-              className="btn btn-primary hover:btn-primary text-white"
+              className="btn btn-error hover:bg-[red] text-white"
               onClick={() => handleDelete(payment.id)}
             >
-              Delete
+              <Image
+                src="/images/icon/trash.svg"
+                width={15}
+                height={15}
+                alt="delete"
+              />
             </button>
           </div>
         </div>

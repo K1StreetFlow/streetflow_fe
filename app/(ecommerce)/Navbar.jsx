@@ -1,7 +1,51 @@
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
+  const [cart, setCart] = useState({});
+  const [showCartIcon, setShowCartIcon] = useState(true);
+
+  const pathname = usePathname();
+
+  // const router = useRouter();
+
+  useEffect(() => {
+    // Periksa apakah pengguna sedang berada di halaman checkout
+    if (pathname === "/carts") {
+      setShowCartIcon(false);
+    } else if (pathname === "/carts/checkout") {
+      setShowCartIcon(false);
+    } else if (pathname.includes("/waiting-payment")) {
+      setShowCartIcon(false);
+    } else {
+      setShowCartIcon(true);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    // Fungsi untuk mengambil data dari backend
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/carts/2", {
+          next: {
+            revalidate: 0,
+          },
+        });
+        const result = await response.json();
+        setCart(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+    const interval = setInterval(fetchData, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
@@ -43,7 +87,7 @@ export default function Navbar() {
             width={200}
             height={200}
             className="w-40 rounded "
-            // alt={cart.product.name_product}
+            alt="Logo Streetflow"
           />
         </a>
       </div>
@@ -61,6 +105,22 @@ export default function Navbar() {
         </ul>
       </div>
       <div className="navbar-end me-5">
+        <div className="flex flex-row me-5">
+          {showCartIcon && (
+            <>
+              <Link href="/carts">
+                <Image
+                  src="/images/icon/shop-cart-bold.svg"
+                  width={30}
+                  height={30}
+                />
+              </Link>
+              <span className="badge bg-[#3C50E0] py-2 text-white font-bold ">
+                {cart.total_product}
+              </span>
+            </>
+          )}
+        </div>
         <a className="btn">Login</a>
       </div>
     </div>
