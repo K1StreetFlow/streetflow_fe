@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
   }, []);
 
   return (
-    <div className="dark:bg-boxdark-2 dark:text-bodydark">
+    <div className="bg-white">
       {loading ? (
         <Loader />
       ) : (
