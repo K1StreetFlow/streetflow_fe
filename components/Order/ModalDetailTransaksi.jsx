@@ -22,7 +22,23 @@ const ModalDetailTransaksi = ({ id }) => {
 	return (
 		<div>
 			<div className="p-5 border-b-4 border-y-meta-9">
-				<h3 className="font-semibold mb-3 text-lg">{data.data.order_list.status_order}</h3>
+				<h3
+					className={`inline-flex rounded-sm bg-opacity-10 py-1 px-3 text-base font-medium mb-3 ${
+						data.data.order_list.status_order === "Paid"
+							? "text-primary bg-primary"
+							: data.data.order_list.status_order === "Delivered"
+							? "text-[#F3B664] bg-[#F1EB90]"
+							: data.data.order_list.status_order === "Completed"
+							? "text-success bg-success"
+							: data.data.order_list.status_order === "Packaged"
+							? "text-warning bg-warning"
+							: data.data.order_list.status_order === "Unpaid"
+							? "text-danger bg-danger"
+							: "text-secondary bg-secondary"
+					}`}
+				>
+					{data.data.order_list.status_order}
+				</h3>
 				<div className="flex justify-between mb-2">
 					<p>Order ID</p>
 					<p className="font-semibold">#{data.data.order_list.code_order}</p>
@@ -34,28 +50,32 @@ const ModalDetailTransaksi = ({ id }) => {
 			</div>
 			<div className="p-5 border-b-4 border-y-meta-9">
 				<h3 className="font-semibold mb-3 text-lg">Product Details</h3>
-				<div className="flex border border-meta-9 rounded-md p-4 justify-between">
-					<div className="flex mb-2 w-200 pr-5">
-						<Image
-							src={getImageUrl(data.data.order_list.cart_details.product.photo.photo_product)}
-							width={100}
-							height={100}
-							className="rounded-md mr-4"
-							alt={"ada"}
-						></Image>
-						<div>
-							<p className="font-semibold">{data.data.order_list.cart_details.product.name_product}</p>
-							<p className="text-sm">
-								{data.data.order_list.cart_details.quantity} x Rp
-								{data.data.order_list.cart_details.product.price_product.toLocaleString("id-ID")}
+				{data.data.order_list.cart.cart_detail.map((detail, index) => (
+					<div key={index} className="flex border border-meta-9 rounded-md p-4 justify-between mb-2">
+						<div className="flex mb-2 w-200 pr-5">
+							<Image
+								src={getImageUrl(detail.product.photo.photo_product)}
+								width={62}
+								height={62}
+								className="rounded-md mr-4"
+								alt={"ada"}
+							></Image>
+							<div>
+								<p className="font-semibold">{detail.product.name_product}</p>
+								<p className="text-sm">
+									{detail.quantity} x Rp
+									{detail.product.price_product.toLocaleString("id-ID")}
+								</p>
+							</div>
+						</div>
+						<div className="text-right">
+							<p>Total price</p>
+							<p className="font-semibold text-sm">
+								Rp{detail.product.price_product * detail.quantity.toLocaleString("id-ID")}
 							</p>
 						</div>
 					</div>
-					<div className="text-right">
-						<p>Total price</p>
-						<p className="font-semibold">Rp{data.data.order_list.payment.total_payment.toLocaleString("id-ID")}</p>
-					</div>
-				</div>
+				))}
 			</div>
 			<div className="p-5 border-b-4 border-y-meta-9">
 				<h3 className="font-semibold mb-3 text-lg">Shipping Info</h3>

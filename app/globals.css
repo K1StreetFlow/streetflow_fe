@@ -270,7 +270,7 @@ span.flatpickr-weekday,
 	border-left: 1px solid var(--NN300, #bfc9d9);
 }
 
-.photo{
+.photo {
 	width: 48px;
 	height: 48px;
 	border-radius: 50%;
@@ -278,6 +278,32 @@ span.flatpickr-weekday,
 	margin-right: 12px;
 }
 
-.border-bawah{
+.border-bawah {
 	border-bottom: 1px solid var(--NN300, #bfc9d9);
+}
+
+.box-payment {
+	display: block;
+	position: relative;
+	padding: 8px 12px;
+	border-radius: 8px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: var(--NN200, #d6dfeb);
+	background-color: var(--NN0, #ffffff);
+	cursor: pointer;
+}
+
+.number-payment {
+	display: inline-block;
+	padding: 0px 4px;
+	min-width: 15px;
+	line-height: 16px;
+	font-size: 0.714286rem;
+	font-weight: 700;
+	text-align: center;
+	color: rgb(255, 255, 255);
+	border-radius: 6px;
+	background: var(--RN600, #e02954);
+	box-sizing: border-box;
 }

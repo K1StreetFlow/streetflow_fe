@@ -32,14 +32,14 @@ const TableOrder = async () => {
 						{orders.data?.map((order, key) => (
 							<tr key={key}>
 								<td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-									<h5 className="font-medium text-black dark:text-white">#Order-{order.order_list.id}</h5>
+									<h5 className="font-medium text-black dark:text-white">{order.order_list.code_order}</h5>
 								</td>
 								<td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
 									<h5 className="font-medium text-black dark:text-white">{order.address.users_customer.fullname}</h5>
 								</td>
 								<td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
 									<h5 className="font-medium text-black dark:text-white">
-										{order.order_list.cart_details.product.name_product}
+									{order.order_list.cart.cart_detail.map((detail) => detail.product.name_product).join(', ')}
 									</h5>
 								</td>
 								<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

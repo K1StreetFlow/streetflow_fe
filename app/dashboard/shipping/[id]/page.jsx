@@ -18,6 +18,16 @@ function getImageUrl(filename) {
 const Order = async ({ params }) => {
 	const { data } = await getOrderById(params.id);
 
+	let groupedDetails = data.order_list.cart.cart_detail.reduce((acc, detail) => {
+		let existing = acc.find((item) => item.product.name_product === detail.product.name_product);
+		if (existing) {
+			existing.quantity += detail.quantity;
+		} else {
+			acc.push({ ...detail });
+		}
+		return acc;
+	}, []);
+
 	return (
 		<>
 			<Breadcrumb pageName="Order List" />
@@ -28,7 +38,7 @@ const Order = async ({ params }) => {
 					<h3 className="font-semibold mb-3 text-lg">{data.order_list.status_order}</h3>
 					<div className="flex justify-between mb-2">
 						<p>Order ID</p>
-						<p className="font-semibold">#Order-{data.order_list.id}</p>
+						<p className="font-semibold">{data.order_list.code_order}</p>
 					</div>
 					<div className="flex justify-between">
 						<p>Order Payment</p>
@@ -37,25 +47,34 @@ const Order = async ({ params }) => {
 				</div>
 				<div className="p-5 border-b-2 border-gray-200">
 					<h3 className="font-semibold mb-3 text-lg">Product Details</h3>
-					<div className="flex border-2 border-gray-200 rounded-md p-4 justify-between">
-						<div className="flex mb-2 w-200 pr-5">
-							<Image
-								src={getImageUrl(data.order_list.cart_details.product.photo.photo_product)}
-								width={100}
-								height={100}
-								className="rounded-md mr-4"
-								alt={data.order_list.cart_details.product.photo.photo_product}
-							></Image>
-							<div>
-								<p className="font-semibold">{data.order_list.cart_details.product.name_product}</p>
-								<p className="text-sm">{data.order_list.cart_details.quantity} x Rp{data.order_list.cart_details.product.price_product.toLocaleString("id-ID")}</p>
+					{groupedDetails.map((detail) => (
+						<div key={detail.id} className="mb-4">
+							<div className="flex border-2 border-gray-200 rounded-md p-4 justify-between">
+								<div className="flex w-200 pr-5">
+									<Image
+										src={getImageUrl(detail.product.photo.photo_product)}
+										width={62}
+										height={62}
+										className="rounded-md mr-4"
+										style={{ objectFit: "cover" }}
+										alt={detail.product.name_product}
+									></Image>
+									<div>
+										<p className="font-semibold">{detail.product.name_product}</p>
+										<p className="text-sm">
+											{detail.quantity} x Rp {detail.product.price_product.toLocaleString("id-ID")}
+										</p>
+									</div>
+								</div>
+								<div className="text-right">
+									<p>Total price</p>
+									<p className="font-semibold">
+										Rp{(detail.quantity * detail.product.price_product).toLocaleString("id-ID")}
+									</p>
+								</div>
 							</div>
 						</div>
-						<div className="text-right">
-							<p>Total price</p>
-							<p className="font-semibold">Rp{data.order_list.payment.total_payment.toLocaleString("id-ID")}</p>
-						</div>
-					</div>
+					))}
 				</div>
 				<div className="p-5 border-b-2 border-gray-200">
 					<h3 className="font-semibold mb-3 text-lg">Shipping Info</h3>

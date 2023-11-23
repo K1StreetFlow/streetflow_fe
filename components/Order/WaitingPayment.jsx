@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Gambar from "/assets/img/profile.jpg";
 import React, { useState, useEffect } from "react";
 import { formatDate } from "@/app/utils/formatDate";
 import SidebarUser from "@/components/Sidebar/SidebarUser";
@@ -63,15 +62,7 @@ const WaitingPayment = () => {
 										<p className="mr-2">{formatDate(order.order_list.payment.createdAt)}</p>
 										<p
 											className={`inline-flex rounded-sm bg-opacity-10 py-1 px-3 text-sm font-medium mr-2 ${
-												order.order_list.status_order === "Paid"
-													? "text-primary bg-primary"
-													: order.order_list.status_order === "Delivered"
-													? "text-[#F3B664] bg-[#F1EB90]"
-													: order.order_list.status_order === "Completed"
-													? "text-success bg-success"
-													: order.order_list.status_order === "Packaged"
-													? "text-warning bg-warning"
-													: order.order_list.status_order === "Unpaid"
+												order.order_list.status_order === "Unpaid"
 													? "text-danger bg-danger"
 													: "text-secondary bg-secondary"
 											}`}
@@ -83,22 +74,32 @@ const WaitingPayment = () => {
 								</div>
 								<div className="flex">
 									<div className="item-content">
-										<div className="flex">
-											<Image
-												src={getImageUrl(order.order_list.cart_details.product.photo.photo_product)}
-												width={100}
-												height={100}
-												alt="product"
-												className="rounded-lg mr-4"
-											></Image>
-											<div>
-												<p className="font-bold">{order.order_list.cart_details.product.name_product}</p>
-												<p className="text-sm text-form-strokedark">
-													{order.order_list.cart_details.quantity} x Rp
-													{order.order_list.cart_details.product.price_product.toLocaleString("id-ID")}
-												</p>
+										{order.order_list.cart.cart_detail.slice(0, 1).map((detail) => (
+											<div className="flex" key={detail.id}>
+												<Image
+													src={getImageUrl(detail.product.photo.photo_product)}
+													width={100}
+													height={100}
+													alt="product"
+													className="rounded-lg mr-4"
+												></Image>
+												<div>
+													<p className="font-bold">{detail.product.name_product}</p>
+													<p className="text-sm text-form-strokedark mb-2">
+														{detail.quantity} x Rp
+														{detail.product.price_product.toLocaleString("id-ID")}
+													</p>
+													{order.order_list.cart.cart_detail.length > 1 && (
+														<a
+															className="text-sm text-form-strokedark cursor-pointer hover:font-semibold"
+															onClick={() => toggleModal(order.id)}
+														>
+															+{order.order_list.cart.cart_detail.length - 1} produk lainnya
+														</a>
+													)}
+												</div>
 											</div>
-										</div>
+										))}
 									</div>
 									<div className="border-line pl-5 justify-start items-center w-46">
 										<p className="text-form-strokedark">Total Belanja</p>
