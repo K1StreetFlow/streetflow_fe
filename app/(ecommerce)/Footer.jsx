@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="footer absolute bottom-0 p-10 bg-neutral text-neutral-content">
+    <footer className="footer relative bottom-0 p-10 bg-neutral text-neutral-content">
       <aside>
         <Image
           src="/images/logo/streetflow-logo-light.svg"

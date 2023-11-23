@@ -97,12 +97,7 @@ const page = async ({ params }) => {
                     </button>
                   </Link>
 
-                  <button className="btn bg-[#3C50E0] hover:bg-[#2b39a0] text-white ml-8">
-                    <Image
-                      src="/images/icon/order-white.svg"
-                      width={20}
-                      height={20}
-                    />
+                  <button className="btn btn-primary text-white ml-8">
                     <Link href={"/order-list"}>Order List</Link>
                   </button>
                 </div>
