@@ -75,7 +75,7 @@ const WaitingPayment = () => {
 								<div className="flex">
 									<div className="item-content">
 										{order.order_list.cart.cart_detail.slice(0, 1).map((detail) => (
-											<div className="flex" key={detail.id}>
+											<div className="flex flex-row" key={detail.id}>
 												<Image
 													src={getImageUrl(detail.product.photo.photo_product)}
 													width={100}
@@ -98,6 +98,10 @@ const WaitingPayment = () => {
 														</a>
 													)}
 												</div>
+												<div className="border-line ml-20 pl-5 justify-start">
+													<p>Code Payment</p>
+													<p className="font-bold">{order.order_list.payment.code_payment}</p>
+												</div>
 											</div>
 										))}
 									</div>
@@ -108,7 +112,7 @@ const WaitingPayment = () => {
 								</div>
 								<div className="flex justify-end items-center mt-7 gap-4">
 									<button className="font-semibold" onClick={() => toggleModal(order.id)}>
-										Detail Transaksi
+										Transaction Details
 									</button>
 									{order.order_list.status_order === "Unpaid" && <button className="button-ulasan">Payment</button>}
 								</div>
@@ -119,7 +123,7 @@ const WaitingPayment = () => {
 								<div className="absolute inset-0 bg-black opacity-50 backdrop-blur-md z-10"></div>
 								<div className="bg-white rounded-lg shadow-lg p-6 w-3/5 z-20 max-h-screen flex flex-col h-115">
 									<div className="flex justify-between items-center">
-										<h2 className="text-2xl font-bold">Modal Title</h2>
+										<h2 className="text-2xl font-bold">Transaction Details</h2>
 										<button onClick={() => toggleModal(null)} className="text-lg">
 											X
 										</button>

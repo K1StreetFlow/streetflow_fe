@@ -68,20 +68,20 @@ const OrderTransaction = () => {
 									All
 								</button>
 								<button
-									onClick={() => setSelectedStatus("Unpaid")}
-									className={`button-status ${
-										selectedStatus === "Unpaid" ? "font-bold border-black text-black-2" : "text-[#5e6c84]"
-									}`}
-								>
-									Unpaid
-								</button>
-								<button
 									onClick={() => setSelectedStatus("Paid")}
 									className={`button-status ${
 										selectedStatus === "Paid" ? "font-bold border-black text-black-2" : "text-[#5e6c84]"
 									}`}
 								>
 									Paid
+								</button>
+								<button
+									onClick={() => setSelectedStatus("Packaged")}
+									className={`button-status ${
+										selectedStatus === "Packaged" ? "font-bold border-black text-black-2" : "text-[#5e6c84]"
+									}`}
+								>
+									Packaged
 								</button>
 								<button
 									onClick={() => setSelectedStatus("Delivered")}

@@ -1,5 +1,5 @@
-import "../satoshi.css";
-import "../globals.css";
+import "../../satoshi.css";
+import "../../globals.css";
 import OrderTransaction from "@/components/Order/OrderTransaction";
 
 export const metadata = {
@@ -9,7 +9,7 @@ export const metadata = {
 const DetailTrasanksi = () => {
 	return (
 		<>
-			<div className="container mx-auto px-4 max-h-screen">
+			<div className="container mx-auto px-4">
 				<OrderTransaction />
 			</div>
 		</>
