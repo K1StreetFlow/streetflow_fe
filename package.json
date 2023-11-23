@@ -16,7 +16,15 @@
     "nookies": "^2.5.2",
     "daisyui": "^4.4.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "@headlessui/react": "^1.7.17",
+    "@nextui-org/react": "^2.2.9",
+    "framer-motion": "^10.16.5",
+    "react-icons": "^4.12.0",
+    "react-modal": "^3.16.1",
+    "react-slick": "^0.29.0",
+    "react-spring": "^9.7.3",
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
     "@react-jvectormap/core": "^1.0.4",
@@ -30,12 +38,13 @@
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
     "jsvectormap": "^1.5.3",
+    "next": "^14.0.3",
     "postcss": "8.4.27",
-    "react": "18.2.0",
+    "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-dom": "18.2.0",
     "react-jvectormap": "^0.0.16",
     "tailwindcss": "3.3.3",
-    "typescript": "5.1.6"
+    "typescript": "^5.2.2"
   }
 }
