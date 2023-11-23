@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 async function getPaymentById(code_payment) {
   const res = await fetch(
@@ -90,22 +91,19 @@ const page = async ({ params }) => {
             <div className="flex justify-end my-20 ">
               <div className="flex flex-col  items-end">
                 <div className="flex flex-row mt-5">
-                  <button className="btn btn-primary text-white ">
-                    Belanja Lagi
-                  </button>
-                  <Link href={data.pdf_url}>
-                    <button className="btn btn-primary text-white ml-8">
+                  <Link href={data.pdf_url} target="_blank">
+                    <button className="btn btn-outline btn-primary text-white ml-8">
                       Cara Pembayaran
                     </button>
                   </Link>
 
-                  <button
-                    className="btn btn-primary text-white ml-8"
-                    disabled={
-                      data.status_payment != "Success" ? "disabled" : ""
-                    }
-                  >
-                    <Link href={"/order-list"}>Halaman Order List</Link>
+                  <button className="btn bg-[#3C50E0] hover:bg-[#2b39a0] text-white ml-8">
+                    <Image
+                      src="/images/icon/order-white.svg"
+                      width={20}
+                      height={20}
+                    />
+                    <Link href={"/order-list"}>Order List</Link>
                   </button>
                 </div>
               </div>

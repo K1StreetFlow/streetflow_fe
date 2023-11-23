@@ -1,4 +1,5 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import Link from "next/link";
 
 async function getCartById(id) {
   const res = await fetch(`http://localhost:8000/api/carts/${id}`);
@@ -159,6 +160,9 @@ const Details = async ({ params }) => {
             </div>
           </div>
         ))}
+        <Link href="/dashboard/carts">
+          <button className="btn btn-error text-white">Back</button>
+        </Link>
       </div>
     </>
   );

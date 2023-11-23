@@ -1,5 +1,4 @@
 import formatDate from "@/app/utils/formatDate";
-// import { deleteDataPayment } from "@/app/api/payments/api";
 import Image from "next/image";
 import DetailPayment from "@/app/dashboard/payments/detailPayment";
 import DeletePayment from "@/app/dashboard/payments/deletePayment";
@@ -13,28 +12,9 @@ async function getAllPayments() {
   return res.json();
 }
 
-async function getAllCustomers() {
-  const res = await fetch("http://localhost:8000/api/user", {
-    next: {
-      revalidate: 0,
-    },
-  });
-  return res.json();
-}
-
-async function getAllCarts() {
-  const res = await fetch("http://localhost:8000/api/carts", {
-    next: {
-      revalidate: 0,
-    },
-  });
-  return res.json();
-}
-
 const TablePayment = async () => {
   const payments = await getAllPayments();
-  const users = await getAllCustomers();
-  const carts = await getAllCarts();
+  let count = 1;
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -42,8 +22,11 @@ const TablePayment = async () => {
         <table className="w-full table-auto mt-10">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
+              <th className="min-w-[20px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                #
+              </th>
               <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                Code Payment
+                Name
               </th>
               <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                 Method Payment
@@ -51,16 +34,13 @@ const TablePayment = async () => {
               <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                 VA Type
               </th>
-              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                Virtual Account
-              </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                 Total Payment
               </th>
               <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                 Status
               </th>
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
+              <th className="py-4 px-4 font-medium text-black dark:text-white text-center ">
                 Actions
               </th>
             </tr>
@@ -68,9 +48,12 @@ const TablePayment = async () => {
           <tbody>
             {payments.data?.map((payment, key) => (
               <tr key={key}>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark text-center">
+                  <p className="text-black dark:text-white">{count++}</p>
+                </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p className="text-black dark:text-white">
-                    {payment.code_payment}
+                    {payment.cart.user_customer.fullname}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
@@ -82,11 +65,6 @@ const TablePayment = async () => {
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p className="text-black dark:text-white">
                     {payment.va_type}
-                  </p>
-                </td>
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {payment.va_number}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

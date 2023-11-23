@@ -74,13 +74,14 @@ export default function Checkout({ data }) {
                 "Content-Type": "application/json",
               },
             };
+            const va_number = result.va_numbers[0].va_number || null;
             const data = {
               code_payment: result.order_id,
               status_payment: "Success",
               total_payment: parseInt(result.gross_amount),
               date_payment: result.transaction_time,
               method_payment: result.payment_type,
-              va_number: result.va_numbers[0].va_number,
+              va_number,
               va_type: result.va_numbers[0].bank,
               pdf_url: result.pdf_url,
               id_cart: 1,
@@ -92,8 +93,6 @@ export default function Checkout({ data }) {
               config
             );
 
-            console.log(response.data);
-
             if (response.data) {
               setToken("");
               window.location.href = "/order-list";
@@ -102,20 +101,24 @@ export default function Checkout({ data }) {
             }
           },
           onPending: async (result) => {
+            console.log(result);
             const config = {
               headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
               },
             };
+
             const data = {
               code_payment: result.order_id,
               status_payment: "Pending",
               total_payment: parseInt(result.gross_amount),
               date_payment: result.transaction_time,
               method_payment: result.payment_type,
-              va_number: result.va_numbers[0].va_number,
-              va_type: result.va_numbers[0].bank,
+              va_number: result.va_numbers[0].va_number
+                ? result.va_numbers[0].va_number
+                : null,
+              va_type: result.va_numbers[0].bank || null,
               pdf_url: result.pdf_url,
               id_cart: 1,
             };
@@ -175,7 +178,7 @@ export default function Checkout({ data }) {
               <div
                 className={`p-5 w-100 mx-5 rounded-md shadow-6 hover:bg-gray ${
                   selectedAddress && selectedAddress.id === address.id
-                    ? "border-2 border-success"
+                    ? "border-2 border-[#3C50E0]"
                     : ""
                 } `}
               >
@@ -277,7 +280,7 @@ export default function Checkout({ data }) {
             </div>
 
             <button
-              className="btn btn-primary text-white mt-10 "
+              className="btn bg-[#3C50E0] hover:bg-[#2a379b] text-white mt-10 "
               onClick={handleCheckout}
             >
               Pilih metode pembayaran

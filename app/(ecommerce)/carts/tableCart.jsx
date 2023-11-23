@@ -128,14 +128,22 @@ export default function tableCartCustomer({ carts }) {
       <hr className="pb-6 mt-6" />
       <div className="flex justify-end">
         <div className="flex flex-col me-10">
-          <div>Total Price</div>
-          <div className="font-bold text-lg">
+          <div className="font-bold">Total Price</div>
+          <div className="font-bold text-xl text-[#3C50E0] ">
             Rp {cart.grand_price.toLocaleString("id-ID")}
           </div>
         </div>
 
         <Link href={"carts/checkout"}>
-          <button className="btn bg-primary  text-white">Checkout</button>
+          <button className="btn bg-[#3C50E0] hover:bg-[#2b399f]  text-white">
+            <Image
+              src={"/images/icon/shop-cart-bold-white.svg"}
+              width={20}
+              height={20}
+              alt={"Checkout"}
+            />
+            Checkout
+          </button>
         </Link>
       </div>
     </>

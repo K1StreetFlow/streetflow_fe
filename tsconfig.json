@@ -29,8 +29,9 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "app/dashboard/page.js",
-    "app/page.js",
-    "components/Dashboard/Cart/TableTwo.jsx"
-, "components/Dashboard/Cart/TableCart.jsx"  ],
+    "app/page.jsx",
+    "components/Dashboard/Cart/TableTwo.jsx",
+    "components/Dashboard/Cart/TableCart.jsx"
+  ],
   "exclude": ["node_modules"]
 }
