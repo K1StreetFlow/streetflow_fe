@@ -12,9 +12,6 @@
     "@headlessui/react": "^1.7.17",
     "@nextui-org/react": "^2.2.9",
     "axios": "^1.6.2",
-<<<<<<< HEAD
-    "next": "14.0.3",
-=======
     "daisyui": "^4.4.2",
     "framer-motion": "^10.16.5",
     "js-cookie": "^3.0.5",
@@ -22,7 +19,6 @@
     "next": "13.4.12",
     "next-client-cookies": "^1.1.0",
     "nookies": "^2.5.2",
->>>>>>> 7895ca8446f646cc2ee398d4ef40008a9f27221d
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^4.12.0",

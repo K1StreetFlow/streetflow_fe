@@ -1,6 +1,6 @@
 import "../../satoshi.css";
 import "../../globals.css";
-import WaitingPayment from "@/components/Order/WaitingPayment";
+import WaitingPayment from "./WaitingPayment";
 
 const WaitingPayments = () => {
 	return (
