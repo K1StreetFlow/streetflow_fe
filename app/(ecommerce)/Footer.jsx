@@ -5,7 +5,7 @@ export default function Footer() {
 	return (
 		<footer className="footer bottom-0 p-10 bg-neutral text-neutral-content">
 			<aside>
-				<Image src="/images/logo/streetflow-logo-light.svg" width={500} height={500} className="w-40 rounded " />
+				<Image src="/images/logo/streetflow-logo-light.svg" width={500} height={500} className="w-40 rounded"  alt=""/>
 				<p>
 					ACME Industries Ltd.
 					<br />

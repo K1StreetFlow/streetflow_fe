@@ -35,6 +35,7 @@ export default function Navbar() {
 						width={200}
 						height={200}
 						className="w-40 rounded "
+						alt=""
 						// alt={cart.product.name_product}
 					/>
 				</a>
