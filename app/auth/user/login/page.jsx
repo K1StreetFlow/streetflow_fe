@@ -28,7 +28,7 @@ const SignIn = () => {
           withCredentials: true,
         }
       );
-      router.push("/dashboard/profile/userProfile");
+      router.push("/profile");
     } catch (error) {
       if (error.response) {
         setMessage(error.response.data.message);
