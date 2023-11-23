@@ -68,7 +68,7 @@ const SignUp = () => {
         }
       );
 
-      await axios.post("http://localhost:8000/api/carts", {
+      const result = await axios.post("http://localhost:8000/api/carts", {
         id_users_customer: response.data.id,
       });
 

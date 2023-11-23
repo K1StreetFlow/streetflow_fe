@@ -1,6 +1,5 @@
 "use client";
 import "@/app/globals.css";
-s;
 import "@/app/satoshi.css";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";

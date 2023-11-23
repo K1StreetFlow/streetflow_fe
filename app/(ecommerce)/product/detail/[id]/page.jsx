@@ -8,6 +8,7 @@ import { FaShoppingCart, FaCheck } from "react-icons/fa";
 import LoginModal from "@/components/Product/modalproduct/LoginModal";
 import Loader from "@/components/common/Loader";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const ProductPage = ({ params }) => {
   const { id } = params;
@@ -31,19 +32,51 @@ const ProductPage = ({ params }) => {
     fetchData();
   }, [id]);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     // if (!isLoggedIn) {
     //   // Jika pengguna belum login, tampilkan modal login
     //   setShowModalLogin(true);
     // } else {
     // Jika pengguna sudah login, hitung total harga
+
+    // console.log(cart.data.cart_detail);
+
     const totalPrice = calculateTotalPrice(product.price_product, quantity);
     // Update displayPayment
     document.getElementById("displayPayment").innerText = totalPrice.toFixed(2);
-    console.log("Total Pembayaran:", totalPrice);
-    router.push("/carts");
+    // console.log("Total Pembayaran:", totalPrice);
 
-    // }
+    const cart = await axios.get("http://localhost:8000/api/carts/user/cart/", {
+      withCredentials: true,
+    });
+
+    const cart_detail = cart.data.cart_detail;
+
+    // Periksa apakah id_product sudah ada di cart_detail
+    const existingItemIndex = cart.data.cart_detail.findIndex(
+      (item) => item.id_product === product.id
+    );
+
+    if (existingItemIndex !== -1) {
+      // Jika id_product sudah ada, update quantity
+      await axios.put(
+        `http://localhost:8000/api/cart-details/${cart.data.cart_id}/${product.id}`,
+        {
+          quantity: quantity,
+        }
+      );
+    } else {
+      // Jika id_product belum ada, tambahkan item baru ke cart_detail
+      await axios.post("http://localhost:8000/api/cart-details", {
+        id_cart: cart.data.cart_id,
+        id_product: id,
+        quantity: quantity,
+      });
+    }
+
+    // console.log(result);
+
+    // router.push("/carts");
   };
 
   const calculateTotalPrice = (price, quantity) => {

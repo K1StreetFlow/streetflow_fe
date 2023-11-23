@@ -25,41 +25,39 @@ export default function Navbar() {
     }
   }, [pathname]);
 
-  const fetchToken = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/api/user/token", {
-        withCredentials: true,
-      });
-      const userData = response.data.decodedToken;
+  // const fetchToken = async () => {
+  //   try {
+  //     const response = await axios.get("http://localhost:8000/api/user/token", {
+  //       withCredentials: true,
+  //     });
+  //     const userData = response.data.decodedToken;
 
-      setUserData(userData);
-    } catch (error) {
-      console.error("Error fetching or decoding token:", error);
-    }
-  };
+  //     setUserData(userData);
+  //   } catch (error) {
+  //     console.error("Error fetching or decoding token:", error);
+  //   }
+  // };
 
-  const updateToken = async () => {
-    await fetchToken();
-  };
+  // const updateToken = async () => {
+  //   await fetchToken();
+  // };
 
-  useEffect(() => {
-    updateToken();
-    fetchToken();
-  }, []);
+  // useEffect(() => {
+  //   updateToken();
+  //   fetchToken();
+  // }, []);
 
   useEffect(() => {
     // Fungsi untuk mengambil data dari backend
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:8000/api/carts/user/cart",
+        const response = await axios.get(
+          "http://localhost:8000/api/carts/user/cart/",
           {
-            next: {
-              revalidate: 0,
-            },
+            withCredentials: true,
           }
         );
-        const result = await response.json();
+        const result = response.data;
         setCart(result);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -67,7 +65,29 @@ export default function Navbar() {
     };
 
     fetchData();
-    const interval = setInterval(fetchData, 2000);
+    const interval = setInterval(fetchData, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    // Fungsi untuk mengambil data dari backend
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/user/profile/user",
+          {
+            withCredentials: true,
+          }
+        );
+        const result = response.data;
+        setUserData(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+    const interval = setInterval(fetchData, 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -152,9 +172,8 @@ export default function Navbar() {
           <DropdownUser user={userData} />
         ) : (
           // <a className="btn">Logout</a>
-          <Link href="/auth/user/login">
-            <a className="btn">Login</a>
-          </Link>
+
+          <a className="btn">Login</a>
         )}
       </div>
     </div>
