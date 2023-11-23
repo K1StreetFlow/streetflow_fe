@@ -39,7 +39,8 @@
     "app/dashboard/profile/page.jsx",
     "components/Dashboard/E-commerce.jsx",
     "components/Dashboard/Cart/TableTwo.jsx",
-    "components/Dashboard/Cart/TableCart.jsx"
+    "components/Dashboard/Cart/TableCart.jsx",
+    "components/Tables/AddCategory.jsx"
   ],
   "exclude": ["node_modules"]
 }
