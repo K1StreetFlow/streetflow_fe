@@ -28,12 +28,6 @@ export default function editReviewProducts({ users, products, order_list, review
         const file = e.target.files[0];
         setPhotoReview(file);
 
-        const fileName = file ? file.name : "";
-        const photoReviewInput = document.getElementById("photoReviewInput");
-        if (photoReviewInput) {
-            photoReviewInput.value = fileName;
-        }
-
         const reader = new FileReader();
         reader.onloadend = () => {
             setPreviewImage(reader.result);
@@ -53,9 +47,6 @@ export default function editReviewProducts({ users, products, order_list, review
 
         await fetch(`http://localhost:8000/api/review-products-photo/${review.id}`, {
             method: "PUT",
-            headers: {
-                "Content-Type": "multipart/form-data"
-            },
             body: formData
         });
     }
@@ -85,33 +76,6 @@ export default function editReviewProducts({ users, products, order_list, review
         router.refresh();
         setModal(false);
     }
-
-    async function handleUpdate(e) {
-        e.preventDefault();
-
-        await fetch(`http://localhost:8000/api/review-products/${review.id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                id_users_customer: user,
-                id_products: product,
-                id_order_list: orderlist,
-                message_review: messageReview,
-                number_review: numberReview,
-            }),
-        });
-
-        setUser(review.id_users_customer);
-        setProduct(review.id_products);
-        setOrderlist(review.id_order_list);
-        setMessageReview(review.message_review);
-        setNumberReview(review.number_review);
-        router.refresh();
-        setModal(false);
-    }
-    
         return (
             <div>
                 <button className="btn bg-info btn-sm text-white" onClick={handleChange}>

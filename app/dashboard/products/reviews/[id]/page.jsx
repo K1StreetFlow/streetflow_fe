@@ -1,3 +1,4 @@
+import React from "react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import BackReview from "@/app/dashboard/products/reviews/backReviewProducts";
 import Image from "next/image";
@@ -13,6 +14,35 @@ async function getReviewProductById(id) {
 function getImageUrl(filename) {
 	return `http://localhost:8000/api/review-products-photo/view/${filename}`;
 }
+
+const RatingDisplay = ({ numberReview }) => {
+  const filledStars = Array.from({ length: numberReview }, (_, index) => (
+    <input
+      key={index}
+      type="radio"
+      name="rating-9"
+      className="mask mask-star-2"
+      checked={index === numberReview - 1} // Menandai bintang terisi sesuai dengan nilai database
+    />
+  ));
+
+  const emptyStars = Array.from({ length: 5 - numberReview }, (_, index) => (
+    <input
+      key={index + numberReview}
+      type="radio"
+      name="rating-9"
+      className="mask mask-star-2"
+    />
+  ));
+
+  return (
+    <div className="rating rating-lg">
+      <input type="radio" name="rating-9" className="rating-hidden" />
+      {filledStars}
+      {emptyStars}
+    </div>
+  );
+};
 
 const ReviewProducts = async ({ params }) => {
   const { data } = await getReviewProductById(params.id);
@@ -84,7 +114,7 @@ const ReviewProducts = async ({ params }) => {
                 Number Review
               </label>
               <div className="relative">
-                <h3>{data.number_review}</h3>
+                <RatingDisplay numberReview={data.number_review} />
               </div>
             </div>
             <div className="w-full h-[20%]">
@@ -110,3 +140,4 @@ const ReviewProducts = async ({ params }) => {
 };
 
 export default ReviewProducts;
+

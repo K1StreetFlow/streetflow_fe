@@ -1,5 +1,5 @@
 import Image from "next/image";
-// import AddReview from "@/app/dashboard/products/reviews/addReviewProducts";
+import AddReview from "@/app/dashboard/products/reviews/addReviewProducts";
 import EditReview from "@/app/dashboard/products/reviews/editReviewProducts";
 import DeleteReview from "@/app/dashboard/products/reviews/deleteReviewProducts";
 import DetailReview from "@/app/dashboard/products/reviews/detailReviewProducts";
@@ -54,7 +54,7 @@ const TableReviewProducts = async () => {
     return (
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="py-6 px-4 md:px-6 xl:px-7.5">
-                {/* <AddReview users={users} products={products} order_list={order_list} /> */}
+                <AddReview users={users} products={products} order_list={order_list} />
             </div>
 
             <div className="py-10 px-10">
