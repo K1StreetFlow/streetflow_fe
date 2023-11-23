@@ -28,7 +28,16 @@ const TableCategory = ({ name_category_products }) => {
           </div>
           <div className="p-2.5 xl:p-5">
             <h5 className="text-sm  font-medium uppercase xsm:text-base">
-              Nama category products
+              
+            </h5>
+          </div>
+          <div className="p-2.5 xl:p-5">
+            <h5 className="text-sm  font-medium uppercase xsm:text-base">
+              Name category products
+            </h5>
+          </div>
+          <div className="p-2.5 xl:p-5">
+            <h5 className="text-sm  font-medium uppercase xsm:text-base">
             </h5>
           </div>
           <div className="p-2.5 text-center  xl:p-5">
@@ -52,10 +61,20 @@ const TableCategory = ({ name_category_products }) => {
             </div>
             <div className="flex items-center  gap-3 p-2.5 xl:p-5 ">
               <p className="hidden text-black dark:text-white sm:block">
+                
+              </p>
+            </div>
+            <div className="flex items-center  gap-3 p-2.5 xl:p-5 ">
+              <p className="hidden text-black dark:text-white sm:block">
                 {category.name_category_products}
               </p>
             </div>
-
+            <div className="flex items-center  gap-3 p-2.5 xl:p-5 ">
+              <p className="hidden text-black dark:text-white sm:block">
+                
+              </p>
+            </div>
+            
             <div className="flex items-center justify-center  p-2.5 xl:p-5">
               <EditCategory category={category} />
               <DeleteCategory {...category} />

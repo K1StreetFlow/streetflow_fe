@@ -21,7 +21,7 @@ function DeleteCategory(category) {
   return (
     <div>
       <button
-        className="btn btn-primary btn-error btn-sm text-white"
+        className="btn  btn-error btn-sm text-white"
         onClick={handleChange}
       >
         Delete
@@ -50,7 +50,7 @@ function DeleteCategory(category) {
             <button
               type="button"
               onClick={() => handleDelete(category.id)}
-              className="btn btn-success text-white"
+              className="btn btn-success  btn-error text-white"
             >
               Delete
             </button>

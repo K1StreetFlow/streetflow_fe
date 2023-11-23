@@ -38,7 +38,7 @@ export default function EditCategory({ category }) {
   return (
     <div>
       <button
-        className="text-white hover:bg-meta-8 bg-warning p-2 rounded-md me-2"
+        className="text-white hover:bg-meta-8 bg-warning p-1 px-4 rounded-md me-2"
         onClick={handleChange}
       >
         Edit
