@@ -26,7 +26,7 @@ export default function Checkout({ data }) {
       fullname: data.user_customer.fullname,
       code_payment: generateOrderId(data.user_customer.id),
       email: data.user_customer.email,
-      total: data.grand_price,
+      total: parseInt(data.grand_price),
     };
 
     const config = {
