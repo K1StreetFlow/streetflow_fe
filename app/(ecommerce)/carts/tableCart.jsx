@@ -5,20 +5,37 @@ import axios from "axios";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-export default function tableCartCustomer({ carts }) {
+export default function tableCartCustomer({ carts, token }) {
   const [cartDetail, setCartDetail] = useState();
   const [cart, setCart] = useState(carts);
+  const router = useRouter();
 
   useEffect(() => {
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+
     // Fungsi untuk mengambil data dari backend
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/carts/2", {
-          next: {
-            revalidate: 0,
-          },
-        });
+        const response = await fetch(
+          "http://localhost:8000/api/carts/user/cart/",
+          {
+            next: {
+              revalidate: 0,
+            },
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              accept: "application/json",
+              cookie: `tokenCustomer=${token}`,
+            },
+            credentials: "include",
+          }
+        );
         const result = await response.json();
         setCartDetail(result.cart_detail);
         setCart(result);
@@ -34,13 +51,24 @@ export default function tableCartCustomer({ carts }) {
 
   const updateQuantity = async (cartItemId, newQuantity) => {
     try {
-      console.log("cartItemId", cartItemId);
-      console.log("newQuantity", newQuantity);
-      await axios.put(`http://localhost:8000/api/cart-details/${cartItemId}`, {
-        quantity: newQuantity,
-      });
+      const quantityUpdated = await axios.put(
+        `http://localhost:8000/api/cart-details/${cartItemId}`,
+        {
+          quantity: newQuantity,
+        }
+      );
     } catch (error) {
       console.error("Failed to update quantity:", error);
+    }
+  };
+
+  const handleDeleteCart = async (cartItemId) => {
+    try {
+      await axios.delete(
+        `http://localhost:8000/api/cart-details/${cartItemId}`
+      );
+    } catch (error) {
+      console.error("Failed to delete cart:", error);
     }
   };
 
@@ -62,7 +90,7 @@ export default function tableCartCustomer({ carts }) {
           </tr>
         </thead>
         <tbody>
-          {cartDetail?.map((cart, key) => (
+          {cart.cart_detail?.map((cart, key) => (
             <tr className="hover" key={key}>
               <td className="hidden pb-4 md:table-cell w-30">
                 <a href="#">
@@ -78,11 +106,13 @@ export default function tableCartCustomer({ carts }) {
               <td className="w-50">
                 <a href="#">
                   <p className="mb-2 md:ml-4 ">{cart.product.name_product}</p>
-                  <form action="" method="POST">
-                    <button type="submit" className="text-gray-700 md:ml-4">
-                      <small>(Remove item)</small>
-                    </button>
-                  </form>
+
+                  <button
+                    className="text-gray-700 md:ml-4"
+                    onClick={() => handleDeleteCart(cart.id)}
+                  >
+                    <small>(Remove item)</small>
+                  </button>
                 </a>
               </td>
               <td className="justify-center md:justify-end md:flex mt-6">

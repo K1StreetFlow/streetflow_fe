@@ -98,7 +98,7 @@ const page = async ({ params }) => {
                   </Link>
 
                   <button className="btn btn-primary text-white ml-8">
-                    <Link href={"/order-list"}>Order List</Link>
+                    <Link href={"/order"}>Order List</Link>
                   </button>
                 </div>
               </div>

@@ -68,15 +68,16 @@ const DropdownUser = ({ user }) => {
           </span>
           <span className="block text-xs">{user.email}</span>
         </span>
-        <span className="h-12 w-12 rounded-full border overflow-hidden">
+        <span className="h-12 w-12 object-contain rounded-full border overflow-hidden">
           <Image
-            src={`http://localhost:8000/${user.photo.replace("\\", "/")}`}
+            src={`http://localhost:8000/${user.upload_photo.replace(
+              "\\",
+              "/"
+            )}`}
             alt="User Profile"
-            className="rounded-full bg-top "
-            objectFit="cover"
-            layout="fixed"
-            width={200}
-            height={200}
+            className=""
+            width={50}
+            height={50}
           />
         </span>
 
