@@ -3,7 +3,7 @@
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { formatDate } from "@/app/utils/formatDate";
-import SidebarUser from "../../../components/Sidebar/SidebarUser";
+import SidebarCustomer from "../../../components/Sidebar/SidebarCustomer";
 import ModalDetailTransaksi from "../../../components/Order/ModalDetailTransaksi";
 import Link from "next/link";
 
@@ -55,7 +55,7 @@ const OrderTransaction = () => {
 		<>
 			<div className="flex items-start mt-10 text-[#212121]">
 				<div className="w-1/5 border-none rounded-lg pb-8 box ">
-					<SidebarUser />
+					<SidebarCustomer />
 				</div>
 				<div className="w-4/5 mb-5 ">
 					<h3 className="font-bold ml-6 mb-5 text-xl">Transaction List</h3>
