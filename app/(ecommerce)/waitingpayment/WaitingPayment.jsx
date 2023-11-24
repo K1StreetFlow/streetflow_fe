@@ -6,8 +6,8 @@ import { formatDate } from "@/app/utils/formatDate";
 import SidebarUser from "@/components/Sidebar/SidebarUser";
 import ModalDetailTransaksi from "@/components/Order/ModalDetailTransaksi";
 
-async function getAllOrders() {
-	const res = await fetch(`http://localhost:8000/api/shipping`, {
+async function getOrderById(id) {
+	const res = await fetch(`http://localhost:8000/api/shippings/${id}`, {
 		next: {
 			revalidate: 0,
 		},
@@ -19,7 +19,7 @@ function getImageUrl(filename) {
 	return `http://localhost:8000/api/photo_products/view/${filename}`;
 }
 
-const WaitingPayment = () => {
+const WaitingPayment = ({ id }) => {
 	const [orders, setOrders] = useState([]);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [currentModalId, setCurrentModalId] = useState(null);
@@ -31,14 +31,16 @@ const WaitingPayment = () => {
 
 	useEffect(() => {
 		const fetchOrders = async () => {
-			const allOrders = await getAllOrders();
-			setOrders(allOrders);
+			const orderData = await getOrderById(id);
+			setOrders(orderData.data ? [orderData.data] : []);
 		};
 
-		fetchOrders();
-	}, []);
+		if (id) {
+			fetchOrders();
+		}
+	}, [id]);
 
-	const filteredOrders = orders.data?.filter(
+	const filteredOrders = orders.filter(
 		(order) => order.order_list.status_order === "Unpaid" || order.order_list.status_order === "Pending"
 	);
 

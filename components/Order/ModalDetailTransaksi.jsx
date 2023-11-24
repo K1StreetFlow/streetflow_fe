@@ -2,7 +2,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 async function getOrderById(id) {
-	const res = await fetch(`http://localhost:8000/api/shipping/${id}`);
+	const res = await fetch(`http://localhost:8000/api/shippings/${id}`);
 	return res.json();
 }
 
@@ -93,8 +93,8 @@ const ModalDetailTransaksi = ({ id }) => {
 					<p className="w-40">Address</p>
 					<span className="mr-3">:</span>
 					<div>
-						<p className="font-semibold">{data.data.address.users_customer.fullname}</p>
-						<p>{data.data.address.users_customer.phone_number}</p>
+						<p className="font-semibold">{data.data.address.user_customer.fullname}</p>
+						<p>{data.data.address.user_customer.phone_number}</p>
 						<p>
 							{data.data.address.street}, {data.data.address.house_number}, {data.data.address.city},{" "}
 							{data.data.address.province},{data.data.address.zipcode}

@@ -364,9 +364,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item Order List --> */}
               <li>
                 <Link
-                  href="/dashboard/shipping"
+                  href="/dashboard/shippings"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("dashboard/shipping") &&
+                    pathname.includes("dashboard/shippings") &&
                     "bg-graydark dark:bg-meta-4"
                   }`}
                 >
@@ -382,7 +382,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item Order List --> */}
 
               {/* <!-- Menu Item Shipping --> */}
-              <li>
+              {/* <li>
                 <Link
                   href="/dashboard/shippings"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
@@ -398,7 +398,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   />
                   Shippings
                 </Link>
-              </li>
+              </li> */}
               {/* <!-- Menu Item Shipping --> */}
 
               {/* <!-- Menu Item Users --> */}

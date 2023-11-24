@@ -31,7 +31,7 @@
     "services/**/*.js",
     "app/dashboard/page.js",
     "app/page.js",
-    "app/dashboard/order-list/page.js",
+    "app/dashboard/order-list/page.jsx",
     "components/Tables/TableOrder.js",
     "app/auth/admin/login/page.jsx",
     "app/auth/admin/register/page.jsx",
@@ -43,7 +43,8 @@
     "components/Tables/AddCategory.jsx",
     "app/page.jsx",
     "components/Dashboard/Cart/TableTwo.jsx",
-    "components/Dashboard/Cart/TableCart.jsx"
+    "components/Dashboard/Cart/TableCart.jsx",
+    "app/utils/formatDate.js"
   ],
   "exclude": ["node_modules"]
 }

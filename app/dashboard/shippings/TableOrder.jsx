@@ -1,13 +1,24 @@
 import { formatDates } from "@/app/utils/formatDate";
-import DetailOrder from "@/app/dashboard/shipping/detailOrder";
+import DetailOrder from "./detailOrder";
 
 async function getAllOrders() {
-	const res = await fetch(`http://localhost:8000/api/shipping`, {
-		next: {
-			revalidate: 0,
-		},
-	});
-	return res.json();
+	try {
+		const res = await fetch(`http://localhost:8000/api/shippings`, {
+			next: {
+				revalidate: 0,
+			},
+		});
+
+		if (!res.ok) {
+			throw new Error(`HTTP error! status: ${res.status}`);
+		}
+
+		return res.json();
+	} catch (error) {
+		console.error("Failed to fetch orders:", error);
+		// You can decide how to handle the error here, for example, return an empty array
+		return { data: [] };
+	}
 }
 
 const TableOrder = async () => {
@@ -32,14 +43,14 @@ const TableOrder = async () => {
 						{orders.data?.map((order, key) => (
 							<tr key={key}>
 								<td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-									<h5 className="font-medium text-black dark:text-white">{order.order_list.code_order}</h5>
+									<h5 className="font-medium text-black dark:text-white">{order.order_list?.code_order}</h5>
 								</td>
 								<td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-									<h5 className="font-medium text-black dark:text-white">{order.address.users_customer.fullname}</h5>
+									<h5 className="font-medium text-black dark:text-white">{order.address.user_customer.fullname}</h5>
 								</td>
 								<td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
 									<h5 className="font-medium text-black dark:text-white">
-									{order.order_list.cart.cart_detail.map((detail) => detail.product.name_product).join(', ')}
+										{order.order_list?.cart.cart_detail.map((detail) => detail.product.name_product).join(", ")}
 									</h5>
 								</td>
 								<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -47,26 +58,26 @@ const TableOrder = async () => {
 								</td>
 								<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 									<p className="text-black dark:text-white">
-										Rp {order.order_list.payment.total_payment.toLocaleString("id-ID")}
+										Rp {order.order_list?.payment.total_payment.toLocaleString("id-ID")}
 									</p>
 								</td>
 								<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 									<p
 										className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-											order.order_list.status_order === "Paid"
+											order.order_list?.status_order === "Paid"
 												? "text-primary bg-primary"
-												: order.order_list.status_order === "Delivered"
+												: order.order_list?.status_order === "Delivered"
 												? "text-[#F3B664] bg-[#F1EB90]"
-												: order.order_list.status_order === "Completed"
+												: order.order_list?.status_order === "Completed"
 												? "text-success bg-success"
-												: order.order_list.status_order === "Packaged"
+												: order.order_list?.status_order === "Packaged"
 												? "text-warning bg-warning"
-												: order.order_list.status_order === "Unpaid"
+												: order.order_list?.status_order === "Unpaid"
 												? "text-danger bg-danger"
 												: "text-secondary bg-secondary"
 										}`}
 									>
-										{order.order_list.status_order}
+										{order.order_list?.status_order}
 									</p>
 								</td>
 								<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

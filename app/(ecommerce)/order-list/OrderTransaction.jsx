@@ -3,8 +3,8 @@
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { formatDate } from "@/app/utils/formatDate";
-import SidebarUser from "@/components/Sidebar/SidebarUser";
-import ModalDetailTransaksi from "@/components/Order/ModalDetailTransaksi";
+import SidebarUser from "../../../components/Sidebar/SidebarUser";
+import ModalDetailTransaksi from "../../../components/Order/ModalDetailTransaksi";
 import Link from "next/link";
 
 function getImageUrl(filename) {
@@ -25,9 +25,9 @@ const OrderTransaction = () => {
 	useEffect(() => {
 		const fetchOrderById = async (id) => {
 			try {
-				const res = await fetch(`http://localhost:8000/api/shipping/${id}`, {
+				const res = await fetch(`http://localhost:8000/api/shippings/${id}`, {
 					next: {
-						revalidate: 0, 
+						revalidate: 0,
 					},
 				});
 
@@ -44,7 +44,7 @@ const OrderTransaction = () => {
 		};
 
 		// Ganti ID sesuai dengan kebutuhan
-		const orderId = 2;
+		const orderId = 1;
 		fetchOrderById(orderId);
 	}, []);
 

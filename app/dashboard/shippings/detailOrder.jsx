@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function DetailOrder({ id }) {
 	return (
-		<Link href={`shipping/${id}`}>
+		<Link href={`shippings/${id}`}>
 			<button className="hover:text-primary">
 				<svg
 					className="fill-current"

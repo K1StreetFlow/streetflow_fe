@@ -1,4 +1,4 @@
-import formatDate from "@/app/utils/formatDate";
+import {formatDate} from "@/app/utils/formatDate";
 import Image from "next/image";
 import DetailPayment from "@/app/dashboard/payments/detailPayment";
 import DeletePayment from "@/app/dashboard/payments/deletePayment";

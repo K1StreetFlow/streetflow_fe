@@ -233,8 +233,8 @@ export default function Checkout({ data }) {
                   </tr>
                 </thead>
                 {data.cart_detail?.map((cart, key) => (
-                  <tbody>
-                    <tr>
+                  <tbody key={key}>
+                    <tr >
                       <td>
                         <Image
                           src="/images/product/product-01.png"

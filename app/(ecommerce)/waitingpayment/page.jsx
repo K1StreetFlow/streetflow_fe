@@ -6,7 +6,7 @@ const WaitingPayments = () => {
 	return (
 		<>
 			<div className="container mx-auto px-4 max-h-screen">
-				<WaitingPayment />
+			<WaitingPayment id={1} />
 			</div>
 		</>
 	);
