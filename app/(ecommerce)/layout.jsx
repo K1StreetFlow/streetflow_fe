@@ -14,13 +14,13 @@ export default function RootLayout({ children }) {
   }, []);
 
   return (
-    <div className="bg-white">
+    <div className="bg-whiten bottom-0">
       {loading ? (
         <Loader />
       ) : (
-        <div className="flex h-screen overflow-hidden">
+        <div className="mt-auto">
           {/* <!-- ===== Content Area Start ===== --> */}
-          <div className=" flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+          <div className="mt-auto flex flex-1 flex-col overflow-y-auto overflow-x-hidden ">
             <Navbar />
             {/* <!-- ===== Main Content Start ===== --> */}
             <main>
@@ -28,11 +28,13 @@ export default function RootLayout({ children }) {
                 {children}
               </div>
             </main>
-            <Footer />
-
+            
+            <div className="relative bottom-0 w-full">
+              <Footer />
+            </div>
             {/* <!-- ===== Main Content End ===== --> */}
           </div>
-
+         
           {/* <!-- ===== Content Area End ===== --> */}
         </div>
       )}
