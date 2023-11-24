@@ -2,27 +2,17 @@ import { formatDates } from "@/app/utils/formatDate";
 import DetailOrder from "./detailOrder";
 
 async function getAllOrders() {
-	try {
-		const res = await fetch(`http://localhost:8000/api/shippings`, {
-			next: {
-				revalidate: 0,
-			},
-		});
-
-		if (!res.ok) {
-			throw new Error(`HTTP error! status: ${res.status}`);
-		}
-
-		return res.json();
-	} catch (error) {
-		console.error("Failed to fetch orders:", error);
-		// You can decide how to handle the error here, for example, return an empty array
-		return { data: [] };
-	}
+	const res = await fetch(`http://localhost:8000/api/shippings`, {
+		next: {
+			revalidate: 0,
+		},
+	});
+	return res.json();
 }
 
 const TableOrder = async () => {
 	const orders = await getAllOrders();
+	console.log(orders);
 
 	return (
 		<div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">

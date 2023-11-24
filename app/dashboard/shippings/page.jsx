@@ -5,7 +5,7 @@ const OrderList = () => {
 	return (
 		<>
 			<Breadcrumb pageName="Order List" />
-			<div className="flex flex-wrap">
+			<div className="">
 				<TableOrder />
 			</div>
 		</>
