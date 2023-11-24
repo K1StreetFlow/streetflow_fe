@@ -61,7 +61,7 @@ const WaitingPayment = ({ id }) => {
 							<div className="box-3 mb-4" key={key}>
 								<div className="flex justify-between mb-4 items-center">
 									<div className="inline-flex items-center text-sm">
-										<p className="mr-2">{formatDate(order.order_list.payment.createdAt)}</p>
+										<p className="mr-2">{formatDate(order.order_list.payment.date_payment)}</p>
 										<p
 											className={`inline-flex rounded-sm bg-opacity-10 py-1 px-3 text-sm font-medium mr-2 ${
 												order.order_list.status_order === "Unpaid"
@@ -102,7 +102,7 @@ const WaitingPayment = ({ id }) => {
 												</div>
 												<div className="border-line ml-20 pl-5 justify-start">
 													<p>Code Payment</p>
-													<p className="font-bold">{order.order_list.payment.code_payment}</p>
+													<p className="font-bold">{order.order_list.payment.va_number}</p>
 												</div>
 											</div>
 										))}
@@ -116,6 +116,7 @@ const WaitingPayment = ({ id }) => {
 									<button className="font-semibold" onClick={() => toggleModal(order.id)}>
 										Transaction Details
 									</button>
+									<button className="button-bayar">Cara Bayar</button>
 									{order.order_list.status_order === "Unpaid" && <button className="button-ulasan">Payment</button>}
 								</div>
 							</div>

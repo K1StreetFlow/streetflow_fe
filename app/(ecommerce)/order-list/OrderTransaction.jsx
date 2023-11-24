@@ -25,7 +25,7 @@ const OrderTransaction = () => {
 	useEffect(() => {
 		const fetchOrderById = async (id) => {
 			try {
-				const res = await fetch(`http://localhost:8000/api/shippings/${id}`, {
+				const res = await fetch(`http://localhost:8000/api/shippings/user/${id}`, {
 					next: {
 						revalidate: 0,
 					},
@@ -44,7 +44,7 @@ const OrderTransaction = () => {
 		};
 
 		// Ganti ID sesuai dengan kebutuhan
-		const orderId = 1;
+		const orderId = localStorage.getItem('orderId');
 		fetchOrderById(orderId);
 	}, []);
 

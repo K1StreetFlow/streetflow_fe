@@ -10,7 +10,7 @@
 	}
 }
 
-<<<<<<< HEAD
+
 @layer utilities {
 	/* Chrome, Safari and Opera */
 	.no-scrollbar::-webkit-scrollbar {
@@ -307,4 +307,28 @@ span.flatpickr-weekday,
 	border-radius: 6px;
 	background: var(--RN600, #e02954);
 	box-sizing: border-box;
+}
+
+
+.button-bayar {
+	display: inline-block;
+	padding: 0 16px;
+	height: 32px;
+	line-height: 32px;
+	border-radius: 4px;
+	font-size: 14px;
+	font-weight: 600;
+	text-align: center;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: all 0.3s ease 0s;
+	border: 1px solid var(--NN300, #bfc9d9);
+	color: black;
+	background-color: #fff;
+}
+
+.button-bayar:hover {
+	background-color: var(--NN100, #f5f7fa);
+	border-color: var(--NN300, #bfc9d9);
+	color: black;
 }
