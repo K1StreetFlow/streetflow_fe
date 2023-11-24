@@ -70,7 +70,7 @@ const DropdownUser = ({ user }) => {
         </span>
         <span className="h-12 w-12 object-contain rounded-full border overflow-hidden">
           <Image
-            src={`http://localhost:8000/${user.upload_photo.replace(
+            src={`http://localhost:8000/${user.upload_photo?.replace(
               "\\",
               "/"
             )}`}
