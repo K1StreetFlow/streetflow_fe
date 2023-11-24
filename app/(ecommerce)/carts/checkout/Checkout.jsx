@@ -254,16 +254,18 @@ export default function Checkout({ data }) {
                   <tbody>
                     <tr>
                       <td>
-                        <Image
-                          src="/images/product/product-01.png"
-                          width={200}
-                          height={200}
-                          className="w-20 rounded"
-                          alt="Thumbnail"
-                        />
+                        <Link href={`/product/detail/${cart.product.id}`}>
+                          <img
+                            src={`http://localhost:8000/api/photo_products/view/${cart.product.photo.photo_product}`}
+                            alt={cart.product.name_product}
+                            className="w-full h-auto rounded-md shadow-md transition-transform transform hover:scale-105"
+                          />
+                        </Link>
                       </td>
                       <td className="text-base text-black font-bold">
-                        {cart.product.name_product}
+                        <Link href={`/product/detail/${cart.product.id}`}>
+                          {cart.product.name_product}
+                        </Link>
                       </td>
                       <td className="text-center text-base text-black">
                         Rp {cart.product.price_product.toLocaleString("id-ID")}
