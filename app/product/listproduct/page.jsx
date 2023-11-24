@@ -274,11 +274,11 @@ const AllProduct = () => {
                   <label className="block text-base">
                     <input
                       type="checkbox"
-                      checked={selectedColors.includes("Gray")}
-                      onChange={() => handleColorChange("Gray")}
+                      checked={selectedColors.includes("Grey")}
+                      onChange={() => handleColorChange("Grey")}
                       className="mr-2 h-6 w-6"
                     />
-                    Gray
+                    Grey
                   </label>
                 </div>
 
