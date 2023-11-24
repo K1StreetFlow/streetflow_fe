@@ -40,7 +40,7 @@ const Carousel = () => {
     <Slider {...settings} className="border-none">
       <div className="border-none">
         <Image
-          src="/images/corosel/corosel1.png"
+          src="/images/corosel/carousel1.svg"
           alt="Slider Image 1"
           className="w-full h-auto rounded-xl object-cover border-none"
           width={1200} // Replace with the actual width of your image
@@ -49,7 +49,7 @@ const Carousel = () => {
       </div>
       <div className="border-none">
         <Image
-          src="/images/corosel/corosel2.png"
+          src="/images/corosel/carousel2.svg"
           alt="Slider Image 2"
           className="w-full h-auto rounded-xl object-cover border-none"
           width={1200} // Replace with the actual width of your image
