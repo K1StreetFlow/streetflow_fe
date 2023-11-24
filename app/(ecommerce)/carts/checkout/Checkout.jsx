@@ -1,27 +1,25 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import Image from "next/image";
 import generateOrderId from "@/app/utils/generateOrderId";
 import axios from "axios";
-import Link from "next/link";
 
 export default function Checkout({ data }) {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [token, setToken] = useState(null);
-  const [error, setError] = useState(null);
 
   const handleAddressChange = (event) => {
     const selectedId = parseInt(event.target.value);
     const address = data.user_customer.address.find(
       (addr) => addr.id === selectedId
     );
-    setError(null);
     setSelectedAddress(address);
   };
 
   async function handleCheckout() {
     if (!selectedAddress) {
-      return setError("Please select an address");
+      alert("Pilih alamat terlebih dahulu");
+      return;
     }
 
     const dataPayment = {
@@ -46,6 +44,10 @@ export default function Checkout({ data }) {
 
     console.log("Response", response.data);
 
+    if (response.data) {
+      localStorage.setItem("orderId", response.data.id);
+    }
+
     setToken(response.data.token);
   }
 
@@ -66,6 +68,10 @@ export default function Checkout({ data }) {
   }, []);
 
   useEffect(() => {
+    console.log(data.cart_id);
+  }, []);
+
+  useEffect(() => {
     if (token) {
       try {
         window.snap.pay(token, {
@@ -77,33 +83,41 @@ export default function Checkout({ data }) {
               },
             };
             const va_number = result.va_numbers[0].va_number || null;
-            const data = {
-              code_payment: result.order_id,
-              status_payment: "Success",
-              total_payment: parseInt(result.gross_amount),
-              date_payment: result.transaction_time,
-              method_payment: result.payment_type,
-              va_number,
-              va_type: result.va_numbers[0].bank,
-              pdf_url: result.pdf_url,
-              id_cart: 1,
-            };
 
             const response = await axios.post(
               "http://localhost:8000/api/payments",
-              data,
+              {
+                code_payment: result.order_id,
+                status_payment: "Success",
+                total_payment: parseInt(result.gross_amount),
+                date_payment: result.transaction_time,
+                method_payment: result.payment_type,
+                va_number,
+                va_type: result.va_numbers[0].bank,
+                pdf_url: result.pdf_url,
+                id_cart: data.cart_id,
+              },
               config
             );
 
             if (response.data) {
+              await axios.post(
+                "http://localhost:8000/api/order/create",
+                {
+                  id_payment: response.data.data.id,
+                  id_cart_details: data.cart_id,
+                  status_order: "Paid",
+                  id_address: selectedAddress.id,
+                },
+                config
+              );
               setToken("");
-              window.location.href = "/order-list";
+              window.location.href = "/order";
             } else {
               console.log("error");
             }
           },
           onPending: async (result) => {
-            console.log(result);
             const config = {
               headers: {
                 Accept: "application/json",
@@ -111,28 +125,36 @@ export default function Checkout({ data }) {
               },
             };
 
-            const data = {
-              code_payment: result.order_id,
-              status_payment: "Pending",
-              total_payment: parseInt(result.gross_amount),
-              date_payment: result.transaction_time,
-              method_payment: result.payment_type,
-              va_number: result.va_numbers[0].va_number
-                ? result.va_numbers[0].va_number
-                : null,
-              va_type: result.va_numbers[0].bank || null,
-              pdf_url: result.pdf_url,
-              id_cart: 1,
-            };
-
             const response = await axios.post(
               "http://localhost:8000/api/payments",
-              data,
+              {
+                code_payment: result.order_id,
+                status_payment: "Pending",
+                total_payment: parseInt(result.gross_amount),
+                date_payment: result.transaction_time,
+                method_payment: result.payment_type,
+                va_number: result.va_numbers[0].va_number
+                  ? result.va_numbers[0].va_number
+                  : null,
+                va_type: result.va_numbers[0].bank || null,
+                pdf_url: result.pdf_url,
+                id_cart: data.cart_id,
+              },
               config
             );
 
             if (response.data) {
               setToken("");
+              await axios.post(
+                "http://localhost:8000/api/order/create",
+                {
+                  id_payment: response.data.data.id,
+                  id_cart_details: data.cart_id,
+                  status_order: "Unpaid",
+                  id_address: selectedAddress.id,
+                },
+                config
+              );
               window.location.href = `/waiting-payment/${result.order_id}`;
             } else {
               console.log("error");
@@ -166,23 +188,7 @@ export default function Checkout({ data }) {
         <div className="mb-5">
           <h1 className="text-2xl font-bold text-black">Shipping Addresses</h1>
         </div>
-        {data.user_customer.address[0] ? (
-          ""
-        ) : (
-          <div>
-            <h1 className="text-lg text-error mt-10 mb-5">
-              You don't have any shipping address
-            </h1>
-            <Link href="/profile">
-              <button className="btn btn-error text-white">
-                Add Shipping Address
-              </button>
-            </Link>
-          </div>
-        )}
-        <div className="flex w-full flex-wrap">
-          {/* {cart.total_price ? Rp ${cart.total_price.toLocaleString("id-ID")} : 'Price not available'} */}
-
+        <div className="flex w-full flex-wrap ">
           {data.user_customer.address.map((address, key) => (
             <label key={key} className="mb-5">
               <input
@@ -251,21 +257,19 @@ export default function Checkout({ data }) {
                   </tr>
                 </thead>
                 {data.cart_detail?.map((cart, key) => (
-                  <tbody>
+                  <tbody key={key}>
                     <tr>
                       <td>
-                        <Link href={`/product/detail/${cart.product.id}`}>
-                          <img
-                            src={`http://localhost:8000/api/photo_products/view/${cart.product.photo.photo_product}`}
-                            alt={cart.product.name_product}
-                            className="w-full h-auto rounded-md shadow-md transition-transform transform hover:scale-105"
-                          />
-                        </Link>
+                        <Image
+                          src="/images/product/product-01.png"
+                          width={200}
+                          height={200}
+                          className="w-20 rounded"
+                          alt="Thumbnail"
+                        />
                       </td>
                       <td className="text-base text-black font-bold">
-                        <Link href={`/product/detail/${cart.product.id}`}>
-                          {cart.product.name_product}
-                        </Link>
+                        {cart.product.name_product}
                       </td>
                       <td className="text-center text-base text-black">
                         Rp {cart.product.price_product.toLocaleString("id-ID")}
@@ -298,25 +302,6 @@ export default function Checkout({ data }) {
             <div className="text-2xl font-bold text-black">
               Rp {data.grand_price.toLocaleString("id-ID")}
             </div>
-
-            {error && (
-              <div role="alert" className="alert alert-error mt-10">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="stroke-current shrink-0 h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span>{error}</span>
-              </div>
-            )}
 
             <button
               className="btn bg-[#3C50E0] hover:bg-[#2a379b] text-white mt-10 "
