@@ -5,9 +5,15 @@
 @tailwind utilities;
 
 @layer base {
+<<<<<<< HEAD
 	body {
 		@apply font-satoshi font-normal text-base text-body relative z-1;
 	}
+=======
+  body {
+    @apply font-satoshi font-normal text-base bg-whiten ;
+  }
+>>>>>>> b2ad19f4cf556edaf7d526862e4aef1debbe2805
 }
 
 

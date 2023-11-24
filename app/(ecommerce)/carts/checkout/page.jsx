@@ -1,7 +1,6 @@
 import React from "react";
 import { cookies } from "next/headers";
 import Checkout from "./Checkout";
-import axios from "axios";
 
 async function getAllCarts() {
   const cookieStore = cookies();

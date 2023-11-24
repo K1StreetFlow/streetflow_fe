@@ -12,6 +12,8 @@ export default function tableCartCustomer({ carts, token }) {
   const [cart, setCart] = useState(carts);
   const router = useRouter();
 
+  console.log(cart.cart_detail[0].product.photo.photo_product);
+
   useEffect(() => {
     if (!token) {
       router.push("/login");
@@ -93,19 +95,19 @@ export default function tableCartCustomer({ carts, token }) {
           {cart.cart_detail?.map((cart, key) => (
             <tr className="hover" key={key}>
               <td className="hidden pb-4 md:table-cell w-30">
-                <a href="#">
-                  <Image
-                    src="/images/product/product-01.png"
-                    width={200}
-                    height={200}
-                    className="w-20 rounded"
+                <Link href={`/product/detail/${cart.product.id}`}>
+                  <img
+                    src={`http://localhost:8000/api/photo_products/view/${cart.product.photo.photo_product}`}
                     alt={cart.product.name_product}
+                    className="w-full h-auto rounded-md shadow-md transition-transform transform hover:scale-105"
                   />
-                </a>
+                </Link>
               </td>
-              <td className="w-50">
-                <a href="#">
-                  <p className="mb-2 md:ml-4 ">{cart.product.name_product}</p>
+              <td className="w-100">
+                <Link href={`/product/detail/${cart.product.id}`}>
+                  <p className="mb-2 font-bold md:ml-4 ">
+                    {cart.product.name_product}
+                  </p>
 
                   <button
                     className="text-gray-700 md:ml-4"
@@ -113,7 +115,7 @@ export default function tableCartCustomer({ carts, token }) {
                   >
                     <small>(Remove item)</small>
                   </button>
-                </a>
+                </Link>
               </td>
               <td className="justify-center md:justify-end md:flex mt-6">
                 <div className="w-20 h-10">
@@ -148,7 +150,7 @@ export default function tableCartCustomer({ carts, token }) {
                 </span>
               </td>
               <td className="text-right">
-                <span className="text-sm lg:text-base font-medium">
+                <span className="text-sm lg:text-base font-bold">
                   Rp {cart.total_price.toLocaleString("id-ID")}
                 </span>
               </td>

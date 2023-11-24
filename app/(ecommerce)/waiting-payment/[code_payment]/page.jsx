@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-
+import SidebarCustomer from "@/components/Sidebar/SidebarCustomer";
 async function getPaymentById(code_payment) {
   const res = await fetch(
     `http://localhost:8000/api/payments/status-order/${code_payment}`,
@@ -29,31 +29,32 @@ const page = async ({ params }) => {
   const updatedStatus = await updatePayemnt(params.code_payment);
 
   return (
-    <div className="flex justify-center my-6">
-      <div className="flex flex-col w-full h-120 p-20 mt-20 text-gray-800 bg-white shadow-lg pin-r pin-y md:w-4/5 lg:w-4/5">
+    <div className="flex items-start mt-10">
+      <div className="w-1/5 ml-7 border-none rounded-lg pb-8 box text-[#212121]">
+					<SidebarCustomer />
+			</div>
+      <div className=" ml-5 box-2 mr-8 shadow-lg">
         <div>
-          <h1 className="text-4xl text-black font-bold mb-10 ">
-            Waiting Payment
-          </h1>
-          <hr />
+          <h3 className="font-bold ml-6 mb-5 text-xl text-[#212121]">Waiting Payment</h3>
         </div>
-        <div className="flex-1 mt-10">
+        <div className="flex">
           <div>
-            <div className="flex flex-col gap-7.5 py-3">
-              <div className="flex flex-row gap-5.5   ">
+            <div className="flex flex-col">
+              <div className="flex flex-row">
+              <hr />
                 <table className="table w-full mx-auto py-15">
                   <thead>
                     <tr>
-                      <th className="text-left text-xl font-bold text-black">
+                      <th className="text-left text-md font-bold text-black">
                         VA TYPE
                       </th>
-                      <th className="text-xl text-center font-bold text-black ">
+                      <th className="text-md text-center font-bold text-black ">
                         No. Virtual Account
                       </th>
-                      <th className="text-center text-xl font-bold text-black">
+                      <th className="text-center text-md font-bold text-black">
                         Status Payment
                       </th>
-                      <th className=" text-right text-xl font-bold text-black">
+                      <th className=" text-right text-md font-bold text-black">
                         Total Pembayaran
                       </th>
                     </tr>
@@ -61,13 +62,13 @@ const page = async ({ params }) => {
 
                   <tbody>
                     <tr>
-                      <td className="text-xl text-left text-black font-bold text uppercase ">
+                      <td className="text-md text-left text-black font-bold text uppercase ">
                         {data.va_type}
                       </td>
-                      <td className="text-center font-bold text-xl text-black">
+                      <td className="text-center font-bold text-md text-black">
                         {data.va_number}
                       </td>
-                      <td className="text-center font-bold text-xl text-black">
+                      <td className="text-center font-bold text-md text-black">
                         <p
                           className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-lg font-medium ${
                             data.status_payment === "Success"
