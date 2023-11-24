@@ -11,6 +11,7 @@ export default function Navbar() {
   const [showCartIcon, setShowCartIcon] = useState(true);
   const pathname = usePathname();
   const [userData, setUserData] = useState(null);
+  const [totalProduct, setTotalProduct] = useState(0);
 
   useEffect(() => {
     // Periksa apakah pengguna sedang berada di halaman checkout
@@ -25,28 +26,6 @@ export default function Navbar() {
     }
   }, [pathname]);
 
-  // const fetchToken = async () => {
-  //   try {
-  //     const response = await axios.get("http://localhost:8000/api/user/token", {
-  //       withCredentials: true,
-  //     });
-  //     const userData = response.data.decodedToken;
-
-  //     setUserData(userData);
-  //   } catch (error) {
-  //     console.error("Error fetching or decoding token:", error);
-  //   }
-  // };
-
-  // const updateToken = async () => {
-  //   await fetchToken();
-  // };
-
-  // useEffect(() => {
-  //   updateToken();
-  //   fetchToken();
-  // }, []);
-
   useEffect(() => {
     // Fungsi untuk mengambil data dari backend
     const fetchData = async () => {
@@ -58,6 +37,7 @@ export default function Navbar() {
           }
         );
         const result = response.data;
+        setTotalProduct(result.cart_detail.length);
         setCart(result);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -160,9 +140,9 @@ export default function Navbar() {
                   height={30}
                 />
               </Link>
-              {cart.total_product > 0 && (
+              {totalProduct > 0 && (
                 <span className="badge bg-[#3C50E0] py-2 text-white font-bold ">
-                  {cart.total_product}
+                  {totalProduct}
                 </span>
               )}
             </>

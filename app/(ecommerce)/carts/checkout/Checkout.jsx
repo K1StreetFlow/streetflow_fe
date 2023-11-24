@@ -3,23 +3,25 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import generateOrderId from "@/app/utils/generateOrderId";
 import axios from "axios";
+import Link from "next/link";
 
 export default function Checkout({ data }) {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [token, setToken] = useState(null);
+  const [error, setError] = useState(null);
 
   const handleAddressChange = (event) => {
     const selectedId = parseInt(event.target.value);
     const address = data.user_customer.address.find(
       (addr) => addr.id === selectedId
     );
+    setError(null);
     setSelectedAddress(address);
   };
 
   async function handleCheckout() {
     if (!selectedAddress) {
-      alert("Pilih alamat terlebih dahulu");
-      return;
+      return setError("Please select an address");
     }
 
     const dataPayment = {
@@ -164,7 +166,23 @@ export default function Checkout({ data }) {
         <div className="mb-5">
           <h1 className="text-2xl font-bold text-black">Shipping Addresses</h1>
         </div>
-        <div className="flex w-full flex-wrap ">
+        {data.user_customer.address[0] ? (
+          ""
+        ) : (
+          <div>
+            <h1 className="text-lg text-error mt-10 mb-5">
+              You don't have any shipping address
+            </h1>
+            <Link href="/profile">
+              <button className="btn btn-error text-white">
+                Add Shipping Address
+              </button>
+            </Link>
+          </div>
+        )}
+        <div className="flex w-full flex-wrap">
+          {/* {cart.total_price ? Rp ${cart.total_price.toLocaleString("id-ID")} : 'Price not available'} */}
+
           {data.user_customer.address.map((address, key) => (
             <label key={key} className="mb-5">
               <input
@@ -278,6 +296,25 @@ export default function Checkout({ data }) {
             <div className="text-2xl font-bold text-black">
               Rp {data.grand_price.toLocaleString("id-ID")}
             </div>
+
+            {error && (
+              <div role="alert" className="alert alert-error mt-10">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="stroke-current shrink-0 h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span>{error}</span>
+              </div>
+            )}
 
             <button
               className="btn bg-[#3C50E0] hover:bg-[#2a379b] text-white mt-10 "
