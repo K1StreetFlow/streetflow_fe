@@ -5,7 +5,7 @@ import Gambar from "/assets/img/profile.jpg";
 import "./style.css";
 import React, { useState, useEffect } from "react";
 import { formatDate } from "@/app/utils/formatDate";
-import SidebarOrder from "@/components/Order/SidebarOrder";
+import SidebarCustomer from "@/components/Sidebar/SidebarCustomer";
 import ModalDetailTransaksi from "@/components/Order/ModalDetailTransaksi";
 
 async function getAllOrders() {
@@ -48,12 +48,12 @@ const OrderTransaction = () => {
 		<>
 			<div className="flex items-start mt-10">
 				<div className="w-1/5 border-none rounded-lg pb-8 box text-[#212121]">
-					<SidebarOrder />
+					<SidebarCustomer />
 				</div>
 				<div className="w-4/5 mb-5 text-[#212121]">
 					<h3 className="font-bold ml-6 mb-5 text-xl">Transaction List</h3>
-					<div className="box-2">
-						<div className="flex mb-4 items-center">
+					<div>
+						<div className="box-2 flex mb-4 items-center">
 							<div className="mr-4">
 								<p className="font-semibold">Status</p>
 							</div>
