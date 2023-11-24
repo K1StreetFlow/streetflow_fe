@@ -68,11 +68,22 @@ const SignUp = () => {
         }
       );
 
-      const result = await axios.post("http://localhost:8000/api/carts", {
-        id_users_customer: response.data.id,
-      });
+      const result = await axios.post(
+        "http://localhost:8000/api/carts",
+        {
+          id_users_customer: response.data.id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
-      router.push("/auth/user/login");
+      console.log(result.data.data);
+      if (result.data.data) {
+        router.push("/auth/user/login");
+      }
+
+      // router.push("/auth/user/login");
       // Optionally, you can redirect the user or perform other actions upon successful registration
     } catch (error) {
       console.error("Error during registration:", error);
