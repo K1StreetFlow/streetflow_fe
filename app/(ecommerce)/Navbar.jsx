@@ -1,16 +1,17 @@
 import Image from "next/image";
-import React from "react";
+import React, { use } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import DropdownUser from "./DropdownUser";
 
 export default function Navbar() {
   const [cart, setCart] = useState({});
   const [showCartIcon, setShowCartIcon] = useState(true);
-
   const pathname = usePathname();
-
-  // const router = useRouter();
+  const [userData, setUserData] = useState(null);
+  const [totalProduct, setTotalProduct] = useState(0);
 
   useEffect(() => {
     // Periksa apakah pengguna sedang berada di halaman checkout
@@ -29,12 +30,14 @@ export default function Navbar() {
     // Fungsi untuk mengambil data dari backend
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/carts/2", {
-          next: {
-            revalidate: 0,
-          },
-        });
-        const result = await response.json();
+        const response = await axios.get(
+          "http://localhost:8000/api/carts/user/cart/",
+          {
+            withCredentials: true,
+          }
+        );
+        const result = response.data;
+        setTotalProduct(result.cart_detail.length);
         setCart(result);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -42,7 +45,29 @@ export default function Navbar() {
     };
 
     fetchData();
-    const interval = setInterval(fetchData, 2000);
+    const interval = setInterval(fetchData, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    // Fungsi untuk mengambil data dari backend
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/user/profile/user",
+          {
+            withCredentials: true,
+          }
+        );
+        const result = response.data;
+        setUserData(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+    const interval = setInterval(fetchData, 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -71,13 +96,13 @@ export default function Navbar() {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li className="text-black font-bold">
-              <a>Home</a>
+              <a href="/">Home</a>
             </li>
             <li>
-              <a>About</a>
+              <a href="/about">About</a>
             </li>
             <li>
-              <a>Store</a>
+              <a href="/product">Store</a>
             </li>
           </ul>
         </div>
@@ -94,13 +119,13 @@ export default function Navbar() {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a>Home</a>
+            <a href="/">Home</a>
           </li>
           <li>
-            <a href="#">About</a>
+            <a href="/about">About</a>
           </li>
           <li>
-            <a>Store</a>
+            <a href="/product">Store</a>
           </li>
         </ul>
       </div>
@@ -115,13 +140,21 @@ export default function Navbar() {
                   height={30}
                 />
               </Link>
-              <span className="badge bg-[#3C50E0] py-2 text-white font-bold ">
-                {cart.total_product}
-              </span>
+              {totalProduct > 0 && (
+                <span className="badge bg-[#3C50E0] py-2 text-white font-bold ">
+                  {totalProduct}
+                </span>
+              )}
             </>
           )}
         </div>
-        <a className="btn">Login</a>
+        {userData ? (
+          <DropdownUser user={userData} />
+        ) : (
+          // <a className="btn">Logout</a>
+
+          <a className="btn">Login</a>
+        )}
       </div>
     </div>
   );

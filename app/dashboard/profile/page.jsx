@@ -6,11 +6,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-export const metadata = {
-  title: "Profile Page | Next.js E-commerce Dashboard",
-  description: "This is Profile page for TailAdmin Next.js",
-  // other metadata
-};
+// export const metadata = {
+//   title: "Profile Page | Next.js E-commerce Dashboard",
+//   description: "This is Profile page for TailAdmin Next.js",
+//   // other metadata
+// };
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);

@@ -1,17 +1,22 @@
 import React from "react";
+import { cookies } from "next/headers";
 import Checkout from "./Checkout";
 
-async function getCartById(id) {
-  const res = await fetch(`http://localhost:8000/api/carts/${id}`);
-  return res.json();
-}
-
 async function getAllCarts() {
-  const res = await fetch("http://localhost:8000/api/carts/2", {
-    next: {
-      revalidate: 0,
+  const cookieStore = cookies();
+  const token = cookieStore.get("tokenCustomer");
+
+  const res = await fetch("http://localhost:8000/api/carts/user/cart", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      accept: "application/json",
+      cookie: `tokenCustomer=${token.value}`,
     },
+
+    credentials: "include",
   });
+
   return res.json();
 }
 

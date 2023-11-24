@@ -1,13 +1,19 @@
-import FormPayment from "./formPayment";
+import "../../satoshi.css";
+import "../../globals.css";
+import OrderTransaction from "./OrderTransaction";
 
-export default function page() {
-  return (
-    <div className="flex justify-center my-6">
-      <div className="flex flex-col w-full p-8 text-gray-800 bg-white shadow-lg pin-r pin-y md:w-4/5 lg:w-4/5">
-        <div className="flex-1 justify-center">
-          <FormPayment />
-        </div>
-      </div>
-    </div>
-  );
-}
+export const metadata = {
+	title: "Order | Streetflow",
+};
+
+const DetailTrasanksi = () => {
+	return (
+		<>
+			<div className="container mx-auto px-4">
+				<OrderTransaction />
+			</div>
+		</>
+	);
+};
+
+export default DetailTrasanksi;
