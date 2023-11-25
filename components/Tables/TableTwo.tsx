@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { FaTrash, FaEdit, FaPlus } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
-import { deletePhotoProduct, editPhotoProduct, getAllPhotoProducts, getPhotoProductById, uploadPhoto } from '@/app/dashboard/products/api/PhotoApi';
+import { deletePhotoProduct, editPhotoProduct, getAllPhotoProducts,  uploadPhoto } from '@/app/dashboard/products/api/PhotoApi';
 import { getAllProducts, deleteProduct, addProduct, editProduct } from '@/app/dashboard/products/api/ProductApi';
 import AddProductModal from '@/components/Product/FormCrudProduct/TambahProductForm';
 import EditProductModal from '@/components/Product/FormCrudProduct/EditProductForm';
