@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 
 const API_BASE_URL = "http://localhost:8000/api";
 
-export const getAllProducts = async (): Promise<AxiosResponse> => {
+export const getAllPhotoProducts = async (): Promise<AxiosResponse> => {
   return await axios.get(`${API_BASE_URL}/photo_products`, { withCredentials: true });
 };
 
@@ -10,7 +10,7 @@ export const getProductById = async (id: number): Promise<AxiosResponse> => {
   return await axios.get(`${API_BASE_URL}/photo_products/${id}`, { withCredentials: true });
 };
 
-export const editProduct = async (id: number, data: any, photo?: File): Promise<AxiosResponse> => {
+export const editPhotoProduct = async (id: number, data: any, photo?: File): Promise<AxiosResponse> => {
   const formData = new FormData();
   if (photo) {
     formData.append("photo_product", photo);
@@ -26,7 +26,7 @@ export const editProduct = async (id: number, data: any, photo?: File): Promise<
   });
 };
 
-export const deleteProduct = async (id: number): Promise<AxiosResponse> => {
+export const deletePhotoProduct = async (id: number): Promise<AxiosResponse> => {
   return await axios.delete(`${API_BASE_URL}/photo_products/${id}`, { withCredentials: true });
 };
 

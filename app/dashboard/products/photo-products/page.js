@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { FaUpload, FaTrash, FaEdit, FaEye } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { getAllProducts, uploadPhoto, deleteProduct, editProduct } from "../api/PhotoApi";
+import { getAllPhotoProducts, uploadPhoto, deletePhotoProduct, editPhotoProduct } from "../api/PhotoApi";
 
 const PhotoProduct = () => {
   const [photoProducts, setPhotoProducts] = useState([]);
