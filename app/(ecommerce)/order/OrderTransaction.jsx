@@ -14,10 +14,11 @@ function getImageUrl(filename) {
 
 const OrderTransaction = ({ orderdata, token }) => {
 	const router = useRouter();
-	const [orders, setOrders] = useState(orderdata);
+	const [orders, setOrders] = useState([]);
 	const [selectedStatus, setSelectedStatus] = useState("All");
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [currentModalId, setCurrentModalId] = useState(null);
+	let hasShownUnpaidBox = false;
 
 	const toggleModal = (id) => {
 		setCurrentModalId(id);
@@ -63,6 +64,8 @@ const OrderTransaction = ({ orderdata, token }) => {
 		: [];
 
 	const ordersArray = Array.isArray(filteredOrders) ? filteredOrders : [filteredOrders];
+
+	const unpaidOrdersCount = ordersArray.filter((order) => order.status_order === "Unpaid").length;
 
 	return (
 		<>
@@ -129,52 +132,53 @@ const OrderTransaction = ({ orderdata, token }) => {
 							</div>
 						</div>
 						{ordersArray.map((order, key) => {
-							if (order.status_order === "Unpaid") {
+							if (order.status_order === "Unpaid" && !hasShownUnpaidBox) {
+								hasShownUnpaidBox = true;
 								return (
 									<div className="box-payment rounded-sm mb-4" key={key}>
-										<Link href="/waitingpayment">
+										<Link href="/waiting-payment">
 											<div className="flex justify-between items-center">
 												<p className="font-normal">Waiting for payment</p>
-												<p className="text-sm number-payment">{order.cart.cart_detail.length}</p>
+												<p className="text-sm number-payment">{unpaidOrdersCount}</p>
 											</div>
 										</Link>
 									</div>
 								);
 							} else if (
-								order.order_list.status_order === "Paid" ||
-								order.order_list.status_order === "Delivered" ||
-								order.order_list.status_order === "Packaged" ||
-								order.order_list.status_order === "Completed" ||
-								order.order_list.status_order === "Canceled"
+								order.status_order === "Paid" ||
+								order.status_order === "Delivered" ||
+								order.status_order === "Packaged" ||
+								order.status_order === "Completed" ||
+								order.status_order === "Canceled"
 							) {
 								return (
 									<div className="box-3 mb-4" key={key}>
 										<div className="flex justify-between mb-4 items-center">
 											<div className="inline-flex items-center text-sm">
-												<p className="mr-2">{formatDate(order.order_list.payment.createdAt)}</p>
+												<p className="mr-2">{formatDate(order.payment.createdAt)}</p>
 												<p
 													className={`inline-flex rounded-sm bg-opacity-10 py-1 px-3 text-sm font-medium mr-2 ${
-														order.order_list.status_order === "Paid"
+														order.status_order === "Paid"
 															? "text-primary bg-primary"
-															: order.order_list.status_order === "Delivered"
+															: order.status_order === "Delivered"
 															? "text-[#F3B664] bg-[#F1EB90]"
-															: order.order_list.status_order === "Completed"
+															: order.status_order === "Completed"
 															? "text-success bg-success"
-															: order.order_list.status_order === "Packaged"
+															: order.status_order === "Packaged"
 															? "text-warning bg-warning"
-															: order.order_list.status_order === "Unpaid"
+															: order.status_order === "Unpaid"
 															? "text-danger bg-danger"
 															: "text-secondary bg-secondary"
 													}`}
 												>
-													{order.order_list.status_order}
+													{order.status_order}
 												</p>
-												<p className="mr-2 text-form-strokedark">{order.order_list.code_order}</p>
+												<p className="mr-2 text-form-strokedark">{order.code_order}</p>
 											</div>
 										</div>
 										<div className="flex">
 											<div className="item-content">
-												{order.order_list.cart.cart_detail.slice(0, 1).map((detail) => (
+												{order.cart.cart_detail.slice(0, 1).map((detail) => (
 													<div className="flex" key={detail.id}>
 														<Image
 															src={getImageUrl(detail.product.photo.photo_product)}
@@ -189,12 +193,12 @@ const OrderTransaction = ({ orderdata, token }) => {
 																{detail.quantity} x Rp
 																{detail.product.price_product.toLocaleString("id-ID")}
 															</p>
-															{order.order_list.cart.cart_detail.length > 1 && (
+															{order.cart.cart_detail.length > 1 && (
 																<a
 																	className="text-sm text-form-strokedark cursor-pointer hover:font-semibold"
 																	onClick={() => toggleModal(order.id)}
 																>
-																	+{order.order_list.cart.cart_detail.length - 1} produk lainnya
+																	+{order.cart.cart_detail.length - 1} produk lainnya
 																</a>
 															)}
 														</div>
@@ -203,17 +207,15 @@ const OrderTransaction = ({ orderdata, token }) => {
 											</div>
 											<div className="border-line pl-5 justify-start items-center w-46">
 												<p className="text-form-strokedark">Total Shopping</p>
-												<p className="font-bold">Rp{order.order_list.payment.total_payment.toLocaleString("id-ID")}</p>
+												<p className="font-bold">Rp{order.payment.total_payment.toLocaleString("id-ID")}</p>
 											</div>
 										</div>
 										<div className="flex justify-end items-center mt-7 gap-4">
 											<button className="font-semibold" onClick={() => toggleModal(order.id)}>
 												Transaction Details
 											</button>
-											{order.order_list.status_order === "Completed" && (
-												<button className="button-ulasan">Review</button>
-											)}
-											{order.order_list.status_order === "Unpaid" && <button className="button-ulasan">Payment</button>}
+											{order.status_order === "Completed" && <button className="button-ulasan">Review</button>}
+											{order.status_order === "Unpaid" && <button className="button-ulasan">Payment</button>}
 										</div>
 									</div>
 								);
