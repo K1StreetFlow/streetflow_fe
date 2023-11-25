@@ -5,11 +5,10 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply font-satoshi font-normal text-base bg-whiten ;
-  }
+	body {
+		@apply font-satoshi font-normal text-base bg-white;
+	}
 }
-
 
 @layer utilities {
 	/* Chrome, Safari and Opera */
@@ -198,6 +197,14 @@ span.flatpickr-weekday,
 	border: 1px solid rgb(224, 224, 224);
 }
 
+.line-bottom {
+	border-bottom: 1px solid var(--NN300, #bfc9d9);
+}
+
+.line-top {
+	border-top: 1px solid var(--NN300, #bfc9d9);
+}
+
 .box-3 {
 	display: block;
 	position: relative;
@@ -308,7 +315,6 @@ span.flatpickr-weekday,
 	background: var(--RN600, #e02954);
 	box-sizing: border-box;
 }
-
 
 .button-bayar {
 	display: inline-block;

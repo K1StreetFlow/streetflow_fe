@@ -87,7 +87,7 @@ const TableReviewProducts = async () => {
                                 </td>
                                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                                     <h5 className="font-medium text-black dark:text-white">
-                                        {review.users_customer.fullname}
+                                        {review.user_customer.fullname}
                                     </h5>
                                 </td>
                                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

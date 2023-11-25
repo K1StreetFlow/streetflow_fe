@@ -59,6 +59,8 @@ const Address = ({ userData }) => {
     fetchAddresses();
   }, [userData]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {}, [addresses]);
+
   return (
     <>
       <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-4 mt-4">
@@ -66,8 +68,7 @@ const Address = ({ userData }) => {
 
         <div className="text-left mt-4">
           {" "}
-          {/* Mengganti text-center menjadi text-left */}
-          {userData && userData.addresses && (
+          {userData && userData.address && (
             <div>
               {addresses.map((address) => (
                 <div key={address.id} className="mb-4 p-4 border rounded-md">

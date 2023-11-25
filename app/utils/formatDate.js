@@ -1,5 +1,5 @@
 export const formatDate = (isodate) => {
-	const date = new Date(isodate);
+  const date = new Date(isodate);
 
 	// Daftar nama bulan dalam bahasa Indonesia
 	const monthNames = [
@@ -47,4 +47,3 @@ export const formatDates = (isodate) => {
 
 	return formattedDates;
 };
-

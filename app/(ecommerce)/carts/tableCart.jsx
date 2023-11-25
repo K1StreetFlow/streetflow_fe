@@ -12,7 +12,7 @@ export default function tableCartCustomer({ carts, token }) {
 	const [cart, setCart] = useState(carts);
 	const router = useRouter();
 
-	// console.log(cart.cart_detail[0].product.photo.photo_product);
+	console.log(cart.cart_detail[0].product.photo.photo_product);
 
 	useEffect(() => {
 		if (!token) {
@@ -88,11 +88,11 @@ export default function tableCartCustomer({ carts, token }) {
 						<tr className="hover" key={key}>
 							<td className="hidden pb-4 md:table-cell w-30">
 								<Link href={`/product/detail/${cart.product.id}`}>
-									{/* <img
+									<img
                     src={`http://localhost:8000/api/photo_products/view/${cart.product.photo.photo_product}`}
                     alt={cart.product.name_product}
                     className="w-full h-auto rounded-md shadow-md transition-transform transform hover:scale-105"
-                  /> */}
+                  />
 								</Link>
 							</td>
 							<td className="w-100">

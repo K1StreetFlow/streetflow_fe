@@ -164,7 +164,7 @@ const ProductList = () => {
       </div>
       {showScrollButton && (
         <div
-          className="fixed bottom-8 right-8 bg-primary p-3 rounded-full text-white cursor-pointer hover:bg-primary-dark transition"
+          className="fixed bottom-8 z-30 right-8 bg-primary p-3 rounded-full text-white cursor-pointer hover:bg-primary-dark transition"
           onClick={scrollToTop}
         >
           <FaChevronUp size="2em" />

@@ -9,7 +9,7 @@ const SidebarCustomer = () => {
 				<Image src={Gambar} alt="profile" width={48} height={48} className="rounded-lg mr-2"></Image>
 				<p className="justify-between font-semibold ">Nama</p>
 			</div>
-			<div className="flex flex-col px-3 py-4 box-1 w-full justify-between relative">
+			<div className="flex flex-col px-3 py-4 line-top w-full justify-between relative">
 				<p className="font-bold items-center pb-2">Transaction</p>
 				<div className="flex flex-col w-full">
 					<a href="/waiting-payment" className="pl-4 py-1 cursor-pointer border-none rounded-sm font-normal hover:bg-meta-9">
@@ -28,7 +28,7 @@ const SidebarCustomer = () => {
 					</a>
 				</div>
 			</div>
-			<div className="flex flex-col px-3 py-4 box-1 w-full justify-between relative">
+			<div className="flex flex-col px-3 line-bottom py-4 w-full justify-between relative">
 				<p className="font-bold items-center pb-2">My Settings</p>
 				<div className="flex flex-col w-full">
 					<a href="/profile" className="pl-4 py-1 cursor-pointer border-none rounded-sm font-normal hover:bg-meta-9">

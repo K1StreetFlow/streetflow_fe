@@ -1,8 +1,8 @@
-
+import Streetflow from "@/app/(ecommerce)/StreetflowPage"
 export default function Home() {
 	return (
 		<div>
-			<p>Home Page</p>
+			<Streetflow />
 		</div>
 	);
 }

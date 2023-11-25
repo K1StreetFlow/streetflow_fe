@@ -1,17 +1,13 @@
 "use client";
-import "../../globals.css";
-import "../../data-tables-css.css";
-import "../../satoshi.css";
+import "@/app/globals.css";
+import "@/app/satoshi.css";
 import React, { useState, useEffect } from "react";
-import { FaSearch } from "react-icons/fa";
-import ProductCard from "@/components/Product/CardProduct/ProductCard";
-import { getAllProducts } from "@/app/dashboard/products/api/ProductApi";
+import { FaSearch, FaChevronUp } from "react-icons/fa";
 import { useSpring, animated } from "react-spring";
+import Image from "next/image";
+import ProductCard from "@/components/Product/CardProduct/ProductCard";
 import HeroImage from "@/components/Product/CardProduct/HeroImage";
-import Image from 'next/image';
-import {
-  FaChevronUp,
-} from "react-icons/fa";
+import { getAllProducts } from "@/app/dashboard/products/api/ProductApi";
 
 const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -46,6 +42,145 @@ const SearchBar = ({ onSearch }) => {
   );
 };
 
+const Sidebar = ({
+  handleCategoryChange,
+  handleColorChange,
+  handleSizeChange,
+  selectedCategories,
+  selectedColors,
+  selectedSizes,
+}) => {
+  const [isOpen, setIsOpen] = useState(true);
+
+  const sidebarAnimation = useSpring({
+    width: isOpen ? 300 : 0,
+    opacity: isOpen ? 1 : 0,
+    from: { width: 0, opacity: 0 },
+  });
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
+  return (
+    <animated.div
+      style={sidebarAnimation}
+      className="w-full md:w-1/4 p-4 md:mb-0"
+    >
+      <button
+        className="text-2xl font-semibold mb-4 md:hidden"
+        onClick={toggleSidebar}
+      >
+        {isOpen ? "Tutup" : "Buka"} Sidebar
+      </button>
+      <div className="shadow-lg w-full h-auto p-10 mt-6">
+        <h2 className="text-4xl text-black-2 font-semibold mb-4">Category</h2>
+        <div className="mb-4 text-black-2">
+          <h3 className="text-lg font-semibold mb-2">Clothing Items</h3>
+          <label className="block text-base">
+            <input
+              type="checkbox"
+              checked={selectedCategories.includes("baju")}
+              onChange={() => handleCategoryChange("baju")}
+              className="mr-2 h-6 w-6"
+            />
+            Baju
+          </label>
+          <label className="block text-base">
+            <input
+              type="checkbox"
+              checked={selectedCategories.includes("celana")}
+              onChange={() => handleCategoryChange("celana")}
+              className="mr-2 h-6 w-6"
+            />
+            Celana
+          </label>
+          <label className="block text-base">
+            <input
+              type="checkbox"
+              checked={selectedCategories.includes("jaket")}
+              onChange={() => handleCategoryChange("jaket")}
+              className="mr-2 h-6 w-6"
+            />
+            Jaket
+          </label>
+        </div>
+
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold mb-2">Colors</h3>
+          <label className="block text-base">
+            <input
+              type="checkbox"
+              checked={selectedColors.includes("Blue")}
+              onChange={() => handleColorChange("Blue")}
+              className="mr-2 h-6 w-6"
+            />
+            Blue
+          </label>
+          <label className="block text-base">
+            <input
+              type="checkbox"
+              checked={selectedColors.includes("Black")}
+              onChange={() => handleColorChange("Black")}
+              className="mr-2 h-6 w-6"
+            />
+            Black
+          </label>
+          <label className="block text-base">
+            <input
+              type="checkbox"
+              checked={selectedColors.includes("Grey")}
+              onChange={() => handleColorChange("Grey")}
+              className="mr-2 h-6 w-6"
+            />
+            Grey
+          </label>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-2">Sizes</h3>
+          <label className="block text-base">
+            <input
+              type="checkbox"
+              checked={selectedSizes.includes("L")}
+              onChange={() => handleSizeChange("L")}
+              className="mr-2 h-6 w-6"
+            />
+            L
+          </label>
+          <label className="block text-base">
+            <input
+              type="checkbox"
+              checked={selectedSizes.includes("S")}
+              onChange={() => handleSizeChange("S")}
+              className="mr-2 h-6 w-6"
+            />
+            S
+          </label>
+          <label className="block text-base">
+            <input
+              type="checkbox"
+              checked={selectedSizes.includes("M")}
+              onChange={() => handleSizeChange("M")}
+              className="mr-2 h-6 w-6"
+            />
+            M
+          </label>
+          <label className="block text-base">
+            <input
+              type="checkbox"
+              checked={selectedSizes.includes("XL")}
+              onChange={() => handleSizeChange("XL")}
+              className="mr-2 h-6 w-6"
+            />
+            XL
+          </label>
+        </div>
+      </div>
+    </animated.div>
+  );
+};
+
 const AllProduct = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState([]);
@@ -59,20 +194,32 @@ const AllProduct = () => {
     from: { opacity: 0, translateY: 200 },
     config: { duration: 900 },
   });
+  const [showSidebar, setShowSidebar] = useState(false);
+  const sidebarAnimation = useSpring({
+    transform: showSidebar ? "translateX(0%)" : "translateX(100%)",
+  });
+  useEffect(() => {
+    document.body.style.overflow = showSidebar ? "hidden" : "auto";
+  }, [showSidebar]);
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+  };
+
   const renderNoProductsMessage = () => {
     if (currentProducts.length === 0 && !loading) {
-      return  <Image
-      src="/images/product/9170826.jpg"
-      alt="Slider Image 1"
-      className=" mx-auto rounded-xl bg-transparent"
-      width={500} // Replace with the actual width of your image
-      height={100} // Replace with the actual height of your image
-    />;
+      return (
+        <Image
+          src="/images/product/9170826.jpg"
+          alt="Slider Image 1"
+          className=" mx-auto rounded-xl bg-transparent"
+          width={500} // Replace with the actual width of your image
+          height={100} // Replace with the actual height of your image
+        />
+      );
     }
     return null;
   };
 
-  // State for filtering
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState([]);
@@ -91,18 +238,16 @@ const AllProduct = () => {
 
     fetchData();
     const handleScroll = () => {
-      // Jika posisi scroll lebih besar dari 200px, tampilkan tombol; sebaliknya sembunyikan
       setShowScrollButton(window.scrollY > 200);
     };
 
-    // Menambahkan event listener untuk mendeteksi scroll
     window.addEventListener("scroll", handleScroll);
 
-    // Membersihkan event listener ketika komponen dilepas
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -110,28 +255,23 @@ const AllProduct = () => {
     });
   };
 
-  // Handle category change
   const handleCategoryChange = (category) => {
     toggleSelected("categories", category);
   };
 
-  // Handle color change
   const handleColorChange = (color) => {
     toggleSelected("colors", color);
   };
 
-  // Handle size change
   const handleSizeChange = (size) => {
     toggleSelected("sizes", size);
   };
 
-  // Handle search
   const handleSearch = (term) => {
     setCurrentPage(1);
     setSearchTerm(term);
   };
 
-  // Toggle selected items
   const toggleSelected = (type, item) => {
     switch (type) {
       case "categories":
@@ -154,7 +294,6 @@ const AllProduct = () => {
     }
   };
 
-  // Filter products based on selected criteria and search term
   const filteredProducts = products.filter((product) => {
     const categoryMatch =
       selectedCategories.length === 0 ||
@@ -175,7 +314,6 @@ const AllProduct = () => {
     return categoryMatch && colorMatch && sizeMatch && searchMatch;
   });
 
-  // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentProducts = filteredProducts.slice(
@@ -184,7 +322,6 @@ const AllProduct = () => {
   );
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
-  // Render pagination buttons
   const renderPaginationButtons = () => {
     const buttons = [];
     for (let i = 1; i <= totalPages; i++) {
@@ -211,120 +348,16 @@ const AllProduct = () => {
           <div className="mt-4">
             <SearchBar onSearch={handleSearch} />
           </div>
-          <div className="flex flex-wrap items-center justify-between mb-4">
-            <div className="w-full md:w-1/4 p-4 md:mb-0">
-              <div className="shadow-lg w-full h-auto p-10 mt-6">
-                <h2 className="text-4xl text-black-2 font-semibold mb-4">
-                  Category
-                </h2>
-
-                {/* Categories */}
-                <div className="mb-4 text-black-2">
-                  <h3 className="text-lg font-semibold mb-2">Clothing Items</h3>
-                  <label className="block text-base">
-                    <input
-                      type="checkbox"
-                      checked={selectedCategories.includes("baju")}
-                      onChange={() => handleCategoryChange("baju")}
-                      className="mr-2 h-6 w-6"
-                    />
-                    Baju
-                  </label>
-                  <label className="block text-base">
-                    <input
-                      type="checkbox"
-                      checked={selectedCategories.includes("celana")}
-                      onChange={() => handleCategoryChange("celana")}
-                      className="mr-2 h-6 w-6"
-                    />
-                    Celana
-                  </label>
-                  <label className="block text-base">
-                    <input
-                      type="checkbox"
-                      checked={selectedCategories.includes("jaket")}
-                      onChange={() => handleCategoryChange("jaket")}
-                      className="mr-2 h-6 w-6"
-                    />
-                    Jaket
-                  </label>
-                </div>
-
-                {/* Colors */}
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold mb-2">Colors</h3>
-                  <label className="block text-base">
-                    <input
-                      type="checkbox"
-                      checked={selectedColors.includes("Blue")}
-                      onChange={() => handleColorChange("Blue")}
-                      className="mr-2 h-6 w-6"
-                    />
-                    Blue
-                  </label>
-                  <label className="block text-base">
-                    <input
-                      type="checkbox"
-                      checked={selectedColors.includes("Black")}
-                      onChange={() => handleColorChange("Black")}
-                      className="mr-2 h-6 w-6"
-                    />
-                    Black
-                  </label>
-                  <label className="block text-base">
-                    <input
-                      type="checkbox"
-                      checked={selectedColors.includes("Grey")}
-                      onChange={() => handleColorChange("Grey")}
-                      className="mr-2 h-6 w-6"
-                    />
-                    Grey
-                  </label>
-                </div>
-
-                {/* Sizes */}
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Sizes</h3>
-                  <label className="block text-base">
-                    <input
-                      type="checkbox"
-                      checked={selectedSizes.includes("L")}
-                      onChange={() => handleSizeChange("L")}
-                      className="mr-2 h-6 w-6"
-                    />
-                    L
-                  </label>
-                  <label className="block text-base">
-                    <input
-                      type="checkbox"
-                      checked={selectedSizes.includes("S")}
-                      onChange={() => handleSizeChange("S")}
-                      className="mr-2 h-6 w-6"
-                    />
-                    S
-                  </label>
-                  <label className="block text-base">
-                    <input
-                      type="checkbox"
-                      checked={selectedSizes.includes("M")}
-                      onChange={() => handleSizeChange("M")}
-                      className="mr-2 h-6 w-6"
-                    />
-                    M
-                  </label>
-                  <label className="block text-base">
-                    <input
-                      type="checkbox"
-                      checked={selectedSizes.includes("XL")}
-                      onChange={() => handleSizeChange("XL")}
-                      className="mr-2 h-6 w-6"
-                    />
-                    XL
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div className="w-full mx-auto">
+          <div className="flex  flex-wrap items-start justify-between mb-4">
+            <Sidebar
+              handleCategoryChange={handleCategoryChange}
+              handleColorChange={handleColorChange}
+              handleSizeChange={handleSizeChange}
+              selectedCategories={selectedCategories}
+              selectedColors={selectedColors}
+              selectedSizes={selectedSizes}
+            />
+            <div className="w-full md:w-3/4 mx-auto">
               <div className="max-w-280 mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {currentProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
@@ -340,12 +373,12 @@ const AllProduct = () => {
       </animated.div>
       {showScrollButton && (
         <div
-          className="fixed bottom-8 right-8 bg-primary p-3 rounded-full text-white cursor-pointer hover:bg-primary-dark transition"
+          className="fixed bottom-8 z-50 right-8 bg-primary p-3 rounded-full text-white cursor-pointer hover:bg-primary-dark transition"
           onClick={scrollToTop}
         >
           <FaChevronUp size="2em" />
         </div>
-      )};
+      )}
     </>
   );
 };

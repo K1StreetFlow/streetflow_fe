@@ -91,11 +91,11 @@ const EditUserForm = ({ userId, onCancel, onEditSuccess }) => {
   };
 
   return (
-    <div className="inset-0 z-50 overflow-hidden flex items-center justify-center">
-      <div className="fixed inset-0 bg-black bg-opacity-50" style={{ zIndex: 50, pointerEvents: "none" }}></div>
-      <div className="z-50 flex items-center justify-center">
-        <div className="bg-white p-4 rounded-md w-full max-w-3xl" style={{ pointerEvents: "auto" }}>
-          <div className={`modal ${showModal ? "block" : "hidden"}`}>
+    <div className="fixed inset-0 z-50 overflow-hidden flex items-center justify-center">
+      <div className="fixed inset-0 bg-black bg-opacity-50" onClick={() => setShowModal(false)}></div>
+      <div className="z-50 flex items-center justify-center" style={{ display: showModal ? "block" : "none" }}>
+        <div className="bg-white p-4 rounded-md w-full max-w-3xl">
+          <div className="modal">
             <div className="modal-overlay" onClick={() => setShowModal(false)}></div>
             <div className="modal-container">
               <div className="modal-body">

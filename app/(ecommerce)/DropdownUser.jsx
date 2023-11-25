@@ -55,7 +55,7 @@ const DropdownUser = ({ user }) => {
   });
 
   return (
-    <div className="relative">
+    <div className="relative z-10">
       <Link
         ref={trigger}
         onClick={() => setDropdownOpen(!dropdownOpen)}

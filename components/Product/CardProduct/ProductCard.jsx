@@ -25,7 +25,7 @@ const ProductCard = ({ product }) => {
           </div>
         </Link>
         <p className="text-meta-1 text-xs">
-          RP.{product.price_product} 
+          RP.{product.price_product.toLocaleString("id-ID")} 
         </p>
         <p className="text-xs"> Stock: {product.stock_product}</p>
       </div>

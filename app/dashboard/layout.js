@@ -8,9 +8,25 @@ import Loader from "@/components/common/Loader";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+
 export default function RootLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    // Dapatkan token role dari cookie
+    const tokenRole = Cookies.get("role");
+
+    // Jika tidak ada token, redirect ke halaman login
+    if (!tokenRole) {
+      // Redirect ke halaman login
+      router.push("/auth/admin/login");
+    }
+  }, [router]);
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
@@ -34,7 +50,9 @@ export default function RootLayout({ children }) {
 
             {/* <!-- ===== Main Content Start ===== --> */}
             <main>
-              <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">{children}</div>
+              <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+                {children}
+              </div>
             </main>
             {/* <!-- ===== Main Content End ===== --> */}
           </div>

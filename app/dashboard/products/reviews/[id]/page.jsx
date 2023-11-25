@@ -83,7 +83,7 @@ const ReviewProducts = async ({ params }) => {
                 Customer Name
               </label>
               <div className="relative">
-                <h3>{data.users_customer.fullname}</h3>
+                <h3>{data.user_customer.fullname}</h3>
               </div>
               <div className="h-5"></div>
               <label
