@@ -4,10 +4,10 @@ import { Dialog, Transition } from "@headlessui/react";
 import { FaUpload, FaTrash, FaEdit, FaEye } from "react-icons/fa";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import {
-  getAllProducts,
+  getAllPhotoProducts,
   uploadPhoto,
-  deleteProduct,
-  editProduct,
+  deletePhotoProduct,
+  editPhotoProduct,
 } from "../api/PhotoApi";
 
 const PhotoProduct = () => {
@@ -25,7 +25,7 @@ const PhotoProduct = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getAllProducts();
+        const response = await getAllPhotoProducts();
         setPhotoProducts(response.data);
       } catch (error) {
         console.error("Error fetching photo products:", error);
@@ -59,11 +59,11 @@ const PhotoProduct = () => {
     if (deletingProduct) {
       try {
         // Delete the product
-        await deleteProduct(deletingProduct);
+        await deletePhotoProduct(deletingProduct);
         console.log(`Product with ID ${deletingProduct} deleted successfully`);
 
         // Refresh the product list
-        const response = await getAllProducts();
+        const response = await getAllPhotoProducts();
         setPhotoProducts(response.data);
       } catch (error) {
         console.error(
@@ -106,7 +106,7 @@ const PhotoProduct = () => {
       }
 
       // Refresh the product list
-      const response = await getAllProducts();
+      const response = await getAllPhotoProducts();
       setPhotoProducts(response.data);
 
       // Close the modal
@@ -123,7 +123,7 @@ const PhotoProduct = () => {
     try {
       if (updatedProduct) {
         // If there's an edited product, perform the edit
-        await editProduct(updatedProduct.id, updatedProduct, photo);
+        await editPhotoProduct(updatedProduct.id, updatedProduct, photo);
         console.log("Product edited successfully");
       }
     } catch (error) {

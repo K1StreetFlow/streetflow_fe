@@ -1,25 +1,32 @@
 import Image from "next/image";
 import { FaTrash, FaEdit, FaPlus } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
+import { deletePhotoProduct, editPhotoProduct, getAllPhotoProducts, getPhotoProductById, uploadPhoto } from '@/app/dashboard/products/api/PhotoApi';
 import { getAllProducts, deleteProduct, addProduct, editProduct } from '@/app/dashboard/products/api/ProductApi';
 import AddProductModal from '@/components/Product/FormCrudProduct/TambahProductForm';
 import EditProductModal from '@/components/Product/FormCrudProduct/EditProductForm';
-import DeleteConfirmationModal from '@/components/Product/FormCrudProduct/DeleteConfirmationModal'; // Import modal konfirmasi penghapusan
+import DeleteConfirmationModal from '@/components/Product/FormCrudProduct/DeleteConfirmationModal';
 
 const TableTwo: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any | null>(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // State untuk menampilkan modal konfirmasi penghapusan
-  const [deleteProductId, setDeleteProductId] = useState<number | null>(null); // ID produk yang akan dihapus
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteProductId, setDeleteProductId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const response = await getAllProducts();
         setProducts(response.data);
       } catch (error) {
+        setError('Error fetching data');
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -27,53 +34,88 @@ const TableTwo: React.FC = () => {
   }, []);
 
   const handleDeleteProduct = (id: number) => {
-    // Menampilkan modal konfirmasi penghapusan
     setDeleteProductId(id);
     setShowDeleteModal(true);
   };
 
   const confirmDelete = async () => {
     try {
+      setLoading(true);
       if (deleteProductId) {
         await deleteProduct(deleteProductId);
-        const updatedProducts = await getAllProducts();
-        setProducts(updatedProducts.data);
+        // Memperbarui daftar produk setelah penghapusan tanpa mengambil data dari server
+        setProducts((prevProducts) => prevProducts.filter(product => product.id !== deleteProductId));
       }
     } catch (error) {
+      setError('Error deleting product');
       console.error('Error deleting product:', error);
     } finally {
-      // Menutup modal konfirmasi penghapusan setelah operasi selesai
+      setLoading(false);
       setShowDeleteModal(false);
     }
   };
-
-  const handleAddProduct = async (newProduct: any) => {
+  const handleAddProduct = async (newProduct: any, photo: File) => {
     try {
-      await addProduct(newProduct);
+      setLoading(true);
+      // Upload foto dan dapatkan ID foto produk
+      const photoResponse = await uploadPhoto(photo);
+      const photoId = photoResponse.data.id; // Gantilah 'id' dengan properti yang sesuai
+
+      // Tambahkan ID foto produk ke data produk baru
+      const productData = { ...newProduct, id_photo_product: photoId };
+
+      // Tambahkan produk baru ke API
+      await addProduct(productData);
+
+      // Ambil produk terbaru setelah penambahan
       const updatedProducts = await getAllProducts();
       setProducts(updatedProducts.data);
+
+      // Sembunyikan modal setelah menambah produk
       setShowAddModal(false);
     } catch (error) {
+      setError('Error adding product');
       console.error('Error adding product:', error);
+    } finally {
+      setLoading(false);
     }
   };
-
+  const handleUpdateProduct = async (updatedProduct: any, photo: File | undefined) => {
+    try {
+      let photoUrl = updatedProduct.photo; // Menggunakan URL foto yang sudah ada sebagai default
+  
+      // Jika ada file foto baru, unggah foto dan dapatkan URL baru
+      if (photo) {
+        const photoId = updatedProduct.id_photo_product || 0; // ID foto yang sudah ada atau default 0 jika tidak ada
+        await editPhotoProduct(photoId, {}, photo);
+  
+        // Sesuaikan ini berdasarkan struktur respons API Anda
+        photoUrl = `http://localhost:8000/api/photo_products/${photoId}`;
+      }
+  
+      // Membuat data yang akan dikirim ke API, termasuk URL foto baru
+      const editedProductData = { ...updatedProduct, photo: photoUrl };
+  
+      // Pastikan Anda memiliki ID produk yang akan diubah
+      const productId = updatedProduct.id;
+  
+      // Memanggil fungsi editProduct dengan data yang telah diperbarui
+      await editProduct(productId, editedProductData);
+  
+      // Memperbarui daftar produk setelah mengedit produk
+      const updatedProducts = await getAllProducts();
+      setProducts(updatedProducts.data);
+      setEditingProduct(null);
+    } catch (error) {
+      console.error('Error updating product:', error);
+      // Menangani error jika diperlukan
+    }
+  };
+  
   const handleEditProduct = (product: any) => {
     setEditingProduct(product);
   };
-
-  const handleUpdateProduct = async (updatedProduct: any, data:any) => {
-    try {
-      if (editingProduct) {
-        await editProduct(updatedProduct,data);
-        const updatedProducts = await getAllProducts();
-        setProducts(updatedProducts.data);
-        setEditingProduct(null);
-      }
-    } catch (error) {
-      console.error('Error updating product:', error);
-    }
-  };
+  
 
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark p-4 md:p-6 xl:p-7.5">
@@ -105,6 +147,7 @@ const TableTwo: React.FC = () => {
           productId={editingProduct.id}
           onClose={() => setEditingProduct(null)}
           onEditProduct={handleUpdateProduct}
+          photoUrl={editingProduct.photoUrl}  // Pastikan Anda menyediakan URL foto untuk produk yang diedit
         />
       )}
 
@@ -137,6 +180,9 @@ const TableTwo: React.FC = () => {
           <p className="font-medium">Actions</p>
         </div>
       </div>
+
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error}</p>}
 
       {products.map((product, key) => (
         <div
@@ -198,13 +244,13 @@ const TableTwo: React.FC = () => {
               Edit
             </button>
             <button
-              className="text-sm text-danger-500 dark:text-danger-300 cursor-pointer"
+              className="text-sm text-red-500 dark:text-red-300 cursor-pointer"
               onClick={() => handleDeleteProduct(product.id)}
             >
               <FaTrash />
               Delete
             </button>
-             {/* Modal konfirmasi penghapusan */}
+            {/* Modal konfirmasi penghapusan */}
             {showDeleteModal && product.id === deleteProductId && (
               <DeleteConfirmationModal
                 isOpen={showDeleteModal}
