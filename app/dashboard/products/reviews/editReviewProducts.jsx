@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 'use client'
 
 import { useState } from "react";
@@ -7,7 +8,7 @@ import Image from "next/image";
 
 export default function editReviewProducts({ users, products, order_list, review }) {
     const [modal, setModal] = useState(false);
-    const [user, setUser] = useState(review.users_customer.fullname);
+    const [user, setUser] = useState(review.user_customer.fullname);
     const [product, setProduct] = useState(review.products.name_product);
     const [orderlist, setOrderlist] = useState(review.order_list.code_order);
     const [messageReview, setMessageReview] = useState(review.message_review);
@@ -94,14 +95,14 @@ export default function editReviewProducts({ users, products, order_list, review
                         <h3 className="font-bold text-lg">Edit Review Products</h3>
                         <form onSubmit={handleUpdate}>
                             <div className="form-control">
-                                <label htmlFor="users_customer" className="label font-bold">
+                                <label htmlFor="user_customer" className="label font-bold">
                                     Customer Name
                                 </label>
                                 <input 
                                     type="text"
                                     className="input w-full input-bordered"
                                     placeholder="Customer Name"
-                                    value={review.users_customer.fullname}
+                                    value={review.user_customer.fullname}
                                     onChange={(e) => setUser(e.target.value)} 
                                 />
                             </div>

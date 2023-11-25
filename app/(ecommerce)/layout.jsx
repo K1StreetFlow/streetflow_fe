@@ -7,14 +7,14 @@ import Navbar from "@/app/(ecommerce)/Navbar";
 import Footer from "@/app/(ecommerce)/Footer";
 
 export default function RootLayout({ children }) {
-  const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
-  }, []);
+	useEffect(() => {
+		setTimeout(() => setLoading(false), 1000);
+	}, []);
 
   return (
-    <div className="bg-whiten bottom-0">
+    <div className="bg-white bottom-0">
       {loading ? (
         <Loader />
       ) : (
@@ -23,8 +23,8 @@ export default function RootLayout({ children }) {
           <div className="mt-auto flex flex-1 flex-col overflow-y-auto overflow-x-hidden ">
             <Navbar />
             {/* <!-- ===== Main Content Start ===== --> */}
-            <main>
-              <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+            <main >
+              <div className="mx-auto mt-19 max-w-screen-2xl p-4 md:p-6 2xl:p-10">
                 {children}
               </div>
             </main>
