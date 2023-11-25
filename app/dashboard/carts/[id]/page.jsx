@@ -20,10 +20,7 @@ const Details = async ({ params }) => {
         <div className="flex flex-col gap-7.5">
           <div className="flex flex-row gap-5.5 ">
             <div className="w-full sm:w-1/2">
-              <label
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                htmlFor="fullName"
-              >
+              <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="fullName">
                 Full Name
               </label>
               <div className="relative">
@@ -32,20 +29,14 @@ const Details = async ({ params }) => {
             </div>
 
             <div className="w-full sm:w-1/2">
-              <label
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                htmlFor="email"
-              >
+              <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="email">
                 Username
               </label>
 
               <h3>{data.user_customer.username}</h3>
             </div>
             <div className="w-full sm:w-1/2">
-              <label
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                htmlFor="phoneNumber"
-              >
+              <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="phoneNumber">
                 Phone Number
               </label>
 
@@ -54,10 +45,7 @@ const Details = async ({ params }) => {
           </div>
           <div className="flex flex-col gap-5.5 sm:flex-row">
             <div className="w-[32%]">
-              <label
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                htmlFor="fullName"
-              >
+              <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="fullName">
                 Gender
               </label>
               <div className="relative">
@@ -65,10 +53,7 @@ const Details = async ({ params }) => {
               </div>
             </div>
             <div className="w-110">
-              <label
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                htmlFor="fullName"
-              >
+              <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="fullName">
                 Email
               </label>
               <div className="relative">
@@ -78,11 +63,9 @@ const Details = async ({ params }) => {
           </div>
         </div>
         <hr className="mt-10" />
-        <h2 className=" mt-10 font-bold text-xl bg-slate-950 text-primary">
-          Product Detail
-        </h2>
+        <h2 className=" mt-10 font-bold text-xl bg-slate-950 text-primary">Product Detail</h2>
         {data.cart_detail?.map((cart, key) => (
-          <div>
+          <div key={key}>
             <div className="flex flex-col gap-7.5 py-10">
               <div className="font-bold bg-slate-800">
                 <h3>Product {count++}</h3>
@@ -90,10 +73,7 @@ const Details = async ({ params }) => {
               </div>
               <div className="flex flex-row gap-5.5 ">
                 <div className="w-full sm:w-1/2">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="productName"
-                  >
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="productName">
                     Product Name
                   </label>
                   <div className="relative">
@@ -102,20 +82,14 @@ const Details = async ({ params }) => {
                 </div>
 
                 <div className="w-full sm:w-1/2">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="category"
-                  >
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="category">
                     Category
                   </label>
 
                   <h3>{cart.product.id_category_product}</h3>
                 </div>
                 <div className="w-full sm:w-1/2">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="priceProduct"
-                  >
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="priceProduct">
                     Price Product
                   </label>
 
@@ -124,10 +98,7 @@ const Details = async ({ params }) => {
               </div>
               <div className="flex flex-col gap-5.5 sm:flex-row">
                 <div className="w-[32%]">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="quantity"
-                  >
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="quantity">
                     Quantity
                   </label>
                   <div className="relative">
@@ -135,10 +106,7 @@ const Details = async ({ params }) => {
                   </div>
                 </div>
                 <div className="w-1/3">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="totalPrice"
-                  >
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="totalPrice">
                     Total Price
                   </label>
                   <div className="relative">
@@ -146,10 +114,7 @@ const Details = async ({ params }) => {
                   </div>
                 </div>
                 <div className="w-1/3">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="totalPrice"
-                  >
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="totalPrice">
                     Photo Product
                   </label>
                   <div className="relative">
