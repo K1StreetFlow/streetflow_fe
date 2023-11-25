@@ -23,18 +23,21 @@ export default function tableCartCustomer({ carts, token }) {
     // Fungsi untuk mengambil data dari backend
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/carts/user/cart/", {
-          next: {
-            revalidate: 0,
-          },
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-            cookie: `tokenCustomer=${token}`,
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "http://localhost:8000/api/carts/user/cart/",
+          {
+            next: {
+              revalidate: 0,
+            },
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              accept: "application/json",
+              cookie: `tokenCustomer=${token}`,
+            },
+            credentials: "include",
+          }
+        );
         const result = await response.json();
         setCartDetail(result.cart_detail);
         setCart(result);
@@ -64,9 +67,12 @@ export default function tableCartCustomer({ carts, token }) {
 
   const handleDeleteCart = async (cartItemId) => {
     try {
-      await axios.delete(`http://localhost:8000/api/cart-details/${cartItemId}`, {
-        withCredentials: true,
-      });
+      await axios.delete(
+        `http://localhost:8000/api/cart-details/${cartItemId}`,
+        {
+          withCredentials: true,
+        }
+      );
     } catch (error) {
       console.error("Failed to delete cart:", error);
     }
@@ -105,9 +111,14 @@ export default function tableCartCustomer({ carts, token }) {
               </td>
               <td className="w-100">
                 <Link href={`/product/detail/${cart.product.id}`}>
-                  <p className="mb-2 font-bold md:ml-4 ">{cart.product.name_product}</p>
+                  <p className="mb-2 font-bold md:ml-4 ">
+                    {cart.product.name_product}
+                  </p>
 
-                  <button className="text-gray-700 md:ml-4" onClick={() => handleDeleteCart(cart.id)}>
+                  <button
+                    className="text-gray-700 md:ml-4"
+                    onClick={() => handleDeleteCart(cart.id)}
+                  >
                     <small>(Remove item)</small>
                   </button>
                 </Link>
@@ -116,11 +127,23 @@ export default function tableCartCustomer({ carts, token }) {
                 <div className="w-20 h-10">
                   <div className="relative flex flex-row w-full h-8">
                     <div className="join">
-                      <button onClick={() => updateQuantity(cart.id, cart.quantity - 1)} disabled={cart.quantity <= 1} className="btn btn-sm rounded-full  join-item">
+                      <button
+                        onClick={() =>
+                          updateQuantity(cart.id, cart.quantity - 1)
+                        }
+                        disabled={cart.quantity <= 1}
+                        className="btn btn-sm rounded-full  join-item"
+                      >
                         -
                       </button>
                       <span className="mx-5">{cart.quantity}</span>
-                      <button onClick={() => updateQuantity(cart.id, cart.quantity + 1)} disabled={cart.quantity >= cart.product.stock_product} className="btn btn-sm rounded-full  join-item">
+                      <button
+                        onClick={() =>
+                          updateQuantity(cart.id, cart.quantity + 1)
+                        }
+                        disabled={cart.quantity >= cart.product.stock_product}
+                        className="btn btn-sm rounded-full  join-item"
+                      >
                         +
                       </button>
                     </div>
@@ -128,10 +151,16 @@ export default function tableCartCustomer({ carts, token }) {
                 </div>
               </td>
               <td className="text-right">
-                <span className="text-sm lg:text-base font-medium">Rp {cart.product.price_product.toLocaleString("id-ID")}</span>
+                <span className="text-sm lg:text-base font-medium">
+                  Rp {cart.product.price_product.toLocaleString("id-ID")}
+                </span>
               </td>
               <td className="text-right">
-                <span className="text-sm lg:text-base font-bold">{cart.total_price !== null ? `Rp ${cart.total_price.toLocaleString("id-ID")}` : "Price not available"}</span>
+                <span className="text-sm lg:text-base font-bold">
+                  {cart.total_price !== null
+                    ? `Rp ${cart.total_price.toLocaleString("id-ID")}`
+                    : "Price not available"}
+                </span>
               </td>
             </tr>
           ))}
@@ -141,12 +170,19 @@ export default function tableCartCustomer({ carts, token }) {
       <div className="flex justify-end">
         <div className="flex flex-col me-10">
           <div className="font-bold">Total Price</div>
-          <div className="font-bold text-xl text-[#3C50E0] ">Rp {cart.grand_price.toLocaleString("id-ID")}</div>
+          <div className="font-bold text-xl text-[#3C50E0] ">
+            Rp {cart.grand_price.toLocaleString("id-ID")}
+          </div>
         </div>
 
         <Link href={"carts/checkout"}>
           <button className="btn bg-[#3C50E0] hover:bg-[#2b399f]  text-white">
-            <Image src={"/images/icon/shop-cart-bold-white.svg"} width={20} height={20} alt={"Checkout"} />
+            <Image
+              src={"/images/icon/shop-cart-bold-white.svg"}
+              width={20}
+              height={20}
+              alt={"Checkout"}
+            />
             Checkout
           </button>
         </Link>
