@@ -6,6 +6,7 @@ import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import EditAdminForm from "./EditAdminForm";
 import Image from "next/image";
+import EditUserAdmin from "./EditUserAdmin";
 
 const Home = ({ admins }) => {
   const [adminData, setAdminData] = useState(admins);
@@ -67,7 +68,13 @@ const Home = ({ admins }) => {
   return (
     <>
       {/* ini modals edit */}
-      {editAdminId && <EditAdminForm adminId={editAdminId} onCancel={() => setEditAdminId(null)} onEditSuccess={handleEditSuccess} />}
+      {/* {editAdminId && (
+        <EditAdminForm
+          adminId={editAdminId}
+          onCancel={() => setEditAdminId(null)}
+          onEditSuccess={handleEditSuccess}
+        />
+      )} */}
       <Breadcrumb pageName="User Administrators" />
       <div className="rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark md:p-6 xl:p-9">
         <div className="flex flex-col gap-7.5">
@@ -78,31 +85,60 @@ const Home = ({ admins }) => {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50 text-center">
                   <tr className="mx-auto">
-                    <th className="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                    <th className="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                    <th className="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                    <th className="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Photo</th>
-                    <th className="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <th className="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      ID
+                    </th>
+                    <th className="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Username
+                    </th>
+                    <th className="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Email
+                    </th>
+                    <th className="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Photo
+                    </th>
+                    <th className="py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-gray-50 divide-y divide-gray-200">
                   {(adminData ?? []).map((admin) => (
                     <tr key={admin.id} className="transition-all duration-200">
-                      <td className="text-center py-4 whitespace-nowrap">{admin.id}</td>
-                      <td className="text-center py-4 whitespace-nowrap">{admin.username}</td>
-                      <td className="text-center py-4 whitespace-nowrap">{admin.email}</td>
+                      <td className="text-center py-4 whitespace-nowrap">
+                        {admin.id}
+                      </td>
+                      <td className="text-center py-4 whitespace-nowrap">
+                        {admin.username}
+                      </td>
+                      <td className="text-center py-4 whitespace-nowrap">
+                        {admin.email}
+                      </td>
                       <td className="text-center py-4 whitespace-nowrap">
                         {admin.upload_photo && (
                           <div className="flex items-center justify-center">
-                            <Image src={`http://localhost:8000/${admin.upload_photo.replace("\\", "/")}`} alt="User Profile" width={50} height={50} />
+                            <Image
+                              src={`http://localhost:8000/${admin.upload_photo.replace(
+                                "\\",
+                                "/"
+                              )}`}
+                              alt="User Profile"
+                              width={50}
+                              height={50}
+                            />
                           </div>
                         )}
                       </td>
                       <td className="text-center py-4 flex items-center justify-center gap-4">
-                        <button onClick={() => handleEditClick(admin.id)} className="bg-warning text-white px-2 py-1 rounded transition-all duration-300">
-                          Edit
-                        </button>
-                        <button onClick={() => setDeleteConfirmation(admin.id)} className="bg-danger text-white px-2 py-1 rounded transition-all duration-300">
+                        <EditUserAdmin
+                          adminId={admin.id}
+                          onCancel={() => setEditUserId(null)}
+                          onEditSuccess={handleEditSuccess}
+                        />
+                        <button
+                          onClick={() => setDeleteConfirmation(admin.id)}
+                          className="bg-danger text-white px-2 py-1 rounded transition-all duration-300"
+                        >
                           Delete
                         </button>
                       </td>
@@ -112,7 +148,9 @@ const Home = ({ admins }) => {
               </table>
             )}
             <Link href="/dashboard/users/user-administrators/create-admin">
-              <button className="bg-primary hover:bg-green-700 text-white px-4 py-2 mt-4 rounded">Create Admin</button>
+              <button className="bg-primary hover:bg-green-700 text-white px-4 py-2 mt-4 rounded">
+                Create Admin
+              </button>
             </Link>
           </div>
         </div>
@@ -123,12 +161,20 @@ const Home = ({ admins }) => {
           <div className="fixed inset-0 bg-black bg-opacity-50"></div>
           <div className="z-50 flex items-center justify-center">
             <div className="bg-white p-4 rounded-md w-full max-w-md">
-              <p className="text-center">Are you sure you want to delete this admin?</p>
+              <p className="text-center">
+                Are you sure you want to delete this admin?
+              </p>
               <div className="flex justify-center mt-4">
-                <button className="bg-danger text-white px-4 py-2 rounded-md mr-2 focus:outline-none focus:ring focus:border-blue-300" onClick={() => handleDeleteAdmin(deleteConfirmation)}>
+                <button
+                  className="bg-danger text-white px-4 py-2 rounded-md mr-2 focus:outline-none focus:ring focus:border-blue-300"
+                  onClick={() => handleDeleteAdmin(deleteConfirmation)}
+                >
                   Yes
                 </button>
-                <button className="bg-primary text-white px-4 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300" onClick={() => setDeleteConfirmation(null)}>
+                <button
+                  className="bg-primary text-white px-4 py-2 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                  onClick={() => setDeleteConfirmation(null)}
+                >
                   No
                 </button>
               </div>
