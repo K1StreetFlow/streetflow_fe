@@ -14,8 +14,6 @@ export default function tableCartCustomer({ carts, token }) {
 
   // console.log(cart.cart_detail[0].product.photo.photo_product);
 
-  console.log(cart);
-
   useEffect(() => {
     if (!token) {
       router.push("/login");
