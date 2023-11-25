@@ -129,6 +129,21 @@ export default function Checkout({ data }) {
               },
             };
 
+            const va_number = result.hasOwnProperty("va_number")
+              ? result.va_number[0].va_number
+              : null;
+
+            const va_type = result.hasOwnProperty("va_number")
+              ? result.va_number[0].bank
+              : null;
+
+            const pdf_url = result.hasOwnProperty("pdf_url")
+              ? result.pdf_url
+              : null;
+
+            console.log("va_number", va_number);
+            console.log("va_type", va_type);
+
             const response = await axios.post(
               "http://localhost:8000/api/payments",
               {
@@ -137,11 +152,13 @@ export default function Checkout({ data }) {
                 total_payment: parseInt(result.gross_amount),
                 date_payment: result.transaction_time,
                 method_payment: result.payment_type,
-                va_number: result.va_numbers[0].va_number
-                  ? result.va_numbers[0].va_number
-                  : null,
-                va_type: result.va_numbers[0].bank || null,
-                pdf_url: result.pdf_url,
+                // va_number: result.va_numbers[0].va_number
+                //   ? result.va_numbers[0].va_number
+                //   : null,
+                // va_type: result.va_numbers[0].bank || null,
+                va_number,
+                va_type,
+                pdf_url,
                 id_cart: data.cart_id,
               },
               config
@@ -284,7 +301,7 @@ export default function Checkout({ data }) {
                     <th className="w-30 text-center text-lg font-bold text-black">
                       Quantity
                     </th>
-                    <th className="w-auto text-right text-lg font-bold text-black">
+                    <th className="w-80 text-right text-lg font-bold text-black">
                       Total Price
                     </th>
                   </tr>
@@ -310,7 +327,7 @@ export default function Checkout({ data }) {
                       <td className="text-center text-base text-black">
                         {cart.quantity}
                       </td>
-                      <td className="text-right text-base text-black">
+                      <td className="text-right text-base text-black ">
                         Rp {cart.total_price.toLocaleString("id-ID")}
                       </td>
                     </tr>
@@ -332,7 +349,7 @@ export default function Checkout({ data }) {
               Rp {data.grand_price.toLocaleString("id-ID")}
             </div>
             {/* <div className="mb-5">-</div> */}
-            <div className="text-2xl font-bold text-black">
+            <div className="text-2xl  font-bold text-[#3C50E0] ">
               Rp {data.grand_price.toLocaleString("id-ID")}
             </div>
 

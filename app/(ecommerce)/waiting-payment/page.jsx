@@ -97,9 +97,15 @@ const page = async () => {
                   >
                     Transaction Details
                   </button>
-                  <Link href={order.payment.pdf_url} targer="_blank">
-                    <button className="button-ulasan">Cara Bayar</button>
-                  </Link>
+                  {order.payment.pdf_url !== null ? (
+                    <Link href={order.payment.pdf_url} targer="_blank">
+                      <button className="button-ulasan">Cara Bayar</button>
+                    </Link>
+                  ) : (
+                    <button className="btn" disabled>
+                      Cara Bayar
+                    </button>
+                  )}
                 </div>
               </div>
             ))
