@@ -16,6 +16,7 @@ const ProductPage = ({ params }) => {
   const [quantity, setQuantity] = useState(1);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showModalLogin, setShowModalLogin] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
 
   const router = useRouter();
 
@@ -31,6 +32,11 @@ const ProductPage = ({ params }) => {
 
     fetchData();
   }, [id]);
+
+  const handleImageClick = () => {
+    setShowImageModal(true);
+  };
+
 
   const handleAddToCart = async () => {
     // if (!isLoggedIn) {
@@ -116,7 +122,7 @@ const ProductPage = ({ params }) => {
   return (
     <div className="container mx-auto my-8 grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-8">
       {/* Kolom 1: Gambar Produk */}
-      <div className="col-span-12 lg:col-span-4">
+      <div className="col-span-12 lg:col-span-4 hover:cursor-pointer"  onClick={handleImageClick} >
         <img
           src={`http://localhost:8000/api/photo_products/view/${product.photo.photo_product}`}
           alt={product.name_product}
@@ -134,7 +140,7 @@ const ProductPage = ({ params }) => {
             <FaShoppingCart className="text-gray-600 mr-2" />
             <p className="text-gray-600">Terjual 4</p>
           </div>
-          <div className="text-3xl lg:text-4xl text-black-2 font-bold mb-2">
+          <div className="text-3xl lg:text-4xl text-meta-1 font-bold mb-2">
             RP.{product.price_product.toLocaleString("id-ID")}
           </div>
           <div className="font-normal text-black text-sm lg:text-lg">
@@ -201,7 +207,30 @@ const ProductPage = ({ params }) => {
           </div>
         </div>
       </div>
+      {showImageModal && (
+        <div className="fixed inset-0 z-999999 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black opacity-90"></div>
+          <div className="relative z-10">
+            {/* Modal content */}
+            <div className="bg-white p-4 rounded-md shadow-md">
+              {/* Display detailed image */}
+              <img
+                src={`http://localhost:8000/api/photo_products/view/${product.photo.photo_product}`}
+                alt={product.name_product}
+                className="w-full h-full rounded-md"
+              />
 
+              {/* Close button */}
+              <button
+                onClick={() => setShowImageModal(false)}
+                className="mt-4 px-3 py-2 bg-primary text-white rounded-md"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Modal Login
       <LoginModal
         isOpen={showModalLogin}
