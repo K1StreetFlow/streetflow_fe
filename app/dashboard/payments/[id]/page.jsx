@@ -1,20 +1,56 @@
+// import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+// import { formatDate } from "@/app/utils/formatDate";
+
+// async function getPaymentById(id) {
+//   const res = await fetch(`http://localhost:8000/api/payments/${id}`, {
+//     credentials: "include",
+//     next: {
+//       revalidate: 0,
+//     },
+//   });
+//   return res.json();
+// }
+
+// const Payment = async ({ params }) => {
+//   const data = await getPaymentById(params.id);
+
+//   console.log("params.id:", params.id);
+//   console.log("API Response:", data);
+
+"use client";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { formatDate } from "@/app/utils/formatDate";
 
-async function getPaymentById(id) {
-  const res = await fetch(`http://localhost:8000/api/payments/${id}`, {
-    withCredentials: true,
-    next: {
-      revalidate: 0,
-    },
-  });
-  return res.json();
-}
+const Payment = ({ params }) => {
+  const [data, setData] = useState(null);
 
-const Payment = async ({ params }) => {
-  const { data } = await getPaymentById(params.id);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/payments/${params.id}`,
+          {
+            withCredentials: true,
+          }
+        );
+        setData(response.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-  console.log(data);
+    fetchData();
+  }, [params.id]); // Menerapkan useEffect setiap kali params.id berubah
+
+  console.log("params.id:", params.id);
+  console.log("API Response:", data);
+
+  if (!data) {
+    // Menampilkan indikator loading atau pesan bahwa data sedang dimuat
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
@@ -32,7 +68,7 @@ const Payment = async ({ params }) => {
                 Full Name
               </label>
               <div className="relative">
-                <h3>{data.cart.user_customer.fullname}</h3>
+                <h3>{data?.cart?.user_customer?.fullname || "N/A"}</h3>
               </div>
             </div>
 
@@ -44,7 +80,7 @@ const Payment = async ({ params }) => {
                 Username
               </label>
 
-              <h3>{data.cart.user_customer.username}</h3>
+              <h3>{data?.cart?.user_customer?.username || "N/A"}</h3>
             </div>
             <div className="w-full sm:w-1/2">
               <label
@@ -54,7 +90,7 @@ const Payment = async ({ params }) => {
                 Phone Number
               </label>
 
-              <h3>{data.cart.user_customer.phone_number}</h3>
+              <h3>{data?.cart?.user_customer?.phone_number || "N/A"}</h3>
             </div>
           </div>
           <div className="flex flex-col gap-5.5 sm:flex-row">
@@ -66,7 +102,7 @@ const Payment = async ({ params }) => {
                 Gender
               </label>
               <div className="relative">
-                <h3>{data.cart.user_customer.gender}</h3>
+                <h3>{data?.cart?.user_customer?.gender || "N/A"}</h3>
               </div>
             </div>
             <div className="w-110">
@@ -77,7 +113,7 @@ const Payment = async ({ params }) => {
                 Email
               </label>
               <div className="relative">
-                <h3>{data.cart.user_customer.email}</h3>
+                <h3>{data?.cart?.user_customer?.email || "N/A"}</h3>
               </div>
             </div>
           </div>
@@ -94,7 +130,7 @@ const Payment = async ({ params }) => {
                 Payment Method
               </label>
               <div className="relative">
-                <h3>{data.method_payment}</h3>
+                <h3>{data?.method_payment || "N/A"}</h3>
               </div>
             </div>
 
@@ -106,7 +142,7 @@ const Payment = async ({ params }) => {
                 Total Payment
               </label>
 
-              <h3>Rp {data.total_payment}</h3>
+              <h3>Rp {data?.total_payment || "N/A"}</h3>
             </div>
             <div className="w-full sm:w-1/2">
               <label
@@ -116,7 +152,7 @@ const Payment = async ({ params }) => {
                 Total Payment
               </label>
 
-              <h3>Rp {data.total_payment}</h3>
+              <h3>Rp {data?.total_payment || "N/A"}</h3>
             </div>
             <div className="w-full sm:w-1/2">
               <label
@@ -128,14 +164,14 @@ const Payment = async ({ params }) => {
 
               <p
                 className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                  data.status_payment === "Success"
+                  data?.status_payment === "Success"
                     ? "text-success bg-success"
-                    : data.status_payment === "Failed"
+                    : data?.status_payment === "Failed"
                     ? "text-danger bg-danger"
                     : "text-warning bg-warning"
                 }`}
               >
-                {data.status_payment}
+                {data?.status_payment || "N/A"}
               </p>
             </div>
           </div>
@@ -148,7 +184,7 @@ const Payment = async ({ params }) => {
                 Date Payment
               </label>
               <div className="relative">
-                <h3>{formatDate(data.date_payment)}</h3>
+                <h3>{formatDate(data?.date_payment || "N/A")}</h3>
               </div>
             </div>
             <div className="w-1/3">
@@ -159,7 +195,7 @@ const Payment = async ({ params }) => {
                 Code Payment
               </label>
               <div className="relative">
-                <h3>{data.code_payment}</h3>
+                <h3>{data?.code_payment || "N/A"}</h3>
               </div>
             </div>
             <div className="w-1/3">
@@ -170,7 +206,7 @@ const Payment = async ({ params }) => {
                 Virtual Account Type
               </label>
               <div className="relative">
-                <h3>{data.va_type ? data.va_type : "-"}</h3>
+                <h3>{data?.va_type || "N/A"}</h3>
               </div>
             </div>
             <div className="w-1/3">
@@ -181,7 +217,7 @@ const Payment = async ({ params }) => {
                 Virtual Account
               </label>
               <div className="relative">
-                <h3>{data.va_number ? data.va_number : "-"}</h3>
+                <h3>{data?.va_number || "N/A"}</h3>
               </div>
             </div>
           </div>

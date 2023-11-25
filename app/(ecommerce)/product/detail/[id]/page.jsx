@@ -17,6 +17,8 @@ const ProductPage = ({ params }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showModalLogin, setShowModalLogin] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
+
 
   const router = useRouter();
 
@@ -37,7 +39,6 @@ const ProductPage = ({ params }) => {
     setShowImageModal(true);
   };
 
-
   const handleAddToCart = async () => {
     // if (!isLoggedIn) {
     //   // Jika pengguna belum login, tampilkan modal login
@@ -48,6 +49,7 @@ const ProductPage = ({ params }) => {
     // console.log(cart.data.cart_detail);
 
     const totalPrice = calculateTotalPrice(product.price_product, quantity);
+    setTotalPrice(totalPrice);
     // Update displayPayment
     document.getElementById("displayPayment").innerText = totalPrice
       .toFixed(2)
@@ -103,11 +105,10 @@ const ProductPage = ({ params }) => {
       }
     }
   };
-  
+
   const calculateTotalPrice = (price, quantity) => {
     return price * quantity;
   };
-  
 
   const handleLogin = () => {
     // Implementasi logika login disini
@@ -124,7 +125,10 @@ const ProductPage = ({ params }) => {
   return (
     <div className="container mx-auto my-8 grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-8">
       {/* Kolom 1: Gambar Produk */}
-      <div className="col-span-12 lg:col-span-4 hover:cursor-pointer"  onClick={handleImageClick} >
+      <div
+        className="col-span-12 lg:col-span-4 hover:cursor-pointer"
+        onClick={handleImageClick}
+      >
         <img
           src={`http://localhost:8000/api/photo_products/view/${product.photo.photo_product}`}
           alt={product.name_product}
@@ -146,18 +150,18 @@ const ProductPage = ({ params }) => {
             RP.{product.price_product.toLocaleString("id-ID")}
           </div>
           <div className="font-normal text-black text-sm lg:text-lg">
-            <p className="font-bold lg:text-title-lg text-black-2">
+            <h2 className="font-bold lg:text-title-lg text-black-2">
               Detail Produk
-            </p>
+            </h2>
             <p>Stok: {product.stock_product}</p>
             <p>Size: {product.size_product}</p>
             <p>Warna: {product.colour_product}</p>
             <p>Category :{product.category.name_category_products}</p>
           </div>
-          <p className="font-bold lg:text-title-lg text-black-2 mt-2">
-            Deskripsi Produk
-          </p>
-          <p className=" text-black text-sm lg:text-lg">
+          <h2 className="font-bold lg:text-title-lg text-black-2 mt-2">
+            Deskripsi Product
+          </h2>
+          <p className=" text-black text-sm lg:text-lg overflow-y-auto h-45 md:h-50">
             {product.description_product}
           </p>
         </div>
@@ -166,7 +170,7 @@ const ProductPage = ({ params }) => {
       {/* Kolom 3: Form Jumlah Pembelian dan Tombol */}
       <div className="col-span-12 lg:col-span-4  ">
         <div className="flex flex-col bg-white p-4 rounded-md shadow-md">
-          <label htmlFor="quantity" className="text-gray-600 mb-2">
+          <label htmlFor="quantity" className="text-body mb-2">
             Jumlah Pembelian:
           </label>
           <div className="flex items-center mb-2">
@@ -176,19 +180,20 @@ const ProductPage = ({ params }) => {
               name="quantity"
               min="1"
               max={product.stock_product}
-              className="border border-separate w-24 border-secondary rounded-md px-3 py-2 mr-2"
+              className="border border-gray-300 focus:outline-none focus:border-primary rounded-md px-3 py-2 mr-2"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
             />
-            <p className="text-gray-600 text-right">
+            <p className="text-body text-right">
               Total Stock: {product.stock_product}
             </p>
           </div>
+
           <div className="flex justify-between items-center">
-            <p className="text-gray-600 mb-1">Jumlah Pembayaran:</p>
+            <p className="text-body mb-1">Jumlah Pembayaran:</p>
             <p className="ms-30">RP.</p>
             <span id="displayPayment" className="text-lg font-semibold">
-              0.00 
+              {totalPrice.toLocaleString("id-ID")}
             </span>
           </div>
           <div className="grid grid-cols-2 gap-4 mt-4">
@@ -219,7 +224,7 @@ const ProductPage = ({ params }) => {
               <img
                 src={`http://localhost:8000/api/photo_products/view/${product.photo.photo_product}`}
                 alt={product.name_product}
-                className="w-full h-full rounded-md"
+                className="w-auto object-cover h-auto rounded-md"
               />
 
               {/* Close button */}

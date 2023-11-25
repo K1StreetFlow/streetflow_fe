@@ -214,7 +214,7 @@ export default function Checkout({ data }) {
         {data.user_customer.address.length === 0 && (
           <div className="flex flex-col items-center justify-center w-full h-96">
             <div className="text-lg font-bold text-black">
-              You don't have any shipping address
+              You dont have any shipping address
             </div>
             <Link href="/profile">
               <button className="btn bg-[#3C50E0] hover:bg-[#2a379b] text-white mt-10 ">
@@ -361,6 +361,7 @@ export default function Checkout({ data }) {
                 src={"/images/icon/credit-card2-white.svg"}
                 width={20}
                 height={20}
+                alt=""
               />
               Select Payment
             </button>
