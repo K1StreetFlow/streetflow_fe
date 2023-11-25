@@ -213,7 +213,7 @@ const TableTwo: React.FC = () => {
 
           <div className="col-span-1 hidden lg:flex items-center">
             <p className="text-sm text-black dark:text-white">
-              RP.{product.price_product}
+              RP.{product.price_product.toLocaleString("id-ID")}
             </p>
           </div>
 
