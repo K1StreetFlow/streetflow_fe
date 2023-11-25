@@ -70,11 +70,10 @@ const TableCartDetail = () => {
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark ">
                     <p className="text-black dark:text-white text-center ">
                       <Image
-                        src={"/images/product/product-03.png"}
-                        width={100}
-                        height={100}
-                        className="rounded "
-                        alt="product"
+                        src={`http://localhost:8000/api/photo_products/view/${cart_detail.product.photo.photo_product}`}
+                        width={40}
+                        height={50}
+                        alt={cart_detail.product.name_product}
                       />
                     </p>
                   </td>

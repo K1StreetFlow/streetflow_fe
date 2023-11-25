@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { formatDate } from "@/app/utils/formatDate";
 import Link from "next/link";
+
+import { formatDate } from "@/app/utils/formatDate";
 
 const Payment = ({ params }) => {
   const [data, setData] = useState(null);
@@ -26,9 +26,6 @@ const Payment = ({ params }) => {
     fetchData();
   }, [params.id]); // Menerapkan useEffect setiap kali params.id berubah
 
-  console.log("params.id:", params.id);
-  console.log("API Response:", data);
-
   if (!data) {
     // Menampilkan indikator loading atau pesan bahwa data sedang dimuat
     return <p>Loading...</p>;
@@ -36,8 +33,6 @@ const Payment = ({ params }) => {
 
   return (
     <>
-      <Breadcrumb pageName="Payment" />
-
       <div className="rounded-sm border border-stroke bg-white p-4 shadow-default dark:border-strokedark dark:bg-boxdark md:p-6 xl:p-9 ">
         <h2 className="mb-5 font-bold text-xl">Customer Detail</h2>
         <div className="flex flex-col gap-7.5">
@@ -205,7 +200,7 @@ const Payment = ({ params }) => {
           </div>
         </div>
         <div>
-          <Link href={"/dashboard/payments"}>
+          <Link href={"/waiting-payment"}>
             <button className="btn btn-error text-white">Back</button>
           </Link>
         </div>

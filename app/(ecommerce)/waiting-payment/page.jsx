@@ -91,18 +91,23 @@ const page = async () => {
                   </div>
                 </div>
                 <div className="flex justify-end items-center mt-7 gap-4">
-                  <button
-                    className="font-semibold"
-                    // onClick={() => toggleModal(order.id)}
-                  >
-                    Transaction Details
-                  </button>
+                  <Link href={`/waiting-payment/${order.payment.id}`}>
+                    <button
+                      className="font-semibold"
+                      // onClick={() => toggleModal(order.id)}
+                    >
+                      Transaction Details
+                    </button>
+                  </Link>
                   {order.payment.pdf_url !== null ? (
                     <Link href={order.payment.pdf_url} targer="_blank">
                       <button className="button-ulasan">Cara Bayar</button>
                     </Link>
                   ) : (
-                    <button className="btn" disabled>
+                    <button
+                      className="py-2 px-4 cursor-no-drop bg-gray rounded-sm "
+                      disabled
+                    >
                       Cara Bayar
                     </button>
                   )}
