@@ -79,19 +79,27 @@ const ProductPage = ({ params }) => {
     // router.push("/carts");
   };
 
-  const calculateTotalPrice = (price, quantity) => {
-    return price * quantity;
-  };
-
-  const handlePurchase = () => {
+  const handlePurchase = (price, quantity, stock) => {
     if (!isLoggedIn) {
       // Jika pengguna belum login, tampilkan modal login
       setShowModalLogin(true);
     } else {
-      // Jika pengguna sudah login, lakukan logika pembelian
-      console.log("Product purchased!");
+      // Jika pengguna sudah login, lakukan validasi stok
+      if (quantity > stock) {
+        console.log("Jumlah pembelian melebihi stok yang tersedia.");
+      } else {
+        // Jika jumlah pembelian valid, lakukan logika pembelian
+        const totalPrice = calculateTotalPrice(price, quantity);
+        console.log("Product purchased! Total Price: $" + totalPrice);
+        // Tambahkan logika pembelian atau tindakan lainnya di sini
+      }
     }
   };
+  
+  const calculateTotalPrice = (price, quantity) => {
+    return price * quantity;
+  };
+  
 
   const handleLogin = () => {
     // Implementasi logika login disini
@@ -159,6 +167,7 @@ const ProductPage = ({ params }) => {
               id="quantity"
               name="quantity"
               min="1"
+              max={product.stock_product}
               className="border border-separate w-24 border-secondary rounded-md px-3 py-2 mr-2"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
@@ -171,7 +180,7 @@ const ProductPage = ({ params }) => {
             <p className="text-gray-600 mb-1">Jumlah Pembayaran:</p>
             <p className="ms-30">RP.</p>
             <span id="displayPayment" className="text-lg font-semibold">
-              0.00
+              0.00 
             </span>
           </div>
           <div className="grid grid-cols-2 gap-4 mt-4">
