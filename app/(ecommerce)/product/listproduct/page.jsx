@@ -1,7 +1,6 @@
 "use client";
-import "../../globals.css";
-import "../../data-tables-css.css";
-import "../../satoshi.css";
+import "@/app/globals.css";
+import "@/app/satoshi.css";
 import React, { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import ProductCard from "@/components/Product/CardProduct/ProductCard";
