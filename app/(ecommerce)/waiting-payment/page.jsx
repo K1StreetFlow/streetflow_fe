@@ -86,7 +86,7 @@ const page = async () => {
                   <div className="border-line px-10 justify-start">
                     <p>Total Payment</p>
                     <p className="font-bold">
-                      Rp {order.payment.total_payment}
+                      Rp {order.payment.total_payment.toLocaleString("id-ID")}
                     </p>
                   </div>
                 </div>
