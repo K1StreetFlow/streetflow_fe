@@ -36,7 +36,7 @@ const ProductCard2 = ({ product }) => {
           </Link>
           <div className="flex justify-between items-center">
             <p className="text-meta-7 dark:text-gray-400">
-              RP.{product.price_product}
+              RP.{product.price_product.toLocaleString("id-ID")}
             </p>
             <p className="text-body dark:text-boxdark">
               Stock: {product.stock_product}
