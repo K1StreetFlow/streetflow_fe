@@ -31,17 +31,19 @@ const page = async ({ params }) => {
   return (
     <div className="flex items-start mt-10">
       <div className="w-1/5 ml-7 border-none rounded-lg pb-8 box text-[#212121]">
-					<SidebarCustomer />
-			</div>
+        <SidebarCustomer />
+      </div>
       <div className=" ml-5 box-2 mr-8 shadow-lg">
         <div>
-          <h3 className="font-bold ml-6 mb-5 text-xl text-[#212121]">Waiting Payment</h3>
+          <h3 className="font-bold ml-6 mb-5 text-xl text-[#212121]">
+            Waiting Payment
+          </h3>
         </div>
         <div className="flex">
           <div>
             <div className="flex flex-col">
               <div className="flex flex-row">
-              <hr />
+                <hr />
                 <table className="table w-full mx-auto py-15">
                   <thead>
                     <tr>

@@ -3,6 +3,7 @@ import React, { useState, useEffect, use } from "react";
 import Image from "next/image";
 import generateOrderId from "@/app/utils/generateOrderId";
 import axios from "axios";
+import Link from "next/link";
 
 export default function Checkout({ data }) {
   const [selectedAddress, setSelectedAddress] = useState(null);
@@ -18,7 +19,7 @@ export default function Checkout({ data }) {
 
   async function handleCheckout() {
     if (!selectedAddress) {
-      alert("Pilih alamat terlebih dahulu");
+      alert("Please select shipping address");
       return;
     }
 
@@ -108,6 +109,7 @@ export default function Checkout({ data }) {
                   id_cart_details: data.cart_id,
                   status_order: "Paid",
                   id_address: selectedAddress.id,
+                  id_users_customer: data.user_customer.id,
                 },
                 config
               );
@@ -152,6 +154,7 @@ export default function Checkout({ data }) {
                   id_cart_details: data.cart_id,
                   status_order: "Unpaid",
                   id_address: selectedAddress.id,
+                  id_users_customer: data.user_customer.id,
                 },
                 config
               );
@@ -188,6 +191,19 @@ export default function Checkout({ data }) {
         <div className="mb-5">
           <h1 className="text-2xl font-bold text-black">Shipping Addresses</h1>
         </div>
+        {data.user_customer.address.length === 0 && (
+          <div className="flex flex-col items-center justify-center w-full h-96">
+            <div className="text-lg font-bold text-black">
+              You don't have any shipping address
+            </div>
+            <Link href="/profile">
+              <button className="btn bg-[#3C50E0] hover:bg-[#2a379b] text-white mt-10 ">
+                Add Address
+              </button>
+            </Link>
+          </div>
+        )}
+
         <div className="flex w-full flex-wrap ">
           {data.user_customer.address.map((address, key) => (
             <label key={key} className="mb-5">
@@ -261,7 +277,7 @@ export default function Checkout({ data }) {
                     <tr>
                       <td>
                         <Image
-                          src="/images/product/product-01.png"
+                          src={`http://localhost:8000/api/photo_products/view/${cart.product.photo.photo_product}`}
                           width={200}
                           height={200}
                           className="w-20 rounded"
