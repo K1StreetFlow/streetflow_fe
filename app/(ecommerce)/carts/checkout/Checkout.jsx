@@ -4,12 +4,23 @@ import Image from "next/image";
 import generateOrderId from "@/app/utils/generateOrderId";
 import axios from "axios";
 import Link from "next/link";
+import Alert from "@/app/(ecommerce)/carts/checkout/Alert";
 
 export default function Checkout({ data }) {
+<<<<<<< HEAD
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [token, setToken] = useState(null);
+  const [modal, setModal] = useState(false);
+
+  const handleChange = () => {
+    setModal(!modal);
+  };
+=======
 	const [selectedAddress, setSelectedAddress] = useState(null);
 	const [token, setToken] = useState(null);
 
 	console.log(data);
+>>>>>>> 17b8b4b1fd8d017d79e11c0d65161cb3c7159312
 
 	const handleAddressChange = (event) => {
 		const selectedId = parseInt(event.target.value);
@@ -17,11 +28,19 @@ export default function Checkout({ data }) {
 		setSelectedAddress(address);
 	};
 
+<<<<<<< HEAD
+  async function handleCheckout() {
+    if (!selectedAddress) {
+      setModal(!modal);
+      return;
+    }
+=======
 	async function handleCheckout() {
 		if (!selectedAddress) {
 			alert("Pilih alamat terlebih dahulu");
 			return;
 		}
+>>>>>>> 17b8b4b1fd8d017d79e11c0d65161cb3c7159312
 
 		const dataPayment = {
 			fullname: data.user_customer.fullname,
@@ -172,6 +191,44 @@ export default function Checkout({ data }) {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [token]);
 
+<<<<<<< HEAD
+  return (
+    <>
+      <div>
+        <h1 className="text-4xl text-black font-bold mb-5 ">Checkout Page</h1>
+        <hr />
+      </div>
+      <div className="flex-1 mt-10">
+        <div className="mb-5">
+          <h1 className="text-2xl font-bold text-black">Shipping Addresses</h1>
+        </div>
+        {data.user_customer.address.length === 0 && (
+          <div className="flex flex-col items-center justify-center w-full h-96">
+            <div className="text-lg font-bold text-black">
+              You don't have any shipping address
+            </div>
+            <Link href="/profile">
+              <button className="btn bg-[#3C50E0] hover:bg-[#2a379b] text-white mt-10 ">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                Add Address
+              </button>
+            </Link>
+          </div>
+        )}
+=======
 	return (
 		<>
 			<div>
@@ -190,6 +247,7 @@ export default function Checkout({ data }) {
 						</Link>
 					</div>
 				)}
+>>>>>>> 17b8b4b1fd8d017d79e11c0d65161cb3c7159312
 
 				<div className="flex w-full flex-wrap ">
 					{data.user_customer.address.map((address, key) => (
@@ -265,6 +323,83 @@ export default function Checkout({ data }) {
 					</div>
 				</div>
 
+<<<<<<< HEAD
+        <div className="flex justify-end my-20 ">
+          <div className="pe-5">
+            <div className="mb-5">Grand Total</div>
+            {/* <div className="mb-5">Ongkos Pengiriman</div> */}
+            <div className="text-xl font-bold text-black">Total</div>
+          </div>
+          <div className="flex flex-col w-50 items-end">
+            <div className="mb-5">
+              Rp {data.grand_price.toLocaleString("id-ID")}
+            </div>
+            {/* <div className="mb-5">-</div> */}
+            <div className="text-2xl font-bold text-black">
+              Rp {data.grand_price.toLocaleString("id-ID")}
+            </div>
+
+            <button
+              className="btn bg-[#3C50E0] hover:bg-[#2a379b] text-white mt-10"
+              onClick={handleCheckout}
+            >
+              <Image
+                src={"/images/icon/credit-card2-white.svg"}
+                width={20}
+                height={20}
+              />
+              Select Payment
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* Modal Alert */}
+      <div>
+        <input
+          type="checkbox"
+          checked={modal}
+          onChange={handleChange}
+          className="modal-toggle"
+        />
+
+        <div className="modal ">
+          <div className="modal-box h-1/2 flex justify-center items-center flex-col">
+            <div className="mb-10">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="120"
+                height="120"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#ed4337"
+                stroke-width="1"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+            </div>
+            <h3 className="font-bold text-2xl">
+              Please choose your address first.
+            </h3>
+
+            <div className="modal-action">
+              <button
+                type="button"
+                className="btn bg-[#3C50E0] hover:bg-[#2a379b] border-0 text-white px-6"
+                onClick={handleChange}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+=======
 				<div className="flex justify-end my-20 ">
 					<div className="pe-5">
 						<div className="mb-5">Grand Total</div>
@@ -284,4 +419,5 @@ export default function Checkout({ data }) {
 			</div>
 		</>
 	);
+>>>>>>> 17b8b4b1fd8d017d79e11c0d65161cb3c7159312
 }
