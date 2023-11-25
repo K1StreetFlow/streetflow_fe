@@ -30,10 +30,12 @@ export const deleteProduct = async (id: number): Promise<AxiosResponse> => {
   return await axios.delete(`${API_BASE_URL}/photo_products/${id}`, { withCredentials: true });
 };
 
+// Perbarui fungsi uploadPhoto di PhotoApi.ts
 export const uploadPhoto = async (photo: File): Promise<AxiosResponse> => {
   const formData = new FormData();
   formData.append("photo_product", photo);
 
+  // Ganti URL sesuai dengan kebutuhan Anda
   return await axios.post(`${API_BASE_URL}/photo_products/upload`, formData, {
     withCredentials: true,
     headers: {

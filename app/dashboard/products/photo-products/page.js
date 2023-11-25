@@ -20,7 +20,7 @@ const PhotoProduct = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getAllProducts();
+        const response = await getAllPhotoProducts();
         setPhotoProducts(response.data);
       } catch (error) {
         console.error("Error fetching photo products:", error);
@@ -50,11 +50,11 @@ const PhotoProduct = () => {
     if (deletingProduct) {
       try {
         // Delete the product
-        await deleteProduct(deletingProduct);
+        await deletePhotoProduct(deletingProduct);
         console.log(`Product with ID ${deletingProduct} deleted successfully`);
 
         // Refresh the product list
-        const response = await getAllProducts();
+        const response = await getAllPhotoProducts();
         setPhotoProducts(response.data);
       } catch (error) {
         console.error(`Error deleting product with ID ${deletingProduct}:`, error);
@@ -94,7 +94,7 @@ const PhotoProduct = () => {
       }
 
       // Refresh the product list
-      const response = await getAllProducts();
+      const response = await getAllPhotoProducts();
       setPhotoProducts(response.data);
 
       // Close the modal
@@ -111,7 +111,7 @@ const PhotoProduct = () => {
     try {
       if (updatedProduct) {
         // If there's an edited product, perform the edit
-        await editProduct(updatedProduct.id, updatedProduct, photo);
+        await editPhotoProduct(updatedProduct.id, updatedProduct, photo);
         console.log("Product edited successfully");
       }
     } catch (error) {
