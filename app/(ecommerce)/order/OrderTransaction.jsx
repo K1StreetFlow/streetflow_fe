@@ -57,7 +57,7 @@ const OrderTransaction = ({ orderdata, token }) => {
 		fetchData();
 		const interval = setInterval(fetchData, 1000);
 		return () => clearInterval(interval);
-	}, [token]);
+	}, [router, token]);
 	// Check if orders is an array before filtering
 	const filteredOrders = Array.isArray(orders)
 		? orders.filter((order) => selectedStatus === "All" || order.status_order === selectedStatus)

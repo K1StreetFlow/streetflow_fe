@@ -1,9 +1,17 @@
 import Link from "next/link";
 import Image from "next/image";
 import SidebarCustomer from "@/components/Sidebar/SidebarCustomer";
-import { formatDate } from "../../utils/formatDate";
+import {formatDate} from "../../utils/formatDate";
 import axios from "axios";
 import { cookies } from "next/headers";
+
+async function updateAllPaymentPending() {
+	const res = await fetch(`http://localhost:8000/api/payments/update-status/user`, {
+		next: {
+			revalidate: 0,
+		},
+	});
+}
 
 async function getUserOrder() {
 	const cookieStore = cookies();
@@ -38,19 +46,30 @@ async function getAllPendingUnpaidPayments() {
 		},
 	});
 	const data = await res.json();
-	// Filter payments with status Pending or Unpaid
-	const filteredPayments = data.data.filter(
-		(payment) => payment.status_payment === "Pending" || payment.status_payment === "Unpaid"
-	);
-	return { data: filteredPayments };
+	return data;
+	//   Filter payments with status Pending or Unpaid
+	//   const filteredPayments = data.data.filter(
+	//     (payment) =>
+	//       payment.status_payment === "Pending" ||
+	//       payment.status_payment === "Unpaid"
+	//   );
+	//   return { data: filteredPayments };
 }
 
-const page = async ({ params }) => {
-	const { order } = await getUserOrder();
-	console.log("ORDERRR", order);
+const page = async () => {
+	//   const { data } = await getUserOrder();
 
-	const { data } = await getAllPendingUnpaidPayments();
-	console.log(data);
+	const updatedStatus = await updateAllPaymentPending();
+	console.log("Updated status", updatedStatus);
+
+	const { data } = await getUserOrder();
+	console.log("ORDERRR", data[0].payment);
+
+	//   console.log("ORDERRR", order);
+	//   const updatedStatus = await updateAllPaymentPending();
+	//   console.log("Updated status", updatedStatus);
+
+	//   const { data } = await getAllPendingUnpaidPayments();
 
 	return (
 		<div className="flex items-start mt-10">
@@ -65,33 +84,35 @@ const page = async ({ params }) => {
 						</div>
 					</div>
 					{data.length ? (
-						data.map((payment, key) => (
+						data.map((order, key) => (
 							<div className="box-3 mb-4" key={key}>
 								<div className="flex justify-between mb-4 items-center ">
 									<div className="inline-flex items-center ">
-										<p className="mr-2">{formatDate(payment.createdAt)}</p>
+										<p className="mr-2">{formatDate(order.payment.createdAt)}</p>
 										<p
 											className={`inline-flex rounded-sm bg-opacity-10 py-1 px-3 text-sm font-medium mr-2 ${
-												payment.status_payment === "Failed" ? "text-danger bg-danger" : "text-secondary bg-secondary"
+												order.payment.status_payment === "Failed"
+													? "text-danger bg-danger"
+													: "text-secondary bg-secondary"
 											}`}
 										>
-											{payment.status_payment}
+											{order.payment.status_payment}
 										</p>
-										<p className="mr-2 text-form-strokedark">{payment.code_payment}</p>
+										<p className="mr-2 text-form-strokedark">{order.payment.code_payment}</p>
 									</div>
 								</div>
 								<div className="flex flex-row justify-between">
 									<div>
 										<p className="text-form-strokedark">Method Payment</p>
-										<p className="font-bold mb-2">{payment.method_payment}</p>
+										<p className="font-bold mb-2">{order.payment.method_payment}</p>
 									</div>
 									<div className="border-line ml-20 pl-5 justify-start">
 										<p>Code Payment</p>
-										<p className="font-bold">{payment.va_number}</p>
+										<p className="font-bold">{order.payment.va_number}</p>
 									</div>
 									<div className="border-line px-10 justify-start">
 										<p>Total Payment</p>
-										<p className="font-bold">Rp {payment.total_payment}</p>
+										<p className="font-bold">Rp {order.payment.total_payment}</p>
 									</div>
 								</div>
 								<div className="flex justify-end items-center mt-7 gap-4">
@@ -101,7 +122,9 @@ const page = async ({ params }) => {
 									>
 										Transaction Details
 									</button>
-									<button className="button-bayar">Cara Bayar</button>
+									<Link href={order.payment.pdf_url} targer="_blank">
+										<button className="button-bayar">Cara Bayar</button>
+									</Link>
 									{/* {order.order_list.status_order === "Unpaid" && ( */}
 									<button className="button-ulasan">Payment</button>
 								</div>
