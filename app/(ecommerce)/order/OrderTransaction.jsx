@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { formatDate } from "@/app/utils/formatDate";
@@ -11,11 +12,13 @@ function getImageUrl(filename) {
 	return `http://localhost:8000/api/photo_products/view/${filename}`;
 }
 
-const OrderTransaction = () => {
+const OrderTransaction = ({ orderdata, token }) => {
+	const router = useRouter();
 	const [orders, setOrders] = useState([]);
 	const [selectedStatus, setSelectedStatus] = useState("All");
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [currentModalId, setCurrentModalId] = useState(null);
+	let hasShownUnpaidBox = false;
 
 	const toggleModal = (id) => {
 		setCurrentModalId(id);
@@ -23,33 +26,46 @@ const OrderTransaction = () => {
 	};
 
 	useEffect(() => {
-		const fetchOrderById = async (id) => {
+		if (!token) {
+			router.push("/login");
+		}
+
+		const fetchData = async () => {
 			try {
-				const res = await fetch(`http://localhost:8000/api/shippings/${id}`, {
-					next: {
-						revalidate: 0,
+				const response = await fetch("http://localhost:8000/api/order/user/orderList", {
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						accept: "application/json",
+						cookie: `tokenCustomer=${token}`,
 					},
+					credentials: "include",
 				});
+				const result = await response.json();
+				console.log("API Response:", result);
 
-				if (!res.ok) {
-					throw new Error(`Error fetching data. Status: ${res.status}`);
+				if (result && result.data) {
+					setOrders(result.data);
+				} else {
+					console.error("Invalid response format:", result);
 				}
-
-				const data = await res.json();
-				setOrders([data.data]);
-				console.log(data);
 			} catch (error) {
-				console.error(error);
+				console.error("Error fetching data:", error);
 			}
 		};
 
-		// Ganti ID sesuai dengan kebutuhan
-		const orderId = 1;
-		fetchOrderById(orderId);
-	}, []);
+		fetchData();
+		const interval = setInterval(fetchData, 1000);
+		return () => clearInterval(interval);
+	}, [token]);
+	// Check if orders is an array before filtering
+	const filteredOrders = Array.isArray(orders)
+		? orders.filter((order) => selectedStatus === "All" || order.status_order === selectedStatus)
+		: [];
 
-	const filteredOrders =
-		selectedStatus === "All" ? orders : orders?.filter((order) => order.order_list.status_order === selectedStatus);
+	const ordersArray = Array.isArray(filteredOrders) ? filteredOrders : [filteredOrders];
+
+	const unpaidOrdersCount = ordersArray.filter((order) => order.status_order === "Unpaid").length;
 
 	return (
 		<>
@@ -115,53 +131,54 @@ const OrderTransaction = () => {
 								</button>
 							</div>
 						</div>
-						{filteredOrders?.map((order, key) => {
-							if (order.order_list.status_order === "Unpaid") {
+						{ordersArray.map((order, key) => {
+							if (order.status_order === "Unpaid" && !hasShownUnpaidBox) {
+								hasShownUnpaidBox = true;
 								return (
 									<div className="box-payment rounded-sm mb-4" key={key}>
-										<Link href="/waitingpayment">
+										<Link href="/waiting-payment">
 											<div className="flex justify-between items-center">
 												<p className="font-normal">Waiting for payment</p>
-												<p className="text-sm number-payment">{order.order_list.cart.cart_detail.length}</p>
+												<p className="text-sm number-payment">{unpaidOrdersCount}</p>
 											</div>
 										</Link>
 									</div>
 								);
 							} else if (
-								order.order_list.status_order === "Paid" ||
-								order.order_list.status_order === "Delivered" ||
-								order.order_list.status_order === "Packaged" ||
-								order.order_list.status_order === "Completed" ||
-								order.order_list.status_order === "Canceled"
+								order.status_order === "Paid" ||
+								order.status_order === "Delivered" ||
+								order.status_order === "Packaged" ||
+								order.status_order === "Completed" ||
+								order.status_order === "Canceled"
 							) {
 								return (
 									<div className="box-3 mb-4" key={key}>
 										<div className="flex justify-between mb-4 items-center">
 											<div className="inline-flex items-center text-sm">
-												<p className="mr-2">{formatDate(order.order_list.payment.createdAt)}</p>
+												<p className="mr-2">{formatDate(order.payment.createdAt)}</p>
 												<p
 													className={`inline-flex rounded-sm bg-opacity-10 py-1 px-3 text-sm font-medium mr-2 ${
-														order.order_list.status_order === "Paid"
+														order.status_order === "Paid"
 															? "text-primary bg-primary"
-															: order.order_list.status_order === "Delivered"
+															: order.status_order === "Delivered"
 															? "text-[#F3B664] bg-[#F1EB90]"
-															: order.order_list.status_order === "Completed"
+															: order.status_order === "Completed"
 															? "text-success bg-success"
-															: order.order_list.status_order === "Packaged"
+															: order.status_order === "Packaged"
 															? "text-warning bg-warning"
-															: order.order_list.status_order === "Unpaid"
+															: order.status_order === "Unpaid"
 															? "text-danger bg-danger"
 															: "text-secondary bg-secondary"
 													}`}
 												>
-													{order.order_list.status_order}
+													{order.status_order}
 												</p>
-												<p className="mr-2 text-form-strokedark">{order.order_list.code_order}</p>
+												<p className="mr-2 text-form-strokedark">{order.code_order}</p>
 											</div>
 										</div>
 										<div className="flex">
 											<div className="item-content">
-												{order.order_list.cart.cart_detail.slice(0, 1).map((detail) => (
+												{order.cart.cart_detail.slice(0, 1).map((detail) => (
 													<div className="flex" key={detail.id}>
 														<Image
 															src={getImageUrl(detail.product.photo.photo_product)}
@@ -176,12 +193,12 @@ const OrderTransaction = () => {
 																{detail.quantity} x Rp
 																{detail.product.price_product.toLocaleString("id-ID")}
 															</p>
-															{order.order_list.cart.cart_detail.length > 1 && (
+															{order.cart.cart_detail.length > 1 && (
 																<a
 																	className="text-sm text-form-strokedark cursor-pointer hover:font-semibold"
 																	onClick={() => toggleModal(order.id)}
 																>
-																	+{order.order_list.cart.cart_detail.length - 1} produk lainnya
+																	+{order.cart.cart_detail.length - 1} produk lainnya
 																</a>
 															)}
 														</div>
@@ -190,17 +207,15 @@ const OrderTransaction = () => {
 											</div>
 											<div className="border-line pl-5 justify-start items-center w-46">
 												<p className="text-form-strokedark">Total Shopping</p>
-												<p className="font-bold">Rp{order.order_list.payment.total_payment.toLocaleString("id-ID")}</p>
+												<p className="font-bold">Rp{order.payment.total_payment.toLocaleString("id-ID")}</p>
 											</div>
 										</div>
 										<div className="flex justify-end items-center mt-7 gap-4">
 											<button className="font-semibold" onClick={() => toggleModal(order.id)}>
 												Transaction Details
 											</button>
-											{order.order_list.status_order === "Completed" && (
-												<button className="button-ulasan">Review</button>
-											)}
-											{order.order_list.status_order === "Unpaid" && <button className="button-ulasan">Payment</button>}
+											{order.status_order === "Completed" && <button className="button-ulasan">Review</button>}
+											{order.status_order === "Unpaid" && <button className="button-ulasan">Payment</button>}
 										</div>
 									</div>
 								);
