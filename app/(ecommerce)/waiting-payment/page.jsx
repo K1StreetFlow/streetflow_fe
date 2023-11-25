@@ -55,9 +55,11 @@ const page = async () => {
                     </p>
                     <p
                       className={`inline-flex rounded-sm bg-opacity-10 py-1 px-3 text-sm font-medium mr-2 ${
-                        order.payment.status_payment === "Failed"
+                        order.payment.status_payment === "Success"
+                          ? "text-success bg-success"
+                          : order.payment.status_payment === "Failed"
                           ? "text-danger bg-danger"
-                          : "text-secondary bg-secondary"
+                          : "text-warning bg-warning"
                       }`}
                     >
                       {order.payment.status_payment}
@@ -70,8 +72,11 @@ const page = async () => {
                 <div className="flex flex-row justify-between">
                   <div>
                     <p className="text-form-strokedark">Method Payment</p>
-                    <p className="font-bold mb-2">
-                      {order.payment.method_payment}
+                    <p className="font-bold mb-2 uppercase">
+                      <span className="ms-3">
+                        {order.payment.method_payment}
+                      </span>{" "}
+                      |<span className="ms-3">{order.payment.va_type}</span>
                     </p>
                   </div>
                   <div className="border-line ml-20 pl-5 justify-start">
@@ -93,10 +98,8 @@ const page = async () => {
                     Transaction Details
                   </button>
                   <Link href={order.payment.pdf_url} targer="_blank">
-                    <button className="button-bayar">Cara Bayar</button>
+                    <button className="button-ulasan">Cara Bayar</button>
                   </Link>
-                  {/* {order.order_list.status_order === "Unpaid" && ( */}
-                  <button className="button-ulasan">Payment</button>
                 </div>
               </div>
             ))

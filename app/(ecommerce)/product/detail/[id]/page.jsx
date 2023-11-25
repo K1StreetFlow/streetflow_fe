@@ -43,7 +43,9 @@ const ProductPage = ({ params }) => {
 
     const totalPrice = calculateTotalPrice(product.price_product, quantity);
     // Update displayPayment
-    document.getElementById("displayPayment").innerText = totalPrice.toFixed(2);
+    document.getElementById("displayPayment").innerText = totalPrice
+      .toFixed(2)
+      .toLocaleString("id-ID");
     // console.log("Total Pembayaran:", totalPrice);
 
     const cart = await axios.get("http://localhost:8000/api/carts/user/cart/", {

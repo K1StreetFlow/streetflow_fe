@@ -4,12 +4,16 @@ import Image from "next/image";
 import generateOrderId from "@/app/utils/generateOrderId";
 import axios from "axios";
 import Link from "next/link";
+import Alert from "@/app/(ecommerce)/carts/checkout/Alert";
 
 export default function Checkout({ data }) {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [token, setToken] = useState(null);
+  const [modal, setModal] = useState(false);
 
-  console.log(data);
+  const handleChange = () => {
+    setModal(!modal);
+  };
 
   const handleAddressChange = (event) => {
     const selectedId = parseInt(event.target.value);
@@ -21,7 +25,7 @@ export default function Checkout({ data }) {
 
   async function handleCheckout() {
     if (!selectedAddress) {
-      alert("Pilih alamat terlebih dahulu");
+      setModal(!modal);
       return;
     }
 
@@ -196,6 +200,20 @@ export default function Checkout({ data }) {
             </div>
             <Link href="/profile">
               <button className="btn bg-[#3C50E0] hover:bg-[#2a379b] text-white mt-10 ">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
                 Add Address
               </button>
             </Link>
@@ -305,24 +323,73 @@ export default function Checkout({ data }) {
         <div className="flex justify-end my-20 ">
           <div className="pe-5">
             <div className="mb-5">Grand Total</div>
-            <div className="mb-5">Ongkos Pengiriman</div>
+            {/* <div className="mb-5">Ongkos Pengiriman</div> */}
             <div className="text-xl font-bold text-black">Total</div>
           </div>
           <div className="flex flex-col w-50 items-end">
             <div className="mb-5">
               Rp {data.grand_price.toLocaleString("id-ID")}
             </div>
-            <div className="mb-5">-</div>
+            {/* <div className="mb-5">-</div> */}
             <div className="text-2xl font-bold text-black">
               Rp {data.grand_price.toLocaleString("id-ID")}
             </div>
 
             <button
-              className="btn bg-[#3C50E0] hover:bg-[#2a379b] text-white mt-10 "
+              className="btn bg-[#3C50E0] hover:bg-[#2a379b] text-white mt-10"
               onClick={handleCheckout}
             >
-              Pilih metode pembayaran
+              <Image
+                src={"/images/icon/credit-card2-white.svg"}
+                width={20}
+                height={20}
+              />
+              Select Payment
             </button>
+          </div>
+        </div>
+      </div>
+      {/* Modal Alert */}
+      <div>
+        <input
+          type="checkbox"
+          checked={modal}
+          onChange={handleChange}
+          className="modal-toggle"
+        />
+
+        <div className="modal ">
+          <div className="modal-box h-1/2 flex justify-center items-center flex-col">
+            <div className="mb-10">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="120"
+                height="120"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#ed4337"
+                stroke-width="1"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+            </div>
+            <h3 className="font-bold text-2xl">
+              Please choose your address first.
+            </h3>
+
+            <div className="modal-action">
+              <button
+                type="button"
+                className="btn bg-[#3C50E0] hover:bg-[#2a379b] border-0 text-white px-6"
+                onClick={handleChange}
+              >
+                OK
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import formatDate from "@/app/utils/formatDate";
+import { formatDate } from "@/app/utils/formatDate";
 
 async function getPaymentById(id) {
   const res = await fetch(`http://localhost:8000/api/payments/${id}`, {
