@@ -4,6 +4,7 @@ import BackReview from "@/app/dashboard/products/reviews/backReviewProducts";
 import Image from "next/image";
 async function getReviewProductById(id) {
   const res = await fetch(`http://localhost:8000/api/review-products/${id}`, {
+    credentials: "include",
     next: {
       revalidate: 0,
     },
@@ -12,7 +13,7 @@ async function getReviewProductById(id) {
 }
 
 function getImageUrl(filename) {
-	return `http://localhost:8000/api/review-products-photo/view/${filename}`;
+  return `http://localhost:8000/api/review-products-photo/view/${filename}`;
 }
 
 const RatingDisplay = ({ numberReview }) => {
@@ -26,14 +27,7 @@ const RatingDisplay = ({ numberReview }) => {
     />
   ));
 
-  const emptyStars = Array.from({ length: 5 - numberReview }, (_, index) => (
-    <input
-      key={index + numberReview}
-      type="radio"
-      name="rating-9"
-      className="mask mask-star-2"
-    />
-  ));
+  const emptyStars = Array.from({ length: 5 - numberReview }, (_, index) => <input key={index + numberReview} type="radio" name="rating-9" className="mask mask-star-2" />);
 
   return (
     <div className="rating rating-lg">
@@ -59,81 +53,57 @@ const ReviewProducts = async ({ params }) => {
           <div className="flex flex-row gap-5.5 ">
             <div className="flex flex-col gap-5.5 sm:flex-row">
               <div className="w-full sm:w-110">
-                <label
-                  className="mb-3 block text-sm font-medium text-black dark:text-white"
-                  htmlFor="photoReview"
-                >
+                <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="photoReview">
                   Photo Review
                 </label>
                 <div className="relative">
-                  <Image
-                    src={getImageUrl(data.photo_review)}
-                    width={100}
-                    height={100}
-                    alt={data.photo_review} 
-                    className="rounded-md mr-4"/>
+                  <Image src={getImageUrl(data?.photo_review || "")} width={100} height={100} alt={data?.photo_review || ""} className="rounded-md mr-4" />
                 </div>
               </div>
             </div>
             <div className="w-[150%] sm:w-110 h-[20%]">
-              <label
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                htmlFor="fullName"
-              >
+              <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="fullName">
                 Customer Name
               </label>
               <div className="relative">
-                <h3>{data.user_customer.fullname}</h3>
+                <h3>{data?.users_customer?.fullname || "N/A"}</h3>
               </div>
               <div className="h-5"></div>
-              <label
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                htmlFor="messageReview"
-              >
+              <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="messageReview">
                 Message Review
               </label>
               <div>
-                <h3>{data.message_review}</h3>
+                <h3>{data?.message_review || "N/A"}</h3>
               </div>
             </div>
 
             <div className="w-full h-[20%]">
-              <label
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                htmlFor="productName"
-              >
+              <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="productName">
                 Product Name
               </label>
 
-              <h3>{data.products.name_product}</h3>
+              <h3>{data?.products?.name_product || "N/A"}</h3>
               <div className="h-5"></div>
-              <label
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                htmlFor="numberReview"
-              >
+              <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="numberReview">
                 Number Review
               </label>
               <div className="relative">
-                <RatingDisplay numberReview={data.number_review} />
+                <RatingDisplay numberReview={data?.number_review || 0} />
               </div>
             </div>
             <div className="w-full h-[20%]">
-              <label
-                className="mb-3 block text-sm font-medium text-black dark:text-white"
-                htmlFor="codeOrder"
-              >
+              <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="codeOrder">
                 Code Order
               </label>
 
-              <h3>{data.order_list.code_order}</h3>
+              <h3>{data?.order_list?.code_order || "N/A"}</h3>
             </div>
           </div>
           <div className="flex items-center space-x-3.5">
-          <BackReview />    
+            <BackReview />
           </div>
-        </div> 
-        <div>
         </div>
+        <div></div>
       </div>
     </>
   );
