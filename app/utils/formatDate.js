@@ -1,4 +1,4 @@
-const formatDate = (isodate) => {
+const formatDates = (isodate) => {
   const date = new Date(isodate);
 
   // Daftar nama bulan dalam bahasa Indonesia
@@ -26,4 +26,4 @@ const formatDate = (isodate) => {
   return formattedDate;
 };
 
-export default formatDate;
+export default formatDates;
