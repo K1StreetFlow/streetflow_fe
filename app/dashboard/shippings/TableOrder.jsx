@@ -1,19 +1,42 @@
+"use client";
 import { formatDates } from "@/app/utils/formatDate";
 import DetailOrder from "./detailOrder";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-async function getAllOrders() {
-  const res = await fetch(`http://localhost:8000/api/shippings`, {
-    credentials: "include",
-    next: {
-      revalidate: 0,
-    },
-  });
-  return res.json();
-}
+// async function getAllOrders() {
+//   const res = await fetch(`http://localhost:8000/api/shippings`, {
+//     credentials: "include",
+//     next: {
+//       revalidate: 0,
+//     },
+//   });
+//   return res.json();
+// }
 
-const TableOrder = async () => {
-  const orders = await getAllOrders();
-  console.log(orders);
+// const TableOrder = async () => {
+//   const orders = await getAllOrders();
+//   console.log(orders);
+
+const TableOrder = () => {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/api/shippings", {
+          withCredentials: true,
+        });
+        setOrders(response.data);
+        console.log("ini response", response);
+        console.log("ini respon data", response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
