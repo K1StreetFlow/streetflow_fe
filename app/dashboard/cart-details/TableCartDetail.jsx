@@ -19,27 +19,13 @@ const TableCartDetail = async () => {
         <table className="w-full table-auto mt-10">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
-              <th className="min-w-[30px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 text-center ">
-                #
-              </th>
-              <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white">
-                User Customer
-              </th>
-              <th className="min-w-[50] py-4 px-4 font-medium text-black dark:text-white text-center">
-                Photo Product
-              </th>
-              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                Name Product
-              </th>
-              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white text-center ">
-                Price Product
-              </th>
-              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white text-center ">
-                Quantity
-              </th>
-              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                Total Price
-              </th>
+              <th className="min-w-[30px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 text-center ">#</th>
+              <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white">User Customer</th>
+              <th className="min-w-[50] py-4 px-4 font-medium text-black dark:text-white text-center">Photo Product</th>
+              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">Name Product</th>
+              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white text-center ">Price Product</th>
+              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white text-center ">Quantity</th>
+              <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">Total Price</th>
             </tr>
           </thead>
           <tbody>
@@ -49,42 +35,26 @@ const TableCartDetail = async () => {
                   <p className="text-black dark:text-white">{count++}</p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {cart_detail.cart.user_customer.fullname}
-                  </p>
+                  <p className="text-black dark:text-white">{cart_detail.cart.user_customer.fullname}</p>
                 </td>
 
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark ">
                   <p className="text-black dark:text-white text-center ">
-                    <Image
-                      src={"/images/product/product-03.png"}
-                      width={100}
-                      height={100}
-                      className="rounded "
-                    />
+                    <Image src={"/images/product/product-03.png"} width={100} height={100} className="rounded " alt="product" />
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {cart_detail.product.name_product}
-                  </p>
+                  <p className="text-black dark:text-white">{cart_detail.product.name_product}</p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white text-center ">
-                    Rp{" "}
-                    {cart_detail.product.price_product.toLocaleString("id-ID")}
-                  </p>
+                  <p className="text-black dark:text-white text-center ">Rp {cart_detail.product.price_product.toLocaleString("id-ID")}</p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white text-center ">
-                    {cart_detail.quantity}
-                  </p>
+                  <p className="text-black dark:text-white text-center ">{cart_detail.quantity}</p>
                 </td>
 
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <div className="flex items-center space-x-3.5 justify-center">
-                    Rp {cart_detail.total_price.toLocaleString("id-ID")}
-                  </div>
+                  <div className="flex items-center space-x-3.5 justify-center">{cart_detail.total_price !== null && cart_detail.total_price !== undefined && <span>Rp {cart_detail.total_price.toLocaleString("id-ID")}</span>}</div>
                 </td>
               </tr>
             ))}
