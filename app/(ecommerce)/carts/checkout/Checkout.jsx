@@ -156,7 +156,7 @@ export default function Checkout({ data }) {
                 },
                 config
               );
-              window.location.href = `/waiting-payment/${result.order_id}`;
+              window.location.href = `/waiting-payment`;
             } else {
               console.log("error");
             }
