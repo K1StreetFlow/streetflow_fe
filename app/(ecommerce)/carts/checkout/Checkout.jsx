@@ -4,12 +4,12 @@ import Image from "next/image";
 import generateOrderId from "@/app/utils/generateOrderId";
 import axios from "axios";
 import Link from "next/link";
-import Alert from "@/app/(ecommerce)/carts/checkout/Alert";
 
 export default function Checkout({ data }) {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [token, setToken] = useState(null);
   const [modal, setModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleChange = () => {
     setModal(!modal);
@@ -25,6 +25,7 @@ export default function Checkout({ data }) {
 
   async function handleCheckout() {
     if (!selectedAddress) {
+      setErrorMessage("Please choose your address first.");
       setModal(!modal);
       return;
     }
@@ -85,7 +86,6 @@ export default function Checkout({ data }) {
                 "Content-Type": "application/json",
               },
             };
-            const va_number = result.va_numbers[0].va_number || null;
 
             const response = await axios.post(
               "http://localhost:8000/api/payments",
@@ -95,7 +95,7 @@ export default function Checkout({ data }) {
                 total_payment: parseInt(result.gross_amount),
                 date_payment: result.transaction_time,
                 method_payment: result.payment_type,
-                va_number,
+                va_number: result.va_numbers[0].va_number,
                 va_type: result.va_numbers[0].bank,
                 pdf_url: result.pdf_url,
                 id_cart: data.cart_id,
@@ -122,28 +122,13 @@ export default function Checkout({ data }) {
             }
           },
           onPending: async (result) => {
+            console.log(result);
             const config = {
               headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
               },
             };
-
-            const va_number = result.hasOwnProperty("va_number")
-              ? result.va_number[0].va_number
-              : null;
-
-            const va_type = result.hasOwnProperty("va_number")
-              ? result.va_number[0].bank
-              : null;
-
-            const pdf_url = result.hasOwnProperty("pdf_url")
-              ? result.pdf_url
-              : null;
-
-            console.log("va_number", va_number);
-            console.log("va_type", va_type);
-
             const response = await axios.post(
               "http://localhost:8000/api/payments",
               {
@@ -152,13 +137,9 @@ export default function Checkout({ data }) {
                 total_payment: parseInt(result.gross_amount),
                 date_payment: result.transaction_time,
                 method_payment: result.payment_type,
-                // va_number: result.va_numbers[0].va_number
-                //   ? result.va_numbers[0].va_number
-                //   : null,
-                // va_type: result.va_numbers[0].bank || null,
-                va_number,
-                va_type,
-                pdf_url,
+                va_number: result.va_numbers[0].va_number,
+                va_type: result.va_numbers[0].bank,
+                pdf_url: result.pdf_url,
                 id_cart: data.cart_id,
               },
               config
@@ -188,9 +169,9 @@ export default function Checkout({ data }) {
             window.location.reload();
           },
           onClose: () => {
-            alert("Anda belum menyelesaikan pembayaran");
+            setErrorMessage("Payment canceled");
+            setModal(!modal);
             setToken("");
-            window.location.reload();
           },
         });
       } catch (err) {
@@ -198,7 +179,6 @@ export default function Checkout({ data }) {
         console.log(err);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   return (
@@ -396,9 +376,7 @@ export default function Checkout({ data }) {
                 <line x1="9" y1="9" x2="15" y2="15"></line>
               </svg>
             </div>
-            <h3 className="font-bold text-2xl">
-              Please choose your address first.
-            </h3>
+            <h3 className="font-bold text-2xl">{errorMessage}</h3>
 
             <div className="modal-action">
               <button
