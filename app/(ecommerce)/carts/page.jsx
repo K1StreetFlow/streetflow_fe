@@ -1,7 +1,6 @@
 import React from "react";
 import TableCartCustomer from "@/app/(ecommerce)/carts/tableCart";
 import { cookies } from "next/headers";
-import { useRouter } from "next/navigation";
 
 async function getAllCarts() {
   const cookieStore = cookies();
@@ -22,9 +21,10 @@ async function getAllCarts() {
 }
 
 const Carts = async () => {
-  const carts = await getAllCarts();
   const cookieStore = cookies();
-  const token = cookieStore.get("tokenCustomer");
+  let token = cookieStore.get("tokenCustomer");
+
+  const carts = await getAllCarts();
 
   return (
     <div className="flex justify-center my-6">

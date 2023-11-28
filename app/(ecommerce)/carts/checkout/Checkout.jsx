@@ -104,6 +104,9 @@ export default function Checkout({ data }) {
             );
 
             if (response.data) {
+              await axios.delete(
+                `http://localhost:8000/api/cart-details/${data.cart_id}`
+              );
               await axios.post(
                 "http://localhost:8000/api/order/create",
                 {
@@ -147,7 +150,7 @@ export default function Checkout({ data }) {
 
             if (response.data) {
               setToken("");
-              await axios.post(
+              const order = await axios.post(
                 "http://localhost:8000/api/order/create",
                 {
                   id_payment: response.data.data.id,
@@ -157,6 +160,27 @@ export default function Checkout({ data }) {
                   id_users_customer: data.user_customer.id,
                 },
                 config
+              );
+
+              // console.log(order.data.data.orderList.id);
+              // console.log("Cart Detail", data.cart_detail);
+              data.cart_detail.map(async (cart) => {
+                const checkout = await axios.post(
+                  "http://localhost:8000/api/checkout-product/",
+                  {
+                    id_cart: data.cart_id,
+                    id_product: cart.id_product,
+                    quantity: cart.quantity,
+                    total_price: cart.total_price,
+                    id_order: order.data.data.orderList.id,
+                  },
+                  config
+                );
+                console.log("Checkout", checkout);
+              });
+
+              await axios.delete(
+                `http://localhost:8000/api/cart-details/cart/${data.cart_id}`
               );
               window.location.href = `/waiting-payment`;
             } else {

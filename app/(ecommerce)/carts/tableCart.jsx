@@ -6,18 +6,12 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function tableCartCustomer({ carts, token }) {
-  const [cartDetail, setCartDetail] = useState();
   const [cart, setCart] = useState(carts);
-  const router = useRouter();
 
   useEffect(() => {
-    if (!token) {
-      router.push("/login");
-      return;
-    }
-
     // Fungsi untuk mengambil data dari backend
     const fetchData = async () => {
       try {
@@ -37,14 +31,11 @@ export default function tableCartCustomer({ carts, token }) {
           }
         );
         const result = await response.json();
-        setCartDetail(result.cart_detail);
         setCart(result);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
-    fetchData();
     const interval = setInterval(fetchData, 1000);
     return () => clearInterval(interval);
   }, []);
