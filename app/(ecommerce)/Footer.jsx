@@ -12,9 +12,7 @@ export default function Footer() {
           className="w-40 rounded "
         />
         <p>
-          ACME Industries Ltd.
-          <br />
-          Providing reliable tech since 1992
+          Copyright
         </p>
       </aside>
       <nav>

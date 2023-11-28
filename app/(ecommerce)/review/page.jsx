@@ -1,21 +1,38 @@
-// import SidebarCustomer from "@/components/Sidebar/SidebarCustomer";
-// import ReviewPages from "./Reviews";
-// const Reviews = () => {
-// 	return (
-// 		<>
-// 			<div className="flex items-start mt-10">
-// 				<div className="w-1/5 border-none rounded-lg pb-8 box text-[#212121]">
-// 					<SidebarCustomer />
-// 				</div>
-// 				<div className="w-4/5 mb-5 text-[#212121]">
-// 					<h3 className="font-bold ml-6 mb-5 text-xl">Reviews</h3>
-// 					<div className="box-2">
-// 						<ReviewPages />
-// 					</div>
-// 				</div>
-// 			</div>
-// 		</>
-// 	);
-// };
+import React from "react";
+import "../../satoshi.css";
+import "../../globals.css";
+import ReviewPages from "./Reviews";
+import { cookies } from "next/headers";
 
-// export default Reviews;
+async function getUserOrder() {
+	const cookieStore = cookies();
+	const token = cookieStore.get("tokenCustomer");
+
+	const res = await fetch("http://localhost:8000/api/order/user/orderList", {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			accept: "application/json",
+			cookie: `tokenCustomer=${token.value}`,
+		},
+
+		credentials: "include",
+	});
+
+	return res.json();
+}
+
+const Review = async () => {
+	const orderdata = await getUserOrder();
+	const cookieStore = cookies();
+	const token = cookieStore.get("tokenCustomer");
+	return (
+		<>
+			<div className="container mx-auto px-4">
+				<ReviewPages orderdata={orderdata} token={token.value} />
+			</div>
+		</>
+	);
+};
+
+export default Review;

@@ -214,7 +214,11 @@ const OrderTransaction = ({ orderdata, token }) => {
 											<button className="font-semibold" onClick={() => toggleModal(order.id)}>
 												Transaction Details
 											</button>
-											{order.status_order === "Completed" && <button className="button-ulasan">Review</button>}
+											{order.status_order === "Completed" && (
+												<Link href="/review">
+													<button className="button-ulasan">Review</button>
+												</Link>
+											)}
 											{order.status_order === "Unpaid" && <button className="button-ulasan">Payment</button>}
 										</div>
 									</div>

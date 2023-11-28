@@ -107,7 +107,7 @@ const TableOrder = () => {
 								</td>
 								<td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
 									<select
-										className="border border-[#eee] rounded-sm py-2 px-3 text-sm font-medium text-black dark:text-white"
+										className="border border-[#eee] rounded-sm py-2 px-3 text-sm font-medium"
 										value={order.order_list?.status_order}
 										onChange={(e) => handleEditStatus(order.id, e.target.value)}
 									>
