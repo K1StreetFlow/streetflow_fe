@@ -26,7 +26,32 @@ const ProductList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const productsPerPage = 10;
+  const [allLoadedProducts, setAllLoadedProducts] = useState([]);
 
+  useEffect(() => {
+    // ... (previous code)
+
+    const fetchData = async () => {
+      // ... (previous code)
+
+      try {
+        const response = await getAllProducts();
+        // Concatenate new products with the existing ones
+        setAllLoadedProducts((prevProducts) => [
+          ...prevProducts,
+          ...response.data,
+        ]);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+
+    // ... (previous useEffect content)
+  }, [currentPage]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -53,9 +78,8 @@ const ProductList = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  const paginatedProducts = products.slice(
-    (currentPage - 1) * productsPerPage,
+  const paginatedProducts = allLoadedProducts.slice(
+    0,
     currentPage * productsPerPage
   );
 
@@ -78,6 +102,10 @@ const ProductList = () => {
       behavior: "smooth",
     });
   };
+  const loadMoreProducts = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
   const productListAnimation = useSpring({
     opacity: 1,
     translateY: 0,
@@ -140,11 +168,14 @@ const ProductList = () => {
           </>
         )}
       </div>
-      <div className="flex justify-center mb-4 w-full text-black-2 mt-4 text-center transition-transform transform-gover hover:scale-110">
-        <Link href="/product/listproduct/" className="flex items-center">
-          <FaEye className="mb-1 mr-2" size="2em" />
-          <h2 className="text-2xl font-bold mb-2 mr-2 ">All Products</h2>
-          <span>Lihat Selengkapnya</span>
+      <div className="mb-4 mx-auto text-center w-60  text-white mt-4 flex items-center">
+        <Link
+          href="/product/listproduct/"
+          className="flex items-center justify-center"
+        >
+          <button className="text-1xl bg-meta-1 py-2 rounded-lg px-5 font-bold mb-2 mr-2 transition-transform transform hover:scale-105">
+            Lihat Semua Koleksi
+          </button>
         </Link>
       </div>
       <div className="max-w-280 mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
@@ -152,15 +183,15 @@ const ProductList = () => {
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
-      <div className="mb-4 mx-auto text-center w-60  text-white mt-4 flex items-center">
-        <Link
-          href="/product/listproduct/"
-          className="flex items-center justify-center"
-        >
-          <button className="text-1xl bg-meta-1 py-2 rounded-lg px-5 font-bold mb-2 mr-2">
-            Lihat Semua Koleksi
+      <div className="mb-4 mx-auto text-center text-white mt-4 ">
+        <div className="flex items-center justify-center">
+          <button
+            className="text-2xl  border border-meta-5 text-meta-5 py-4 rounded-lg px-5 font-bold mb-2 mr-2 transition-transform transform hover:scale-105"
+            onClick={loadMoreProducts}
+          >
+            Memuat Lebih Banyak Product
           </button>
-        </Link>
+        </div>
       </div>
       {showScrollButton && (
         <div
@@ -170,7 +201,6 @@ const ProductList = () => {
           <FaChevronUp size="2em" />
         </div>
       )}
-      ;
     </>
   );
 };

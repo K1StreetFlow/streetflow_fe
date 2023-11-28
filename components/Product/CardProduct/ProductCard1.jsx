@@ -10,7 +10,7 @@ const ProductCard1 = ({ product }) => {
 
   return (
     <div>
-      <div className="max-w-xs gap-3 ms-3   rounded-lg overflow-hidden shadow-md mx-auto">
+      <div className="max-w-xs gap-3 ms-3   rounded-lg overflow-hidden shadow-md mx-auto transition-transform transform hover:scale-105">
         <Link href={`/product/detail/${product.id}`}>
           <div className="block">
             <div className="overflow-hidden">

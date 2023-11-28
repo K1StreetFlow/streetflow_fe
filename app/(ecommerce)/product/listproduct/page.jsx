@@ -329,7 +329,7 @@ const AllProduct = () => {
         <button
           key={i}
           className={`mx-1 px-4 py-2 rounded ${
-            i === currentPage ? "bg-primary text-white" : "bg-secondary"
+            i === currentPage ? "bg-primary text-white" : "bg-meta-9 text-black"
           }`}
           onClick={() => setCurrentPage(i)}
         >
@@ -373,7 +373,7 @@ const AllProduct = () => {
       </animated.div>
       {showScrollButton && (
         <div
-          className="fixed bottom-8 z-50 right-8 bg-primary p-3 rounded-full text-white cursor-pointer hover:bg-primary-dark transition"
+          className="fixed bottom-8 z-50 right-8 bg-primary p-3 rounded-full text-white cursor-pointer hover:bg-primary transition"
           onClick={scrollToTop}
         >
           <FaChevronUp size="2em" />
