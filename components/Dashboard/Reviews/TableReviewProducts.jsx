@@ -1,20 +1,99 @@
 "use client";
-import ButtonDelete from "@/components/Dashboard/ButtonDelete";
-import ButtonDetail from "@/components/Dashboard/ButtonDetail";
-import ButtonEdit from "@/components/Dashboard/ButtonEdit";
-
 import Image from "next/image";
+import EditReview from "./editReviewProducts";
+import DeleteReview from "./deleteReviewProducts";
+import DetailReview from "./detailReviewProducts";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-const TableReviewProducts = ({ reviews }) => {
-    const handleDeleteReviews = async () => {
-        try {
-            confirm ("Are you sure want to delete this payment?");
-        } catch (error) {
-            console.log(error);
-        }
+const TableReviewProducts = () => {
+  const [reviews, setReviews] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [orderList, setOrderList] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const reviewsResponse = await axios.get("http://localhost:8000/api/review-products", {
+          withCredentials: true,
+        });
+        console.log("Reviews Data:", reviewsResponse.data);
+        setReviews(reviewsResponse.data);
+
+        const usersResponse = await axios.get("http://localhost:8000/api/user", {
+          withCredentials: true,
+        });
+        console.log("Users Data:", usersResponse.data);
+        setUsers(usersResponse.data);
+
+        const productsResponse = await axios.get("http://localhost:8000/api/products", {
+          withCredentials: true,
+        });
+        console.log("Products Data:", productsResponse.data);
+        setProducts(productsResponse.data);
+
+        const orderListResponse = await axios.get("http://localhost:8000/api/order", {
+          withCredentials: true,
+        });
+        console.log("Order List Data:", orderListResponse.data);
+        setOrderList(orderListResponse.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
-    return (
-        <div className="rounded-sm"></div>
-    )
-}
+    fetchData();
+  }, []); // Empty dependency array ensures useEffect runs once when the component mounts
+
+  let count = 1;
+
+  // Continue with the rest of your component logic, using the state variables
+
+  return (
+    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="py-6 px-4 md:px-6 xl:px-7.5">{/* <AddReview users={users} products={products} order_list={order_list} /> */}</div>
+
+      <div className="py-10 px-10">
+        <table className="table w-full">
+          <thead>
+            <tr className="bg-gray-2 text-left dark:bg-meta-4">
+              <th className="py-4 px-4 font-medium text-black dark:text-white">#</th>
+              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">Customer Name</th>
+              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">Product Name</th>
+              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">Code Order</th>
+              <th className="py-4 px-4 font-medium text-black dark:text-white">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reviews.data?.map((review, key) => (
+              <tr key={key}>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <h6 className="font-medium text-black dark:text-white">{review.id}</h6>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <h5 className="font-medium text-black dark:text-white">{review.user_customer.fullname}</h5>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <h5 className="font-medium text-black dark:text-white">{review.products.name_product}</h5>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <h5 className="font-medium text-black dark:text-white">{review.order_list.code_order}</h5>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <div className="flex items-center justify-center space-x-3.5">
+                    <DetailReview id={review?.id} />
+                    <EditReview review={review} user_customer={users} products={products} order_list={orderList} />
+                    <DeleteReview {...review} />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export default TableReviewProducts;
