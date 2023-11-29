@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
+import Image from "next/image";
 
 import { formatDate } from "@/app/utils/formatDate";
 
@@ -183,7 +184,19 @@ const Payment = ({ params }) => {
                 Virtual Account Type
               </label>
               <div className="relative">
-                <h3>{data?.va_type || "N/A"}</h3>
+                {data.va_type === "bri" ? (
+                  <Image src="/images/logo/bri.webp" width={60} height={60} />
+                ) : data.va_type === "cimb" ? (
+                  <Image
+                    src={"/images/logo/cimb.svg"}
+                    width={120}
+                    height={120}
+                  />
+                ) : data.va_type === "bni" ? (
+                  <Image src={"/images/logo/bni.png"} width={70} height={70} />
+                ) : (
+                  <Image src={"/images/logo/bca.png"} width={70} height={70} />
+                )}
               </div>
             </div>
             <div className="w-1/3">

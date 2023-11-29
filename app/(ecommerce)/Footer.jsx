@@ -11,9 +11,7 @@ export default function Footer() {
           height={500}
           className="w-40 rounded "
         />
-        <p>
-          Copyright
-        </p>
+        <p>Copyright © 2023 - All right reserved by Streetflow</p>
       </aside>
       <nav>
         <header className="footer-title">Social</header>
