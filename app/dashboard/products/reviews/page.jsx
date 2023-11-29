@@ -1,5 +1,5 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import TableReviewProducts from "@/app/dashboard/products/reviews/TableReviewProducts";
+import TableReviewProducts from "@/components/Dashboard/Reviews/TableReviewProducts";
 const Reviews = () => {
   return (
     <>

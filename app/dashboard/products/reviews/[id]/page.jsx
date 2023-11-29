@@ -1,6 +1,6 @@
 import React from "react";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import BackReview from "@/app/dashboard/products/reviews/backReviewProducts";
+import BackReview from "../../../../../components/Dashboard/Reviews/backReviewProducts";
 import Image from "next/image";
 async function getReviewProductById(id) {
   const res = await fetch(`http://localhost:8000/api/review-products/${id}`, {
@@ -66,7 +66,7 @@ const ReviewProducts = async ({ params }) => {
                 Customer Name
               </label>
               <div className="relative">
-                <h3>{data?.users_customer?.fullname || "N/A"}</h3>
+                <h3>{data?.user_customer?.fullname || "N/A"}</h3>
               </div>
               <div className="h-5"></div>
               <label className="mb-3 block text-sm font-medium text-black dark:text-white" htmlFor="messageReview">
