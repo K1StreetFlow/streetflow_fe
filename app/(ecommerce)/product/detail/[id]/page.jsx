@@ -4,11 +4,12 @@ import "@/app/globals.css";
 import "@/app/satoshi.css";
 import React, { useEffect, useState } from "react";
 import { getProductById } from "@/app/dashboard/products/api/ProductApi";
-import { FaShoppingCart, FaCheck } from "react-icons/fa";
+import { FaShoppingCart, FaCheck, FaStar, FaRegStar } from "react-icons/fa";
 import LoginModal from "@/components/Product/modalproduct/LoginModal";
 import Loader from "@/components/common/Loader";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import Image from "next/image";
 
 const ProductPage = ({ params }) => {
   const { id } = params;
@@ -18,7 +19,6 @@ const ProductPage = ({ params }) => {
   const [showModalLogin, setShowModalLogin] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
-
 
   const router = useRouter();
 
@@ -121,9 +121,22 @@ const ProductPage = ({ params }) => {
   if (!product) {
     return <Loader />;
   }
+  const StarRating = ({ rating }) => {
+    const stars = Array.from({ length: 5 }, (_, index) => (
+      <span key={index}>
+        {index < rating ? (
+          <FaStar className="h-5 w-5 text-warning" />
+        ) : (
+          <FaRegStar className="h-5 w-5 text-graydark" />
+        )}
+      </span>
+    ));
+
+    return <div className="flex">{stars}</div>;
+  };
 
   return (
-    <div className="container mx-auto my-8 grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-8">
+    <div className="container mx-auto mt-8 grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-5">
       {/* Kolom 1: Gambar Produk */}
       <div
         className="col-span-12 lg:col-span-4 hover:cursor-pointer"
@@ -157,11 +170,12 @@ const ProductPage = ({ params }) => {
             <p>Size: {product.size_product}</p>
             <p>Warna: {product.colour_product}</p>
             <p>Category :{product.category.name_category_products}</p>
+            <div className="mb-4 text-black-2"></div>
           </div>
           <h2 className="font-bold lg:text-title-lg text-black-2 mt-2">
             Deskripsi Product
           </h2>
-          <p className=" text-black text-sm lg:text-lg overflow-y-auto h-45 md:h-50">
+          <p className=" text-black text-sm lg:text-lg overflow-y-auto h-full md:h-50">
             {product.description_product}
           </p>
         </div>
@@ -214,20 +228,62 @@ const ProductPage = ({ params }) => {
           </div>
         </div>
       </div>
+      {/* Kolom 4: Review Produk */}
+      <div className="col-span-12 mx-auto lg:col-span-5">
+        <div className="mt-4">
+          <h2 className="font-bold text-2xl text-black-2 mb-4">
+            Review Product
+          </h2>
+          {product.review_products.map((review) => {
+            const reviewDate = new Date(review.createdAt);
+            const formattedDate = `${reviewDate.toLocaleDateString(
+              "id-ID"
+            )} ${reviewDate.toLocaleTimeString("id-ID")}`;
+
+            return (
+              <div
+                key={review.id}
+                className="bg-white p-4 rounded-md shadow-md mb-4"
+              >
+                <div className="flex items-center mb-2">
+                  <StarRating rating={review.number_review} />
+                </div>
+                <div className="flex items-center mb-2">
+                  {/* User Profile Picture (Placeholder) */}
+                  <img
+                    src="https://via.placeholder.com/40"
+                    alt="User Profile"
+                    className="w-8 h-8 rounded-full mr-2"
+                  />
+                  {/* User ID and Timestamp */}
+                  <p className="text-gray-600 font-semibold">{formattedDate}</p>
+                </div>
+                {/* Review Message */}
+                <p className="text-black">{review.message_review}</p>
+                <Image
+                  src={`http://localhost:8000/api/review-products-photo/view/${review.photo_review}`}
+                  width={100} // Adjust the width as needed
+                  height={100} // Adjust the height as needed
+                  alt="Customer Image"
+                  className="w-16 h-16 rounded-xl shadow-1 mt-4 object-fill"
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {showImageModal && (
         <div className="fixed inset-0 z-999999 flex items-center justify-center">
           <div className="absolute inset-0 bg-black opacity-90"></div>
           <div className="relative z-10">
-            {/* Modal content */}
             <div className="bg-white p-4 rounded-md shadow-md">
-              {/* Display detailed image */}
               <img
                 src={`http://localhost:8000/api/photo_products/view/${product.photo.photo_product}`}
                 alt={product.name_product}
                 className="w-auto object-cover h-auto rounded-md"
               />
 
-              {/* Close button */}
               <button
                 onClick={() => setShowImageModal(false)}
                 className="mt-4 px-3 py-2 bg-primary text-white rounded-md"
