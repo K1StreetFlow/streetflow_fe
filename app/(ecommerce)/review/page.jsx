@@ -1,7 +1,7 @@
 import React from "react";
 import "../../satoshi.css";
 import "../../globals.css";
-import ReviewPages from "./Reviews";
+import ReviewPages from "@/components/Reviews/Reviews.jsx";
 import { cookies } from "next/headers";
 
 async function getUserOrder() {
