@@ -12,13 +12,14 @@ function getImageUrl(filename) {
 	return `http://localhost:8000/api/photo_products/view/${filename}`;
 }
 
-const ReviewPages = ({ orderdata, token }) => {
+const ReviewPages = ({ orderdata, review, token }) => {
 	const router = useRouter();
 	const [orders, setOrders] = useState([]);
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [selectedProduct, setSelectedProduct] = useState(null);
 	const [reviewMessage, setReviewMessage] = useState("");
 	const [reviewNumber, setReviewNumber] = useState(0);
+	const [reviewPhoto, setReviewPhoto] = useState(null);
 	const [productId, setProductId] = useState(null);
 	const [orderListId, setOrderListId] = useState(null);
 	const [orderStatus, setOrderStatus] = useState(null);
@@ -38,8 +39,9 @@ const ReviewPages = ({ orderdata, token }) => {
 
 	const submitReview = async (event) => {
 		event.preventDefault();
-
+	
 		const review = {
+			id,
 			id_users_customer: customerId,
 			id_products: productId,
 			id_order_list: orderListId,
@@ -47,33 +49,63 @@ const ReviewPages = ({ orderdata, token }) => {
 			message_review: reviewMessage,
 			number_review: reviewNumber,
 		};
-
+	
 		try {
-			const response = await fetch("http://localhost:8000/api/review-products/user", {
+			const reviewResponse = await fetch("http://localhost:8000/api/review-products/user", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					accept: "application/json",
-					cookie: `tokenCustomer=${token}`,
+					"Accept": "application/json",
+					"Cookie": `tokenCustomer=${token}`,
 				},
 				credentials: "include",
 				body: JSON.stringify(review),
 			});
-
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
+	
+			if (!reviewResponse.ok) {
+				throw new Error(`Failed to submit review. HTTP error! status: ${reviewResponse.status}`);
 			}
-
-			const data = await response.json();
-
-			// Do something with the response data
-			console.log(data);
-
-			closeModal();
-		} catch (error) {
-			console.error("Failed to submit review:", error);
+	
+			const reviewData = await reviewResponse.json();
+			const reviewId = reviewData.id;
+			console.log("Review submitted:", reviewData);
+			console.log(reviewId);
+			if (reviewResponse.ok) {
+				const formData = new FormData();
+				formData.append('photo_review', reviewPhoto);
+				
+				try {
+					const photoResponse = await fetch(`http://localhost:8000/api/review-products-photo/${reviewId}`, {
+						method: "PUT",
+						headers: {
+							"Cookie": `tokenCustomer=${token}`,
+						},
+						body: formData,
+						credentials: "include",
+					});
+		
+					if (!photoResponse.ok) {
+						throw new Error(`Failed to submit review photo. HTTP error! status: ${photoResponse.status}`);
+					}
+		
+					const photoData = await photoResponse.json();
+					console.log("Review photo submitted:", photoData);
+		
+					closeModal();
+				} catch (photoError) {
+					console.error("Failed to submit review photo:", photoError);
+					// Provide specific feedback to the user about photo submission failure
+				}
+			}
+			
+		} catch (reviewError) {
+			console.error("Failed to submit review:", reviewError);
+			// Provide specific feedback to the user about review submission failure
 		}
 	};
+	
+	
+	
 
 	useEffect(() => {
 		if (!token) {
@@ -157,7 +189,7 @@ const ReviewPages = ({ orderdata, token }) => {
 											isOpen={modalIsOpen}
 											onRequestClose={closeModal}
 											contentLabel="Review Modal"
-											className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-50"
+											className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-graydark bg-opacity-80"
 										>
 											<div className="bg-white rounded-lg max-w-md mx-auto md:mt-24">
 												<div className="flex flex-col items-start p-4">
@@ -187,7 +219,7 @@ const ReviewPages = ({ orderdata, token }) => {
 													</div>
 													<form onSubmit={submitReview} className="w-full">
 														<label className="mt-3 text-gray-700">
-															Review:
+															Message Review:
 															<input
 																type="text"
 																name="review"
@@ -198,16 +230,65 @@ const ReviewPages = ({ orderdata, token }) => {
 															/>
 														</label>
 														<label className="mt-3 text-gray-700">
-															Number:
-															<input
-																type="number"
-																name="number"
-																value={reviewNumber}
-																onChange={(e) => setReviewNumber(e.target.value)}
+															Number Review:
+															<br />
+															<div className="rating rating-md mt-1 p-2 border rounded-md">
+																<input
+																type="radio"
+																name="rating-4"
+																className="mask mask-star-2 bg-orange-400"
+																value="1"
+																onChange={() => setReviewNumber(1)}
+																checked={reviewNumber === 1}
+																/>
+																<input
+																type="radio"
+																name="rating-4"
+																className="mask mask-star-2 bg-orange-400"
+																value="2"
+																onChange={() => setReviewNumber(2)}
+																checked={reviewNumber === 2}
+																/>
+																<input
+																type="radio"
+																name="rating-4"
+																className="mask mask-star-2 bg-orange-400"
+																value="3"
+																onChange={() => setReviewNumber(3)}
+																checked={reviewNumber === 3}
+																/>
+																<input
+																type="radio"
+																name="rating-4"
+																className="mask mask-star-2 bg-orange-400"
+																value="4"
+																onChange={() => setReviewNumber(4)}
+																checked={reviewNumber === 4}
+																/>
+																<input
+																type="radio"
+																name="rating-4"
+																className="mask mask-star-2 bg-orange-400"
+																value="5"
+																onChange={() => setReviewNumber(5)}
+																checked={reviewNumber === 5}
+																/>
+															</div>
+														</label>
+														<br />
+														<label for="reviewPhoto" className="mt-3 text-gray-700">
+															Review Photo:
+															<input 
+																type="file" 
+																id="reviewPhoto" 
+																name="reviewPhoto" 
+																accept="image/*" 
 																required
 																className="mt-1 p-2 w-full border rounded-md"
+																onChange={(e) => setReviewPhoto(e.target.files[0])}
 															/>
 														</label>
+														
 														<button
 															type="submit"
 															className="mt-3 w-full py-2 px-4 bg-meta-5 text-black text-sm font-medium rounded-md"
