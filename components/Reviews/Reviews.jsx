@@ -29,6 +29,7 @@ const ReviewPages = ({ orderdata, review, token }) => {
 		setOrderListId(order.id);
 		setOrderStatus(order.status_order); // Save the order status
 		setCustomerId(order.id_users_customer); // Save the customer id
+		setSelectedProduct(detail.product);
 		setModalIsOpen(true);
 	};
 
@@ -38,7 +39,7 @@ const ReviewPages = ({ orderdata, review, token }) => {
 
 	const submitReview = async (event) => {
 		event.preventDefault();
-	
+
 		const review = {
 			id_users_customer: customerId,
 			id_products: productId,
@@ -47,65 +48,60 @@ const ReviewPages = ({ orderdata, review, token }) => {
 			message_review: reviewMessage,
 			number_review: reviewNumber,
 		};
-	
+
 		try {
 			const reviewResponse = await fetch("http://localhost:8000/api/review-products/user", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					"Accept": "application/json",
-					"Cookie": `tokenCustomer=${token}`,
+					Accept: "application/json",
+					Cookie: `tokenCustomer=${token}`,
 				},
 				credentials: "include",
 				body: JSON.stringify(review),
 			});
-	
+
 			if (!reviewResponse.ok) {
 				throw new Error(`Failed to submit review. HTTP error! status: ${reviewResponse.status}`);
 			}
-	
+
 			const reviewData = await reviewResponse.json();
 			const reviewId = reviewData.data.id;
 			console.log("Review submitted:", reviewData);
-			
+
 			if (reviewResponse.ok) {
 				const formData = new FormData();
-				formData.append('photo_review', reviewPhoto);
-				
+				formData.append("photo_review", reviewPhoto);
+
 				try {
-					
 					console.log(reviewId);
 					const photoResponse = await fetch(`http://localhost:8000/api/review-products-photo/${reviewId}`, {
 						method: "PUT",
 						headers: {
-							"Cookie": `tokenCustomer=${token}`,
+							Cookie: `tokenCustomer=${token}`,
 						},
 						body: formData,
 						credentials: "include",
 					});
-		
+
 					if (!photoResponse.ok) {
 						throw new Error(`Failed to submit review photo. HTTP error! status: ${photoResponse.status}`);
 					}
-		
+
 					const photoData = await photoResponse.json();
 					console.log("Review photo submitted:", photoData);
-		
+
 					closeModal();
 				} catch (photoError) {
 					console.error("Failed to submit review photo:", photoError);
 					// Provide specific feedback to the user about photo submission failure
 				}
 			}
-			
 		} catch (reviewError) {
 			console.error("Failed to submit review:", reviewError);
 			// Provide specific feedback to the user about review submission failure
 		}
 	};
-	
-	
-	
 
 	useEffect(() => {
 		if (!token) {
@@ -165,44 +161,46 @@ const ReviewPages = ({ orderdata, review, token }) => {
 								</div>
 								<div className="flex">
 									<div className="item-content">
-										{order.cart.cart_detail.map((detail) => (
-											<div className="flex justify-between mb-2" key={detail.id}>
-												<div className="flex items-center">
-													<Image
-														src={getImageUrl(detail.product.photo.photo_product)}
-														width={100}
-														height={100}
-														alt="product"
-														className="rounded-lg mr-4"
-													></Image>
-													<p className="font-bold">{detail.product.name_product}</p>
+										{order.cart.checkout_product
+											.filter((detail) => detail.id_order === order.id)
+											.map((detail) => (
+												<div className="flex justify-between mb-2" key={detail.id}>
+													<div className="flex items-center">
+														<Image
+															src={getImageUrl(detail.product.photo.photo_product)}
+															width={100}
+															height={100}
+															alt="product"
+															className="rounded-lg mr-4"
+														></Image>
+														<p className="font-bold">{detail.product.name_product}</p>
+													</div>
+													<div className="border-line pl-5 flex items-center justify-center w-46">
+														<button className="button-ulasan" onClick={() => openModal(order, detail)}>
+															Review
+														</button>
+													</div>
 												</div>
-												<div className="border-line pl-5 flex items-center justify-center w-46">
-													<button className="button-ulasan" onClick={() => openModal(order, detail)}>
-														Review
-													</button>
-												</div>
-											</div>
-										))}
+											))}
 
 										<Modal
 											isOpen={modalIsOpen}
 											onRequestClose={closeModal}
 											contentLabel="Review Modal"
-											className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-graydark bg-opacity-80"
+											className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-black bg-opacity-10"
 										>
 											<div className="bg-white rounded-lg max-w-md mx-auto md:mt-24">
 												<div className="flex flex-col items-start p-4">
 													<div className="flex items-center w-full">
-														<h3 className="text-gray-900 font-medium text-lg">
-															Review for {selectedProduct?.name_product}
+														<h3 className="text-black font-medium text-lg">
+															Review for <span className="font-bold">&quot;{selectedProduct?.name_product}&quot;</span>
 														</h3>
 														<button
 															onClick={closeModal}
 															className="ml-auto bg-transparent hover:bg-gray-200 rounded-full p-1"
 														>
 															<svg
-																className="w-6 h-6 text-gray-400 hover:text-gray-800"
+																className="w-6 h-6 text-black hover:text-gray-800"
 																fill="none"
 																stroke="currentColor"
 																viewBox="0 0 24 24"
@@ -217,84 +215,87 @@ const ReviewPages = ({ orderdata, review, token }) => {
 															</svg>
 														</button>
 													</div>
-													<form onSubmit={submitReview} className="w-full">
-														<label className="mt-3 text-gray-700">
-															Message Review:
+													<form onSubmit={submitReview} className="w-full space-y-2 mt-3">
+														<div>
+															<label className="mt-3 text-black">Message Review:</label>
 															<input
 																type="text"
 																name="review"
 																value={reviewMessage}
 																onChange={(e) => setReviewMessage(e.target.value)}
 																required
-																className="mt-1 p-2 w-full border rounded-md"
+																className="mt-1 p-2 w-full border rounded-md bg-white"
 															/>
-														</label>
-														<label className="mt-3 text-gray-700">
-															Number Review:
+														</div>
+														<div>
+															<label className="mt-3 text-black">Number Review:</label>
 															<br />
 															<div className="rating rating-md mt-1 p-2 border rounded-md">
 																<input
-																type="radio"
-																name="rating-4"
-																className="mask mask-star-2 bg-orange-400"
-																value="1"
-																onChange={() => setReviewNumber(1)}
-																checked={reviewNumber === 1}
+																	type="radio"
+																	name="rating-4"
+																	className="mask mask-star-2 bg-orange-400"
+																	value="1"
+																	onChange={() => setReviewNumber(1)}
+																	checked={reviewNumber === 1}
 																/>
 																<input
-																type="radio"
-																name="rating-4"
-																className="mask mask-star-2 bg-orange-400"
-																value="2"
-																onChange={() => setReviewNumber(2)}
-																checked={reviewNumber === 2}
+																	type="radio"
+																	name="rating-4"
+																	className="mask mask-star-2 bg-orange-400"
+																	value="2"
+																	onChange={() => setReviewNumber(2)}
+																	checked={reviewNumber === 2}
 																/>
 																<input
-																type="radio"
-																name="rating-4"
-																className="mask mask-star-2 bg-orange-400"
-																value="3"
-																onChange={() => setReviewNumber(3)}
-																checked={reviewNumber === 3}
+																	type="radio"
+																	name="rating-4"
+																	className="mask mask-star-2 bg-orange-400"
+																	value="3"
+																	onChange={() => setReviewNumber(3)}
+																	checked={reviewNumber === 3}
 																/>
 																<input
-																type="radio"
-																name="rating-4"
-																className="mask mask-star-2 bg-orange-400"
-																value="4"
-																onChange={() => setReviewNumber(4)}
-																checked={reviewNumber === 4}
+																	type="radio"
+																	name="rating-4"
+																	className="mask mask-star-2 bg-orange-400"
+																	value="4"
+																	onChange={() => setReviewNumber(4)}
+																	checked={reviewNumber === 4}
 																/>
 																<input
-																type="radio"
-																name="rating-4"
-																className="mask mask-star-2 bg-orange-400"
-																value="5"
-																onChange={() => setReviewNumber(5)}
-																checked={reviewNumber === 5}
+																	type="radio"
+																	name="rating-4"
+																	className="mask mask-star-2 bg-orange-400"
+																	value="5"
+																	onChange={() => setReviewNumber(5)}
+																	checked={reviewNumber === 5}
 																/>
 															</div>
-														</label>
-														<br />
-														<label for="reviewPhoto" className="mt-3 text-gray-700">
-															Review Photo:
-															<input 
-																type="file" 
-																id="reviewPhoto" 
-																name="reviewPhoto" 
-																accept="image/*" 
+														</div>
+
+														<div>
+															<label for="reviewPhoto" className="mt-3 text-black">
+																Review Photo:
+															</label>
+															<input
+																type="file"
+																id="reviewPhoto"
+																name="reviewPhoto"
+																accept="image/*"
 																required
 																className="mt-1 p-2 w-full border rounded-md"
 																onChange={(e) => setReviewPhoto(e.target.files[0])}
 															/>
-														</label>
-														
-														<button
-															type="submit"
-															className="mt-3 w-full py-2 px-4 bg-meta-5 text-black text-sm font-medium rounded-md"
-														>
-															Submit
-														</button>
+														</div>
+														<div>
+															<button
+																type="submit"
+																className="mt-3 w-full py-2 px-4 bg-primary text-white text-base font-bold rounded-md hover:bg-white hover:text-black hover:border-primary border-2 border-primary"
+															>
+																Submit
+															</button>
+														</div>
 													</form>
 												</div>
 											</div>
