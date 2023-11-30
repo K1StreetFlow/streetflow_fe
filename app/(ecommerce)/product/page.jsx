@@ -12,197 +12,172 @@ import { getAllProducts } from "@/app/dashboard/products/api/ProductApi";
 import Loader from "@/components/common/Loader";
 import Carousel from "@/components/Product/CardProduct/Corosel";
 import { useSpring, animated } from "react-spring";
-import {
-  FaShoppingCart,
-  FaStar,
-  FaCheck,
-  FaEye,
-  FaChevronUp,
-} from "react-icons/fa";
+import { FaShoppingCart, FaStar, FaCheck, FaEye, FaChevronUp } from "react-icons/fa";
 
 const ProductList = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [showScrollButton, setShowScrollButton] = useState(false);
-  const productsPerPage = 10;
-  const [allLoadedProducts, setAllLoadedProducts] = useState([]);
+	const [products, setProducts] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [showScrollButton, setShowScrollButton] = useState(false);
+	const productsPerPage = 10;
+	const [allLoadedProducts, setAllLoadedProducts] = useState([]);
 
-  useEffect(() => {
-    // ... (previous code)
+	useEffect(() => {
+		// ... (previous code)
 
-    const fetchData = async () => {
-      // ... (previous code)
+		const fetchData = async () => {
+			// ... (previous code)
 
-      try {
-        const response = await getAllProducts();
-        // Concatenate new products with the existing ones
-        setAllLoadedProducts((prevProducts) => [
-          ...prevProducts,
-          ...response.data,
-        ]);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+			try {
+				const response = await getAllProducts();
+				// Concatenate new products with the existing ones
+				setAllLoadedProducts((prevProducts) => [...prevProducts, ...response.data]);
+			} catch (error) {
+				console.error("Error fetching products:", error);
+			} finally {
+				setLoading(false);
+			}
+		};
 
-    fetchData();
+		fetchData();
 
-    // ... (previous useEffect content)
-  }, [currentPage]);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getAllProducts();
-        setProducts(response.data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+		// ... (previous useEffect content)
+	}, [currentPage]);
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const response = await getAllProducts();
+				setProducts(response.data);
+			} catch (error) {
+				console.error("Error fetching products:", error);
+			} finally {
+				setLoading(false);
+			}
+		};
 
-    fetchData();
-    const handleScroll = () => {
-      // Jika posisi scroll lebih besar dari 200px, tampilkan tombol; sebaliknya sembunyikan
-      setShowScrollButton(window.scrollY > 200);
-    };
+		fetchData();
+		const handleScroll = () => {
+			// Jika posisi scroll lebih besar dari 200px, tampilkan tombol; sebaliknya sembunyikan
+			setShowScrollButton(window.scrollY > 200);
+		};
 
-    // Menambahkan event listener untuk mendeteksi scroll
-    window.addEventListener("scroll", handleScroll);
+		// Menambahkan event listener untuk mendeteksi scroll
+		window.addEventListener("scroll", handleScroll);
 
-    // Membersihkan event listener ketika komponen dilepas
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-  const paginatedProducts = allLoadedProducts.slice(
-    0,
-    currentPage * productsPerPage
-  );
+		// Membersihkan event listener ketika komponen dilepas
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+		};
+	}, []);
+	const paginatedProducts = allLoadedProducts.slice(0, currentPage * productsPerPage);
 
-  const filteredProductsCategory1 = products.filter(
-    (product) => product.category && product.category.id === 1
-  );
-  const filteredProductsCategory2 = products.filter(
-    (product) => product.category && product.category.id === 2
-  );
-  const filteredProductsCategory3 = products.filter(
-    (product) => product.category && product.category.id === 3
-  );
+	const filteredProductsCategory1 = products.filter((product) => product.category && product.category.id === 1);
+	const filteredProductsCategory2 = products.filter((product) => product.category && product.category.id === 2);
+	const filteredProductsCategory3 = products.filter((product) => product.category && product.category.id === 3);
 
-  const getCategoryName = (categoryData) =>
-    categoryData?.name_category_products || "Uncategorized";
+	const getCategoryName = (categoryData) => categoryData?.name_category_products || "Uncategorized";
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-  const loadMoreProducts = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
+	const scrollToTop = () => {
+		window.scrollTo({
+			top: 0,
+			behavior: "smooth",
+		});
+	};
+	const loadMoreProducts = () => {
+		setCurrentPage((prevPage) => prevPage + 1);
+	};
 
-  const productListAnimation = useSpring({
-    opacity: 1,
-    translateY: 0,
-    from: { opacity: 0, translateY: 200 },
-    config: { duration: 900 },
-  });
+	const productListAnimation = useSpring({
+		opacity: 1,
+		translateY: 0,
+		from: { opacity: 0, translateY: 200 },
+		config: { duration: 900 },
+	});
 
-  return (
-    <>
-      <div className="container mx-auto mt-10">
-        {loading ? (
-          <Loader />
-        ) : (
-          <>
-            <animated.div style={productListAnimation}>
-              <Carousel />
-              {/* Carousel component */}
+	return (
+		<>
+			<div className="container mx-auto mt-10">
+				{loading ? (
+					<Loader />
+				) : (
+					<>
+						<animated.div style={productListAnimation}>
+							<Carousel />
+							{/* Carousel component */}
 
-              {/* Section for Category 1 */}
-              <div className="flex items-center mb-4 bg-primary w-60 p-3 text-white mt-5 rounded-ee-xl">
-                <FaShoppingCart className="mr-1" size="2em" />
-                <h2 className="text-2xl font-bold">
-                  {getCategoryName(filteredProductsCategory1[0]?.category)}{" "}
-                  Products
-                </h2>
-              </div>
-              <CardSlider
-                cards={filteredProductsCategory1.map((product) => (
-                  <ProductCard1 key={product.id} product={product} />
-                ))}
-              />
+							{/* Section for Category 1 */}
+							<div className="flex items-center mb-4 bg-primary w-60 p-3 text-white mt-5 rounded-ee-xl">
+								<FaShoppingCart className="mr-1" size="2em" />
+								<h2 className="text-2xl font-bold">
+									{getCategoryName(filteredProductsCategory1[0]?.category)} Products
+								</h2>
+							</div>
+							<CardSlider
+								cards={filteredProductsCategory1.map((product) => (
+									<ProductCard1 key={product.id} product={product} />
+								))}
+							/>
 
-              <div className="flex items-center mb-4 bg-meta-8 w-60 p-3 text-white mt-5 rounded-ee-xl">
-                <FaStar className="mr-1" size="2em" />
-                <h2 className="text-2xl font-bold">
-                  {getCategoryName(filteredProductsCategory2[0]?.category)}{" "}
-                  Products
-                </h2>
-              </div>
-              <CardSlider
-                cards={filteredProductsCategory2.map((product) => (
-                  <ProductCard2 key={product.id} product={product} />
-                ))}
-              />
+							<div className="flex items-center mb-4 bg-meta-8 w-60 p-3 text-white mt-5 rounded-ee-xl">
+								<FaStar className="mr-1" size="2em" />
+								<h2 className="text-2xl font-bold">
+									{getCategoryName(filteredProductsCategory2[0]?.category)} Products
+								</h2>
+							</div>
+							<CardSlider
+								cards={filteredProductsCategory2.map((product) => (
+									<ProductCard2 key={product.id} product={product} />
+								))}
+							/>
 
-              {/* Section for Category 3 */}
-              <div className="flex items-center mb-4 bg-black w-60 p-3 text-white mt-5 rounded-ee-xl">
-                <FaCheck className="mr-1" size="2em" />
-                <h2 className="text-2xl font-bold">
-                  {getCategoryName(filteredProductsCategory3[0]?.category)}{" "}
-                  Products
-                </h2>
-              </div>
-              <CardSlider
-                cards={filteredProductsCategory3.map((product) => (
-                  <ProductCard3 key={product.id} product={product} />
-                ))}
-              />
-            </animated.div>
-          </>
-        )}
-      </div>
-      <div className="mb-4 mx-auto text-center w-60  text-white mt-4 flex items-center">
-        <Link
-          href="/product/listproduct/"
-          className="flex items-center justify-center"
-        >
-          <button className="text-1xl bg-meta-1 py-2 rounded-lg px-5 font-bold mb-2 mr-2 transition-transform transform hover:scale-105">
-            Lihat Semua Koleksi
-          </button>
-        </Link>
-      </div>
-      <div className="max-w-280 mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
-        {paginatedProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
-      <div className="mb-4 mx-auto text-center text-white mt-4 ">
-        <div className="flex items-center justify-center">
-          <button
-            className="text-2xl  border border-meta-5 text-meta-5 py-4 rounded-lg px-5 font-bold mb-2 mr-2 transition-transform transform hover:scale-105"
-            onClick={loadMoreProducts}
-          >
-            Memuat Lebih Banyak Product
-          </button>
-        </div>
-      </div>
-      {showScrollButton && (
-        <div
-          className="fixed bottom-8 z-30 right-8 bg-primary p-3 rounded-full text-white cursor-pointer hover:bg-primary-dark transition"
-          onClick={scrollToTop}
-        >
-          <FaChevronUp size="2em" />
-        </div>
-      )}
-    </>
-  );
+							{/* Section for Category 3 */}
+							<div className="flex items-center mb-4 bg-black w-60 p-3 text-white mt-5 rounded-ee-xl">
+								<FaCheck className="mr-1" size="2em" />
+								<h2 className="text-2xl font-bold">
+									{getCategoryName(filteredProductsCategory3[0]?.category)} Products
+								</h2>
+							</div>
+							<CardSlider
+								cards={filteredProductsCategory3.map((product) => (
+									<ProductCard3 key={product.id} product={product} />
+								))}
+							/>
+						</animated.div>
+					</>
+				)}
+			</div>
+			<div className="mb-4 mx-auto text-center w-60  text-white mt-4 flex items-center">
+				<Link href="/product/listproduct/" className="flex items-center justify-center">
+					<button className="text-1xl bg-meta-1 py-2 rounded-lg px-5 font-bold mb-2 mr-2 transition-transform transform hover:scale-105">
+						See All Products
+					</button>
+				</Link>
+			</div>
+			<div className="max-w-280 mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+				{paginatedProducts.map((product) => (
+					<ProductCard key={product.id} product={product} />
+				))}
+			</div>
+			<div className="mb-4 mx-auto text-center text-white mt-4 ">
+				<div className="flex items-center justify-center">
+					<button
+						className="text-1xl bg-meta-1 py-2 rounded-lg px-5 font-bold mb-2 mr-2 transition-transform transform hover:scale-105"
+						onClick={loadMoreProducts}
+					>
+						More Products
+					</button>
+				</div>
+			</div>
+			{showScrollButton && (
+				<div
+					className="fixed bottom-8 z-30 right-8 bg-primary p-3 rounded-full text-white cursor-pointer hover:bg-primary-dark transition"
+					onClick={scrollToTop}
+				>
+					<FaChevronUp size="2em" />
+				</div>
+			)}
+		</>
+	);
 };
 
 export default ProductList;
