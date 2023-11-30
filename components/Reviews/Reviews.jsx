@@ -30,7 +30,7 @@ const ReviewPages = ({ orderdata, review, token, orderId }) => {
   function reviewProductId(productId) {
     let isReview = false;
     reviewProduct.forEach((item) => {
-      if (item.id_products === productId) {
+      if (item.id_products == productId && item.id_order_list == orderId) {
         isReview = true;
       }
     });

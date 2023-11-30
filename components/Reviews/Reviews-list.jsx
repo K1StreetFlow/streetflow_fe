@@ -24,10 +24,10 @@ const ReviewPages = ({ orderdata, review, token }) => {
   const [orderStatus, setOrderStatus] = useState(null);
   const [customerId, setCustomerId] = useState(null);
 
-  function reviewProductId(productId) {
+  function reviewProductId(productId, orderId) {
     let isReview = false;
     review.forEach((item) => {
-      if (item.id_products === productId) {
+      if (item.id_products == productId && item.id_order_list == orderId) {
         isReview = true;
       }
     });
@@ -212,7 +212,7 @@ const ReviewPages = ({ orderdata, review, token }) => {
                             </p>
                           </div>
                           <div className="border-line pl-5 flex items-center justify-center w-46">
-                            {reviewProductId(detail.product.id) ? (
+                            {reviewProductId(detail.product.id, order.id) ? (
                               <button className="btn btn-disabled ">
                                 Review
                               </button>
