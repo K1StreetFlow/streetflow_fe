@@ -26,19 +26,6 @@ const OrderTransaction = ({ orderdata, token }) => {
 		setIsModalOpen(!isModalOpen);
 	};
 
-	async function handleReview(id) {
-		const res = await axios.get(`http://localhost:8000/api/order/${id}`);
-		let cart_detail = res.data.data.cart.cart_detail;
-		// console.log(cart_detail);
-		cart_detail.map(async (item) => {
-			await axios.post(`http://localhost:8000/api/review-products/user`, {
-				id_products: item.id_product,
-				id_users_customer: res.data.data.cart.id_users_customer,
-				id_order_list: res.data.data.id,
-			});
-		});
-	}
-
 	useEffect(() => {
 		if (!token) {
 			router.push("/login");
@@ -241,9 +228,7 @@ const OrderTransaction = ({ orderdata, token }) => {
 											</button>
 											{order.status_order === "Completed" && (
 												<Link href="/review">
-													<button className="button-ulasan" onClick={() => handleReview(order.id)}>
-														Review
-													</button>
+													<button className="button-ulasan">Review</button>
 												</Link>
 											)}
 											{order.status_order === "Unpaid" && <button className="button-ulasan">Payment</button>}
@@ -253,13 +238,21 @@ const OrderTransaction = ({ orderdata, token }) => {
 							}
 						})}
 						{isModalOpen && (
-							<div className="fixed inset-0 flex items-center justify-center z-50">
+							<div className="fixed inset-0 flex items-center justify-center mt-10 z-50">
 								<div className="absolute inset-0 bg-black opacity-50 backdrop-blur-md z-10"></div>
-								<div className="bg-white rounded-lg shadow-lg p-6 w-3/5 z-20 max-h-screen flex flex-col h-115">
+								<div className="bg-white rounded-lg shadow-lg p-6 w-3/5 z-20 max-h-screen flex flex-col h-3/4">
 									<div className="flex justify-between items-center">
 										<h2 className="text-2xl font-bold">Transaction Details</h2>
 										<button onClick={() => toggleModal(null)} className="text-lg">
-											X
+											<svg
+												className="w-6 h-6 text-black hover:text-gray-800"
+												fill="none"
+												stroke="currentColor"
+												viewBox="0 0 24 24"
+												xmlns="http://www.w3.org/2000/svg"
+											>
+												<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+											</svg>
 										</button>
 									</div>
 									<div className="overflow-y-auto mt-4">

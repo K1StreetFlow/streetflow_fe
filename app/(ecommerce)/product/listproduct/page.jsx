@@ -23,7 +23,7 @@ const SearchBar = ({ onSearch }) => {
 
   return (
     <form onSubmit={handleSearchSubmit} className="mb-4 mt-10">
-      <div className="flex justify-center mx-auto p-3 w-90 bg-transparent shadow-xl border-b-2  py-2 rounded-xl">
+      <div className="flex justify-center mx-auto p-3 w-90 bg-transparent box border-b-2  py-2 rounded-xl">
         <input
           type="text"
           value={searchTerm}
