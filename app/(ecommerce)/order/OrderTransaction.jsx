@@ -266,7 +266,7 @@ const OrderTransaction = ({ orderdata, token }) => {
                         Transaction Details
                       </button>
                       {order.status_order === "Completed" && (
-                        <Link href="/review">
+                        <Link href={`/review/${order.id}`}>
                           <button className="button-ulasan">Review</button>
                         </Link>
                       )}
