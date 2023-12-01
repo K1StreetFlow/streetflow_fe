@@ -6,8 +6,6 @@ import Loader from "@/components/common/Loader";
 import Navbar from "@/app/(ecommerce)/Navbar";
 import Footer from "@/app/(ecommerce)/Footer";
 import Cookies from "js-cookie";
-import { useRouter, usePathname } from "next/navigation";
-import { to } from "react-spring";
 
 export default function RootLayout({ children }) {
   const [loading, setLoading] = useState(true);

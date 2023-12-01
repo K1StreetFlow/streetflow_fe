@@ -8,8 +8,6 @@ const DropdownUser = ({ user }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const trigger = useRef(null);
   const dropdown = useRef(null);
-  const [decodedToken, setDecodedToken] = useState(null);
-  const [userDataFromApi, setUserDataFromApi] = useState(null);
 
   const handleLogOut = async () => {
     try {

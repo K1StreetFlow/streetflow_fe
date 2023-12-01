@@ -129,6 +129,7 @@ export default function Navbar({ tokenCustomer }) {
                   src="/images/icon/shop-cart-bold.svg"
                   width={30}
                   height={30}
+                  alt="Icon Keranjang Belanja"
                 />
               </Link>
               {totalProduct > 0 && (
