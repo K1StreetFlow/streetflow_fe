@@ -5,13 +5,27 @@ import { useState, useEffect } from "react";
 import Loader from "@/components/common/Loader";
 import Navbar from "@/app/(ecommerce)/Navbar";
 import Footer from "@/app/(ecommerce)/Footer";
+import Cookies from "js-cookie";
+import { useRouter, usePathname } from "next/navigation";
+import { to } from "react-spring";
 
 export default function RootLayout({ children }) {
-	const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [tokenCustomer, setTokenCustomer] = useState(null);
 
-	useEffect(() => {
-		setTimeout(() => setLoading(false), 1000);
-	}, []);
+  useEffect(() => {
+    const tokenCustomer = Cookies.get("tokenCustomer");
+
+    if (!tokenCustomer) {
+      console.log("Token tidak ada");
+    } else {
+      setTokenCustomer(tokenCustomer);
+    }
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
 
   return (
     <div className="bg-white bottom-0">
@@ -21,20 +35,20 @@ export default function RootLayout({ children }) {
         <div className="mt-auto">
           {/* <!-- ===== Content Area Start ===== --> */}
           <div className="mt-auto flex flex-1 flex-col overflow-y-auto overflow-x-hidden ">
-            <Navbar />
+            <Navbar tokenCustomer={tokenCustomer} />
             {/* <!-- ===== Main Content Start ===== --> */}
-            <main >
+            <main>
               <div className="mx-auto mt-19 max-w-screen-2xl p-4 md:p-6 2xl:p-10">
                 {children}
               </div>
             </main>
-            
+
             <div className="relative bottom-0 w-full">
               <Footer />
             </div>
             {/* <!-- ===== Main Content End ===== --> */}
           </div>
-         
+
           {/* <!-- ===== Content Area End ===== --> */}
         </div>
       )}
