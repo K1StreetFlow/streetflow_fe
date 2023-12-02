@@ -3,8 +3,8 @@ import "@/app/globals.css";
 import "@/app/satoshi.css";
 import { useState, useEffect } from "react";
 import Loader from "@/components/common/Loader";
-import Navbar from "@/app/(ecommerce)/Navbar";
-import Footer from "@/app/(ecommerce)/Footer";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import Cookies from "js-cookie";
 
 export default function RootLayout({ children }) {

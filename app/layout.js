@@ -2,7 +2,7 @@ import "@/app/globals.css";
 import "@/app/satoshi.css";
 
 export const metadata = {
-  title: "Home | Streetflow",
+  title: "Streetflow",
 };
 
 export default function RootLayout({ children }) {

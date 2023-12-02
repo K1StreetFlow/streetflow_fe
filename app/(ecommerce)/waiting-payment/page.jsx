@@ -132,14 +132,14 @@ const page = async () => {
                       </Link>
                       {order.payment.pdf_url !== null ? (
                         <Link href={order.payment.pdf_url} targer="_blank">
-                          <button className="button-ulasan">Cara Bayar</button>
+                          <button className="button-ulasan">How to pays</button>
                         </Link>
                       ) : (
                         <button
                           className="py-2 px-4 cursor-no-drop bg-gray rounded-sm "
                           disabled
                         >
-                          Cara Bayar
+                          How to Pay
                         </button>
                       )}
                     </div>
@@ -147,7 +147,9 @@ const page = async () => {
                 )
             )
           ) : (
-            <p>Belum ada data</p>
+            <p>
+              You don't have any order. <Link href="/product">Go shopping</Link>
+            </p>
           )}
         </div>
       </div>

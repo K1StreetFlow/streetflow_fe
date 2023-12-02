@@ -1,6 +1,6 @@
 import React from "react";
 import { cookies } from "next/headers";
-import Checkout from "./Checkout";
+import Checkout from "@/components/Checkout/Checkout";
 
 export const metadata = {
   title: "Checkout | Streetflow",

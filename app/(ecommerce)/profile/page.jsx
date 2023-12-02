@@ -1,5 +1,5 @@
 import SidebarCustomer from "@/components/Sidebar/SidebarCustomer";
-import ProfilePage from "./ProfilePage";
+import ProfilePage from "@/components/Profile/ProfilePage";
 
 export const metadata = {
   title: "Profile | Streetflow",

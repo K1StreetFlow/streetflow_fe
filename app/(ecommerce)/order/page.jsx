@@ -1,7 +1,7 @@
 import React from "react";
 import "../../satoshi.css";
 import "../../globals.css";
-import OrderTransaction from "./OrderTransaction";
+import OrderTransaction from "@/components/Order/OrderTransaction";
 import { cookies } from "next/headers";
 
 export const metadata = {

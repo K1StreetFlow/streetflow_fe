@@ -1,7 +1,6 @@
 import React from "react";
-import TableCartCustomer from "@/app/(ecommerce)/carts/tableCart";
+import TableCartCustomer from "@/components/Carts/tableCart";
 import { cookies } from "next/headers";
-import { useRouter } from "next/navigation";
 
 export const metadata = {
   title: "Cart | Streetflow",
