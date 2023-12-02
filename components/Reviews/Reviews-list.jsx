@@ -2,19 +2,18 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import { formatDate } from "@/app/utils/formatDate";
 import SidebarCustomer from "../Sidebar/SidebarCustomer";
 import Modal from "react-modal";
-import { button } from "@nextui-org/react";
 
 function getImageUrl(filename) {
   return `http://localhost:8000/api/photo_products/view/${filename}`;
 }
 
-const ReviewPages = ({ orderdata, review, token, orderId }) => {
+const ReviewPages = ({ orderdata, review, token }) => {
   const router = useRouter();
-  const [orders, setOrders] = useState(orderdata);
+  const [orders, setOrders] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [reviewMessage, setReviewMessage] = useState("");
@@ -24,12 +23,10 @@ const ReviewPages = ({ orderdata, review, token, orderId }) => {
   const [orderListId, setOrderListId] = useState(null);
   const [orderStatus, setOrderStatus] = useState(null);
   const [customerId, setCustomerId] = useState(null);
-  const [checkoutProduct, setCheckoutProduct] = useState([]);
-  const [reviewProduct, setReviewProduct] = useState(review);
 
-  function reviewProductId(productId) {
+  function reviewProductId(productId, orderId) {
     let isReview = false;
-    reviewProduct.forEach((item) => {
+    review.forEach((item) => {
       if (item.id_products == productId && item.id_order_list == orderId) {
         isReview = true;
       }
@@ -37,69 +34,12 @@ const ReviewPages = ({ orderdata, review, token, orderId }) => {
     return isReview;
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch(
-          `http://localhost:8000/api/review-products/user/review`,
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
-
-        const result = res.json();
-
-        if (result && result.data) {
-          setReviewProduct(result);
-        } else {
-          console.error("Invalid response format:", result);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-    const interval = setInterval(fetchData, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    try {
-      const fetchData = async () => {
-        const response = await fetch(
-          `http://localhost:8000/api/checkout-product/order/${orderId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              accept: "application/json",
-              cookie: `tokenCustomer=${token}`,
-            },
-            credentials: "include",
-          }
-        );
-        const result = await response.json();
-
-        if (result) {
-          setCheckoutProduct(result);
-        } else {
-          console.error("Invalid response format:", result);
-        }
-      };
-
-      fetchData();
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }, [orderId]);
-
   const openModal = (order, detail) => {
     setProductId(detail.product.id);
     setOrderListId(order.id);
     setOrderStatus(order.status_order); // Save the order status
     setCustomerId(order.id_users_customer); // Save the customer id
+    setSelectedProduct(detail.product);
     setModalIsOpen(true);
   };
 
@@ -179,6 +119,7 @@ const ReviewPages = ({ orderdata, review, token, orderId }) => {
       }
     } catch (reviewError) {
       console.error("Failed to submit review:", reviewError);
+      // Provide specific feedback to the user about review submission failure
     }
   };
 
@@ -190,7 +131,7 @@ const ReviewPages = ({ orderdata, review, token, orderId }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/order/${orderId}`,
+          "http://localhost:8000/api/order/user/orderList",
           {
             method: "GET",
             headers: {
@@ -202,6 +143,7 @@ const ReviewPages = ({ orderdata, review, token, orderId }) => {
           }
         );
         const result = await response.json();
+        console.log("API Response:", result);
 
         if (result && result.data) {
           setOrders(result.data);
@@ -218,6 +160,10 @@ const ReviewPages = ({ orderdata, review, token, orderId }) => {
     return () => clearInterval(interval);
   }, [token]);
 
+  const completedOrders = orders.filter(
+    (order) => order.status_order === "Completed"
+  );
+
   return (
     <>
       <div className="flex items-start mt-10 text-[#212121]">
@@ -227,77 +173,82 @@ const ReviewPages = ({ orderdata, review, token, orderId }) => {
         <div className="w-4/5 mb-5 ">
           <h3 className="font-bold ml-6 mb-5 text-xl">Review List</h3>
           <div className="box-2">
-            {orders ? (
-              <div className="box-3 mb-4">
+            {completedOrders.map((order, key) => (
+              <div className="box-3 mb-4" key={key}>
                 <div className="flex justify-between mb-4 items-center">
                   <div className="inline-flex items-center text-sm">
                     <p className="mr-2">
-                      {formatDate(orders.payment.createdAt)}
+                      {formatDate(order.payment.createdAt)}
                     </p>
                     <p className="inline-flex rounded-sm bg-opacity-10 py-1 px-3 text-sm font-medium mr-2 text-success bg-success">
-                      {orders.status_order}
+                      {order.status_order}
                     </p>
                     <p className="mr-2 text-form-strokedark">
-                      {orders.code_order}
+                      {order.code_order}
                     </p>
                   </div>
                 </div>
                 <div className="flex">
                   <div className="item-content">
-                    {checkoutProduct.map((detail) => (
-                      <div
-                        className="flex justify-between mb-2"
-                        key={detail.id}
-                      >
-                        <div className="flex items-center">
-                          <Image
-                            src={getImageUrl(
-                              detail.product.photo.photo_product
+                    {order.cart.checkout_product
+                      .filter((detail) => detail.id_order === order.id)
+                      .map((detail) => (
+                        <div
+                          className="flex justify-between mb-2"
+                          key={detail.id}
+                        >
+                          <div className="flex items-center">
+                            <Image
+                              src={getImageUrl(
+                                detail.product.photo.photo_product
+                              )}
+                              width={100}
+                              height={100}
+                              alt="product"
+                              className="rounded-lg mr-4"
+                            ></Image>
+                            <p className="font-bold">
+                              {detail.product.name_product}
+                            </p>
+                          </div>
+                          <div className="border-line pl-5 flex items-center justify-center w-46">
+                            {reviewProductId(detail.product.id, order.id) ? (
+                              <button className="btn btn-disabled ">
+                                Review
+                              </button>
+                            ) : (
+                              <button
+                                className="button-ulasan"
+                                onClick={() => openModal(order, detail)}
+                              >
+                                Review
+                              </button>
                             )}
-                            width={100}
-                            height={100}
-                            alt="product"
-                            className="rounded-lg mr-4"
-                          ></Image>
-                          <p className="font-bold">
-                            {detail.product.name_product}
-                          </p>
+                          </div>
                         </div>
-                        <div className="border-line pl-5 flex items-center justify-center w-46">
-                          {reviewProductId(detail.product.id) ? (
-                            <button className="btn btn-disabled ">
-                              Review
-                            </button>
-                          ) : (
-                            <button
-                              className="button-ulasan"
-                              onClick={() => openModal(orders, detail)}
-                            >
-                              Review
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    ))}
+                      ))}
 
                     <Modal
                       isOpen={modalIsOpen}
                       onRequestClose={closeModal}
                       contentLabel="Review Modal"
-                      className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-graydark bg-opacity-80"
+                      className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-black bg-opacity-10"
                     >
                       <div className="bg-white rounded-lg max-w-md mx-auto md:mt-24">
                         <div className="flex flex-col items-start p-4">
                           <div className="flex items-center w-full">
-                            <h3 className="text-gray-900 font-medium text-lg">
-                              Review for {selectedProduct?.name_product}
+                            <h3 className="text-black font-medium text-lg">
+                              Review for{" "}
+                              <span className="font-bold">
+                                &quot;{selectedProduct?.name_product}&quot;
+                              </span>
                             </h3>
                             <button
                               onClick={closeModal}
                               className="ml-auto bg-transparent hover:bg-gray-200 rounded-full p-1"
                             >
                               <svg
-                                className="w-6 h-6 text-gray-400 hover:text-gray-800"
+                                className="w-6 h-6 text-black hover:text-gray-800"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -312,9 +263,14 @@ const ReviewPages = ({ orderdata, review, token, orderId }) => {
                               </svg>
                             </button>
                           </div>
-                          <form onSubmit={submitReview} className="w-full">
-                            <label className="mt-3 text-gray-700">
-                              Message Review:
+                          <form
+                            onSubmit={submitReview}
+                            className="w-full space-y-2 mt-3"
+                          >
+                            <div>
+                              <label className="mt-3 text-black">
+                                Message Review:
+                              </label>
                               <input
                                 type="text"
                                 name="review"
@@ -323,11 +279,13 @@ const ReviewPages = ({ orderdata, review, token, orderId }) => {
                                   setReviewMessage(e.target.value)
                                 }
                                 required
-                                className="mt-1 p-2 w-full border rounded-md"
+                                className="mt-1 p-2 w-full border rounded-md bg-white"
                               />
-                            </label>
-                            <label className="mt-3 text-gray-700">
-                              Number Review:
+                            </div>
+                            <div>
+                              <label className="mt-3 text-black">
+                                Number Review:
+                              </label>
                               <br />
                               <div className="rating rating-md mt-1 p-2 border rounded-md">
                                 <input
@@ -371,13 +329,15 @@ const ReviewPages = ({ orderdata, review, token, orderId }) => {
                                   checked={reviewNumber === 5}
                                 />
                               </div>
-                            </label>
-                            <br />
-                            <label
-                              for="reviewPhoto"
-                              className="mt-3 text-gray-700"
-                            >
-                              Review Photo:
+                            </div>
+
+                            <div>
+                              <label
+                                for="reviewPhoto"
+                                className="mt-3 text-black"
+                              >
+                                Review Photo:
+                              </label>
                               <input
                                 type="file"
                                 id="reviewPhoto"
@@ -389,14 +349,15 @@ const ReviewPages = ({ orderdata, review, token, orderId }) => {
                                   setReviewPhoto(e.target.files[0])
                                 }
                               />
-                            </label>
-
-                            <button
-                              type="submit"
-                              className="mt-3 w-full py-2 px-4 bg-meta-5 text-black text-sm font-medium rounded-md"
-                            >
-                              Submit
-                            </button>
+                            </div>
+                            <div>
+                              <button
+                                type="submit"
+                                className="mt-3 w-full py-2 px-4 bg-primary text-white text-base font-bold rounded-md hover:bg-white hover:text-black hover:border-primary border-2 border-primary"
+                              >
+                                Submit
+                              </button>
+                            </div>
                           </form>
                         </div>
                       </div>
@@ -404,11 +365,7 @@ const ReviewPages = ({ orderdata, review, token, orderId }) => {
                   </div>
                 </div>
               </div>
-            ) : (
-              <div className="flex justify-center items-center">
-                <p className="text-center">No review found.</p>
-              </div>
-            )}
+            ))}
           </div>
         </div>
       </div>

@@ -8,8 +8,6 @@ const DropdownUser = ({ user }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const trigger = useRef(null);
   const dropdown = useRef(null);
-  const [decodedToken, setDecodedToken] = useState(null);
-  const [userDataFromApi, setUserDataFromApi] = useState(null);
 
   const handleLogOut = async () => {
     try {
@@ -69,16 +67,26 @@ const DropdownUser = ({ user }) => {
           <span className="block text-xs">{user.email}</span>
         </span>
         <span className="h-12 w-12 object-contain rounded-full border overflow-hidden">
-          <Image
-            src={`http://localhost:8000/${user.upload_photo?.replace(
-              "\\",
-              "/"
-            )}`}
-            alt="User Profile"
-            className=""
-            width={50}
-            height={50}
-          />
+          {(user.upload_photo && (
+            <Image
+              src={`http://localhost:8000/${user.upload_photo?.replace(
+                "\\",
+                "/"
+              )}`}
+              alt="User Profile"
+              className=""
+              width={50}
+              height={50}
+            />
+          )) || (
+            <Image
+              src={`/images/logo/user-default.png`}
+              alt="User Profile"
+              className=""
+              width={50}
+              height={50}
+            />
+          )}
         </span>
 
         <svg

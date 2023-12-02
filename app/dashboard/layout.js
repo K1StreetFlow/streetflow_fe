@@ -14,7 +14,6 @@ import { useRouter } from "next/navigation";
 export default function RootLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-
   const router = useRouter();
 
   useEffect(() => {

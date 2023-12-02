@@ -1,14 +1,14 @@
 import React from "react";
-import "../../satoshi.css";
-import "../../globals.css";
-import ReviewPages from "@/components/Reviews/Reviews-list";
+import "@/app/satoshi.css";
+import "@/app/globals.css";
+import ReviewPages from "@/components/Reviews/Reviews.jsx";
 import { cookies } from "next/headers";
 
-async function getUserOrder() {
+async function getUserOrder(orderId) {
   const cookieStore = cookies();
   const token = cookieStore.get("tokenCustomer");
 
-  const res = await fetch("http://localhost:8000/api/order/user/orderList", {
+  const res = await fetch(`http://localhost:8000/api/order/${orderId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -43,17 +43,19 @@ async function getUserReview() {
   return res.json();
 }
 
-const Review = async () => {
-  const orderdata = await getUserOrder();
+const Review = async ({ params }) => {
+  const orderId = params.orderId;
+  const orderdata = await getUserOrder(orderId);
+  const reviewdata = await getUserReview();
   const cookieStore = cookies();
   const token = cookieStore.get("tokenCustomer");
-  const reviewdata = await getUserReview();
   return (
     <>
       <div className="container mx-auto px-4">
         <ReviewPages
-          orderdata={orderdata}
+          orderdata={orderdata.data}
           token={token.value}
+          orderId={orderId}
           review={reviewdata}
         />
       </div>
