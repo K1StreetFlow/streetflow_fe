@@ -5,7 +5,6 @@ import "@/app/satoshi.css";
 import React, { useEffect, useState } from "react";
 import { getProductById } from "@/app/dashboard/products/api/ProductApi";
 import { FaShoppingCart, FaCheck, FaStar, FaRegStar } from "react-icons/fa";
-import LoginModal from "@/components/Product/modalproduct/LoginModal";
 import Loader from "@/components/common/Loader";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -40,21 +39,12 @@ const ProductPage = ({ params }) => {
   };
 
   const handleAddToCart = async () => {
-    // if (!isLoggedIn) {
-    //   // Jika pengguna belum login, tampilkan modal login
-    //   setShowModalLogin(true);
-    // } else {
-    // Jika pengguna sudah login, hitung total harga
-
-    // console.log(cart.data.cart_detail);
-
     const totalPrice = calculateTotalPrice(product.price_product, quantity);
     setTotalPrice(totalPrice);
     // Update displayPayment
     document.getElementById("displayPayment").innerText = totalPrice
       .toFixed(2)
       .toLocaleString("id-ID");
-    // console.log("Total Pembayaran:", totalPrice);
 
     const cart = await axios.get("http://localhost:8000/api/carts/user/cart/", {
       withCredentials: true,
@@ -83,10 +73,6 @@ const ProductPage = ({ params }) => {
         quantity: quantity,
       });
     }
-
-    // console.log(result);
-
-    // router.push("/carts");
   };
 
   const handlePurchase = (price, quantity, stock) => {
@@ -108,14 +94,6 @@ const ProductPage = ({ params }) => {
 
   const calculateTotalPrice = (price, quantity) => {
     return price * quantity;
-  };
-
-  const handleLogin = () => {
-    // Implementasi logika login disini
-    // Setelah login berhasil, atur state isLoggedIn menjadi true
-    setIsLoggedIn(true);
-    // Tutup modal login jika digunakan
-    setShowModalLogin(false);
   };
 
   if (!product) {
@@ -219,7 +197,7 @@ const ProductPage = ({ params }) => {
               Add to Cart
             </button>
             <button
-              className="bg-meta-3 text-white px-6 py-3 rounded transition duration-300 hover:bg-green-600 flex items-center"
+              className="bg-meta-3 text-white px-6 py-3 rounded transition duration-300 hover:bg-green-600 hidden items-center"
               onClick={() => handlePurchase()}
             >
               <FaCheck className="text-2xl mr-2 flex-shrink-0" />
@@ -294,12 +272,6 @@ const ProductPage = ({ params }) => {
           </div>
         </div>
       )}
-      {/* Modal Login
-      <LoginModal
-        isOpen={showModalLogin}
-        onClose={() => setShowModalLogin(false)}
-        onLogin={() => handleLogin()}
-      /> */}
     </div>
   );
 };
