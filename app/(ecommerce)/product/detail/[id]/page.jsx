@@ -228,9 +228,11 @@ const ProductPage = ({ params }) => {
                 </div>
                 <div className="flex items-center mb-2">
                   {/* User Profile Picture (Placeholder) */}
-                  <img
-                    src="https://via.placeholder.com/40"
+                  <Image
+                    src="/images/logo/user-default.png"
                     alt="User Profile"
+                    width={50}
+                    height={50}
                     className="w-8 h-8 rounded-full mr-2"
                   />
                   {/* User ID and Timestamp */}
