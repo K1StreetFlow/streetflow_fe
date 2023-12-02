@@ -4,6 +4,10 @@ import SidebarCustomer from "@/components/Sidebar/SidebarCustomer";
 import { formatDate } from "../../utils/formatDate";
 import { cookies } from "next/headers";
 
+export const metadata = {
+  title: "Waiting Payment | Streetflow",
+};
+
 async function updateAllPaymentPending() {
   await fetch(`http://localhost:8000/api/payments/update-status/user`, {
     next: {

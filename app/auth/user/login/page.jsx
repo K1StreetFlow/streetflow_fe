@@ -5,10 +5,6 @@ import Image from "next/image";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-// export const metadata = {
-//   title: "Login Page | Streetflow",
-// };
-
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

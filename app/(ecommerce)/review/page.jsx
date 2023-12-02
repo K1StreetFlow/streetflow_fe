@@ -4,6 +4,10 @@ import "../../globals.css";
 import ReviewPages from "@/components/Reviews/Reviews-list";
 import { cookies } from "next/headers";
 
+export const metadata = {
+  title: "Review | Streetflow",
+};
+
 async function getUserOrder() {
   const cookieStore = cookies();
   const token = cookieStore.get("tokenCustomer");

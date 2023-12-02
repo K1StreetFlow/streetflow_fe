@@ -3,6 +3,10 @@ import TableCartCustomer from "@/app/(ecommerce)/carts/tableCart";
 import { cookies } from "next/headers";
 import { useRouter } from "next/navigation";
 
+export const metadata = {
+  title: "Cart | Streetflow",
+};
+
 async function getAllCarts() {
   const cookieStore = cookies();
   const token = cookieStore.get("tokenCustomer");
